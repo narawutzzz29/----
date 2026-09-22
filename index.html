@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1F5A3D">
+<link rel="manifest" href="manifest.webmanifest">
+<title>บันทึกงานรถตัดอ้อย</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@600;700&display=swap">
+<style>
+  :root{
+    --ground:#F6F4EA; --surface:#FFFFFF; --surface-2:#EFEBDD; --raise:#FBFAF4;
+    --ink:#1A2118; --ink-soft:#5E6556; --ink-faint:#8A9082; --line:#DEDACB;
+    --green:#1F5A3D; --green-ink:#14402B; --green-soft:#E1EDE3; --on-green:#fff;
+    --amber:#A96D14; --amber-soft:#F6E9D2;
+    --red:#A2412B; --red-soft:#F6E0D9;
+    --blue:#2B5B76; --blue-soft:#DEEAF1;
+    --r:10px; color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+    --ground:#10140F; --surface:#181D16; --surface-2:#212720; --raise:#1E241C;
+    --ink:#E9EBE2; --ink-soft:#9BA394; --ink-faint:#737A6D; --line:#2D352A;
+    --green:#74C391; --green-ink:#A8DCBC; --green-soft:#1B2C21; --on-green:#0E1A13;
+    --amber:#DFAA57; --amber-soft:#2D2415;
+    --red:#E08D74; --red-soft:#2E1C16;
+    --blue:#84B9D8; --blue-soft:#15242E; color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --ground:#10140F; --surface:#181D16; --surface-2:#212720; --raise:#1E241C;
+    --ink:#E9EBE2; --ink-soft:#9BA394; --ink-faint:#737A6D; --line:#2D352A;
+    --green:#74C391; --green-ink:#A8DCBC; --green-soft:#1B2C21; --on-green:#0E1A13;
+    --amber:#DFAA57; --amber-soft:#2D2415;
+    --red:#E08D74; --red-soft:#2E1C16;
+    --blue:#84B9D8; --blue-soft:#15242E; color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+    font-size:15px; line-height:1.55; -webkit-text-size-adjust:100%;
+    padding-top:env(safe-area-inset-top,0px);
+  }
+  img{max-width:100%}
+  [hidden]{display:none!important}
+
+  /* ---------- login ---------- */
+  #login{min-height:100%; display:grid; place-items:center; padding:24px 16px}
+  .loginbox{width:100%; max-width:360px}
+  .loginbox .logo{display:flex; align-items:center; gap:11px; margin-bottom:20px}
+  .loginbox h1{font-family:"Noto Serif Thai",Georgia,serif; font-size:21px; margin:0; letter-spacing:-.01em}
+  .loginbox h1 small{display:block; font-size:12.5px; color:var(--ink-faint); font-weight:400; font-family:"IBM Plex Sans Thai",sans-serif}
+  .mark{width:40px;height:40px;border-radius:11px;background:var(--green);display:grid;place-items:center;flex:none}
+  .mark svg{width:23px;height:23px}
+  .loginbox .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:18px}
+  #login-error{color:var(--red); font-size:13px; margin-top:10px}
+
+  /* ---------- app shell ---------- */
+  #app{display:grid; grid-template-rows:auto 1fr auto; height:100%; max-width:760px; margin:0 auto}
+  header{display:flex; align-items:center; gap:10px; padding:10px 16px; background:var(--surface); border-bottom:1px solid var(--line)}
+  .brand{display:flex; align-items:center; gap:9px; min-width:0}
+  .brand .mark{width:30px;height:30px;border-radius:8px}
+  .brand .mark svg{width:18px;height:18px}
+  .brand h1{font-family:"Noto Serif Thai",Georgia,serif; font-weight:700; font-size:17px; margin:0; white-space:nowrap}
+  .brand small{display:block;font-size:11px;color:var(--ink-faint);font-weight:400;line-height:1.2;font-family:"IBM Plex Sans Thai",sans-serif}
+  .whoami{margin-left:auto; display:flex; align-items:center; gap:8px}
+  .whoami .n{font-size:12px;line-height:1.2;text-align:right}
+  .whoami .n b{display:block;font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .whoami .n span{color:var(--ink-faint)}
+
+  main{overflow-y:auto; padding:14px 16px 22px; display:flex; flex-direction:column; gap:14px}
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:14px}
+  .card > h2{font-family:"Noto Serif Thai",Georgia,serif; font-size:15px; margin:0 0 2px; font-weight:700}
+  .card > p.sub{margin:0 0 12px; font-size:12.5px; color:var(--ink-faint)}
+  .eyebrow{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;margin:2px 0 0}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+  .f{display:flex; flex-direction:column; gap:4px; min-width:0}
+  .f.wide{grid-column:1/-1}
+  label{font-size:12px; font-weight:600; color:var(--ink-soft)}
+  input,select,textarea{font:inherit; font-size:15px; color:var(--ink); background:var(--raise);
+    border:1px solid var(--line); border-radius:8px; padding:9px 10px; width:100%; font-variant-numeric:tabular-nums}
+  textarea{min-height:58px; resize:vertical}
+  input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--green); outline-offset:1px}
+  .segmented{display:flex; gap:6px}
+  .segmented label{flex:1; text-align:center; padding:8px 4px; border:1px solid var(--line); border-radius:8px;
+    background:var(--raise); cursor:pointer; font-size:13.5px; font-weight:500; color:var(--ink-soft); position:relative}
+  .segmented input{position:absolute;opacity:0;width:0;height:0}
+  .segmented label:has(input:checked){border-color:var(--green); background:var(--green-soft); color:var(--green-ink); font-weight:600}
+
+  button{font:inherit; cursor:pointer; border-radius:8px; border:1px solid transparent}
+  .btn{background:var(--green); color:var(--on-green); padding:11px 16px; font-weight:600; font-size:15px; width:auto}
+  .btn.block{width:100%}
+  .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line); font-weight:500}
+  .btn.small{padding:7px 11px; font-size:13px}
+  .btn.danger{background:transparent;color:var(--red);border-color:var(--line)}
+  .btn:disabled{opacity:.5; cursor:not-allowed}
+  .actions{display:flex; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap}
+
+  .total{display:flex; align-items:baseline; gap:8px; margin-top:12px; padding:11px 12px;
+    background:var(--green-soft); border-radius:8px; color:var(--green-ink)}
+  .total b{font-size:22px; font-variant-numeric:tabular-nums; font-family:"Noto Serif Thai",Georgia,serif}
+  .total span{font-size:12.5px}
+
+  .rows{display:flex; flex-direction:column; gap:8px}
+  .row{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:11px 12px; display:grid; gap:3px}
+  .row .top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+  .row .title{font-weight:600; font-size:14.5px}
+  .row .meta{font-size:12px; color:var(--ink-faint); display:flex; gap:10px; flex-wrap:wrap; font-variant-numeric:tabular-nums}
+  .row .amt{margin-left:auto; font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap}
+  .machine-row{cursor:pointer}
+  .detail{border-top:1px dashed var(--line); margin-top:9px; padding-top:9px; display:grid; gap:9px}
+  .kv{display:grid; grid-template-columns:auto 1fr; gap:3px 12px; font-size:13px; margin:0}
+  .kv dt{color:var(--ink-faint)}
+  .kv dd{margin:0; font-variant-numeric:tabular-nums}
+
+  .chip{font-size:11.5px; font-weight:600; padding:2px 8px; border-radius:99px; background:var(--surface-2); color:var(--ink-soft); white-space:nowrap}
+  .chip.ok{background:var(--green-soft); color:var(--green-ink)}
+  .chip.work{background:var(--blue-soft); color:var(--blue)}
+  .chip.fix{background:var(--red-soft); color:var(--red)}
+  .chip.burn{background:var(--amber-soft); color:var(--amber)}
+  .chip.wait{background:var(--amber-soft); color:var(--amber)}
+
+  .tiles{display:grid; grid-template-columns:repeat(2,1fr); gap:9px}
+  .tile{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:11px 12px}
+  .tile .k{font-size:11.5px; color:var(--ink-faint); font-weight:600}
+  .tile .v{font-family:"Noto Serif Thai",Georgia,serif; font-size:21px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.25}
+  .tile .u{font-size:12px; color:var(--ink-faint); font-weight:400; font-family:"IBM Plex Sans Thai",sans-serif}
+
+  .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--r); background:var(--surface)}
+  table{border-collapse:collapse; width:100%; font-size:13px; min-width:620px}
+  th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); white-space:nowrap}
+  th{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); background:var(--surface-2); position:sticky; top:0}
+  td.num{text-align:right; font-variant-numeric:tabular-nums}
+  tr:last-child td{border-bottom:none}
+
+  .empty{padding:22px 12px; text-align:center; color:var(--ink-faint); font-size:13.5px}
+  .banner{border-radius:var(--r); padding:10px 12px; font-size:13px; border:1px solid var(--line); background:var(--amber-soft); color:var(--amber)}
+  .banner.bad{background:var(--red-soft); color:var(--red)}
+
+  nav{display:flex; background:var(--surface); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px)}
+  nav button{flex:1; background:none; border:none; padding:9px 2px 8px; color:var(--ink-faint);
+    display:grid; justify-items:center; gap:2px; font-size:11px; font-weight:600; border-radius:0}
+  nav button svg{width:21px;height:21px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  nav button[aria-current="true"]{color:var(--green)}
+  nav button .ind{width:18px;height:2px;background:transparent;border-radius:2px}
+  nav button[aria-current="true"] .ind{background:var(--green)}
+
+  .toast{position:fixed; left:50%; transform:translateX(-50%); bottom:calc(74px + env(safe-area-inset-bottom,0px));
+    background:var(--ink); color:var(--ground); padding:9px 15px; border-radius:99px; font-size:13.5px; font-weight:500; z-index:50;
+    box-shadow:0 4px 14px rgba(0,0,0,.18); max-width:calc(100% - 32px); text-align:center}
+  @media (prefers-reduced-motion:no-preference){ .toast{animation:pop .2s ease-out} }
+  @keyframes pop{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
+
+  @media (max-width:420px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<!-- ============================ LOGIN ============================ -->
+<div id="login">
+  <div class="loginbox">
+    <div class="logo">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 21V8"/><path d="M12 8c0-3 2-5 5-5 0 3-2 5-5 5Z" fill="#fff" stroke="none"/><path d="M12 12c0-3-2-5-5-5 0 3 2 5 5 5Z" fill="#fff" stroke="none"/><path d="M5 21h14"/></svg></span>
+      <h1>บันทึกงานรถตัดอ้อย<small>เข้าสู่ระบบด้วยชื่อผู้ใช้ที่ได้รับ</small></h1>
+    </div>
+    <div class="card">
+      <form id="login-form">
+        <div class="f" style="margin-bottom:10px">
+          <label for="lg-user">ชื่อผู้ใช้</label>
+          <input id="lg-user" autocomplete="username" autocapitalize="none" spellcheck="false" required placeholder="เช่น somsak">
+        </div>
+        <div class="f" style="margin-bottom:14px">
+          <label for="lg-pass">รหัสผ่าน</label>
+          <input id="lg-pass" type="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn block" id="lg-submit">เข้าสู่ระบบ</button>
+        <div id="login-error" hidden></div>
+      </form>
+    </div>
+    <p style="font-size:12px;color:var(--ink-faint);margin-top:12px">ลืมรหัสผ่าน หรือยังไม่มีชื่อผู้ใช้ — ติดต่อผู้ดูแลระบบ</p>
+  </div>
+</div>
+
+<!-- ============================ APP ============================ -->
+<div id="app" hidden>
+  <header>
+    <div class="brand">
+      <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 21V8"/><path d="M12 8c0-3 2-5 5-5 0 3-2 5-5 5Z" fill="#fff" stroke="none"/><path d="M12 12c0-3-2-5-5-5 0 3 2 5 5 5Z" fill="#fff" stroke="none"/><path d="M5 21h14"/></svg></span>
+      <div><h1>บันทึกงานรถตัดอ้อย</h1><small id="conn">ออนไลน์</small></div>
+    </div>
+    <div class="whoami">
+      <div class="n"><b id="me-name">—</b><span id="me-role">—</span></div>
+      <button type="button" class="btn ghost small" id="btn-logout">ออก</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="notice" hidden></div>
+
+    <!-- บันทึกงาน -->
+    <section id="tab-log">
+      <div class="card">
+        <h2>บันทึกรอบการตัด</h2>
+        <p class="sub">กรอกหลังตัดเสร็จแต่ละแปลง ระบบคิดค่าตัดให้อัตโนมัติ</p>
+        <form id="job-form">
+          <div class="grid">
+            <div class="f"><label for="j-date">วันที่ตัด</label><input type="date" id="j-date" required></div>
+            <div class="f"><label for="j-machine">รถตัด</label><select id="j-machine" required></select></div>
+            <div class="f wide"><label for="j-driver">คนขับ</label><input id="j-driver" autocomplete="off" placeholder="ชื่อคนขับ"></div>
+            <div class="f"><label for="j-owner">เจ้าของไร่</label><input id="j-owner" required autocomplete="off" placeholder="เช่น สมชาย ใจดี"></div>
+            <div class="f"><label for="j-plot">แปลง / ที่ตั้ง</label><input id="j-plot" autocomplete="off" placeholder="เช่น แปลง 3 หนองแวง"></div>
+            <div class="f wide"><label>ประเภทอ้อย</label>
+              <div class="segmented">
+                <label><input type="radio" name="canetype" value="สด" checked><span>อ้อยสด</span></label>
+                <label><input type="radio" name="canetype" value="ไฟไหม้"><span>อ้อยไฟไหม้</span></label>
+              </div>
+            </div>
+            <div class="f"><label for="j-rai">พื้นที่ (ไร่)</label><input type="number" id="j-rai" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
+            <div class="f"><label for="j-tons">น้ำหนักอ้อย (ตัน)</label><input type="number" id="j-tons" inputmode="decimal" step="0.01" min="0" required placeholder="0"></div>
+            <div class="f"><label for="j-trips">จำนวนเที่ยวรถบรรทุก</label><input type="number" id="j-trips" inputmode="numeric" step="1" min="0" placeholder="0"></div>
+            <div class="f"><label for="j-queue">เลขคิว / โรงงาน</label><input id="j-queue" autocomplete="off" placeholder="เช่น คิว 1204"></div>
+            <div class="f"><label for="j-hours">ชั่วโมงทำงาน (ชม.)</label><input type="number" id="j-hours" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
+            <div class="f"><label for="j-fuel">น้ำมันที่เติม (ลิตร)</label><input type="number" id="j-fuel" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
+            <div class="f"><label for="j-rate">ค่าตัด (บาท/ตัน)</label><input type="number" id="j-rate" inputmode="decimal" step="1" min="0" value="180"></div>
+            <div class="f"><label for="j-fuelcost">ค่าน้ำมัน (บาท)</label><input type="number" id="j-fuelcost" inputmode="decimal" step="1" min="0" placeholder="0"></div>
+            <div class="f wide"><label for="j-note">หมายเหตุ</label><textarea id="j-note" placeholder="เช่น อ้อยล้ม ดินแฉะ เสียเวลา 2 ชม."></textarea></div>
+          </div>
+          <div class="total"><b id="j-total">0</b><span>บาท — ค่าตัดรวมของรอบนี้</span></div>
+          <div class="actions">
+            <button type="submit" class="btn" id="j-submit">บันทึกรอบนี้</button>
+            <button type="button" class="btn ghost" id="j-reset">ล้างฟอร์ม</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>บันทึกล่าสุดของฉัน</h2>
+        <p class="sub">5 รายการล่าสุด</p>
+        <div class="rows" id="my-recent"><div class="empty">ยังไม่มีรายการ</div></div>
+      </div>
+    </section>
+
+    <!-- รถตัดอ้อย -->
+    <section id="tab-fleet" hidden>
+      <div class="card">
+        <h2>ทะเบียนรถตัดอ้อย</h2>
+        <p class="sub">แตะที่คันรถเพื่อดูชั่วโมงสะสม ประวัติซ่อม และงานล่าสุด</p>
+        <div class="rows" id="fleet-list"><div class="empty">กำลังโหลด…</div></div>
+        <div class="actions" id="fleet-admin-actions" hidden>
+          <button type="button" class="btn small" id="btn-add-machine">+ เพิ่มรถ</button>
+        </div>
+      </div>
+
+      <div class="card" id="machine-form-card" hidden>
+        <h2 id="mf-title">เพิ่มรถตัดอ้อย</h2>
+        <form id="machine-form">
+          <input type="hidden" id="m-id">
+          <div class="grid">
+            <div class="f"><label for="m-code">ทะเบียน / รหัสรถ</label><input id="m-code" required placeholder="เช่น 82-1234 ขก"></div>
+            <div class="f"><label for="m-brand">ยี่ห้อ</label><input id="m-brand" placeholder="เช่น John Deere"></div>
+            <div class="f"><label for="m-model">รุ่น</label><input id="m-model" placeholder="เช่น CH570"></div>
+            <div class="f"><label for="m-year">ปี</label><input type="number" id="m-year" inputmode="numeric" step="1" placeholder="2565"></div>
+            <div class="f"><label for="m-hours">ชั่วโมงเครื่องสะสม</label><input type="number" id="m-hours" inputmode="decimal" step="1" min="0" placeholder="0"></div>
+            <div class="f"><label for="m-status">สถานะ</label><select id="m-status"><option>ว่าง</option><option>กำลังทำงาน</option><option>ซ่อมบำรุง</option></select></div>
+            <div class="f wide"><label for="m-driver">คนขับประจำรถ</label><input id="m-driver" placeholder="ชื่อคนขับ"></div>
+            <div class="f wide"><label for="m-note">หมายเหตุ</label><input id="m-note"></div>
+          </div>
+          <div class="actions"><button type="submit" class="btn">บันทึกข้อมูลรถ</button>
+            <button type="button" class="btn ghost" id="mf-cancel">ยกเลิก</button></div>
+        </form>
+      </div>
+
+      <div class="card" id="maint-form-card" hidden>
+        <h2>บันทึกซ่อมบำรุง</h2>
+        <p class="sub" id="maint-for">—</p>
+        <form id="maint-form">
+          <input type="hidden" id="mt-machine">
+          <div class="grid">
+            <div class="f"><label for="mt-date">วันที่</label><input type="date" id="mt-date" required></div>
+            <div class="f"><label for="mt-type">ประเภท</label><select id="mt-type">
+              <option>เปลี่ยนถ่ายน้ำมันเครื่อง</option><option>เปลี่ยนใบมีด</option><option>ระบบไฮดรอลิก</option>
+              <option>ยาง / ตีนตะขาบ</option><option>ซ่อมใหญ่</option><option>อื่น ๆ</option></select></div>
+            <div class="f"><label for="mt-hours">ที่ชั่วโมงเครื่อง</label><input type="number" id="mt-hours" inputmode="decimal" step="1" min="0"></div>
+            <div class="f"><label for="mt-cost">ค่าใช้จ่าย (บาท)</label><input type="number" id="mt-cost" inputmode="decimal" step="1" min="0"></div>
+            <div class="f wide"><label for="mt-note">รายละเอียด</label><input id="mt-note"></div>
+          </div>
+          <div class="actions"><button type="submit" class="btn">บันทึก</button>
+            <button type="button" class="btn ghost" id="mt-cancel">ยกเลิก</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ประวัติ -->
+    <section id="tab-history" hidden>
+      <div class="card">
+        <h2>ประวัติงานตัด</h2>
+        <p class="sub" id="history-scope-note">คนขับจะเห็นเฉพาะรายการที่ตัวเองบันทึก</p>
+        <div class="grid">
+          <div class="f"><label for="h-machine">กรองตามรถ</label><select id="h-machine"><option value="">ทุกคัน</option></select></div>
+          <div class="f"><label for="h-from">ตั้งแต่วันที่</label><input type="date" id="h-from"></div>
+        </div>
+      </div>
+      <div class="rows" id="history-list"><div class="empty">ยังไม่มีรายการ</div></div>
+    </section>
+
+    <!-- หลังบ้าน -->
+    <section id="tab-admin" hidden>
+      <div class="card">
+        <h2>สรุปภาพรวม</h2>
+        <p class="sub" id="admin-range">ทุกช่วงเวลา</p>
+        <div class="grid">
+          <div class="f"><label for="a-from">ตั้งแต่วันที่</label><input type="date" id="a-from"></div>
+          <div class="f"><label for="a-to">ถึงวันที่</label><input type="date" id="a-to"></div>
+        </div>
+        <div class="tiles" id="admin-tiles" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card">
+        <h2>สรุปรายคัน</h2>
+        <p class="sub">ผลงานของรถแต่ละคันในช่วงที่เลือก</p>
+        <div class="tablewrap"><table id="admin-machine-table"><tbody></tbody></table></div>
+      </div>
+
+      <div class="card">
+        <h2>ผู้ใช้งานระบบ</h2>
+        <p class="sub">ใครบันทึกไปกี่รายการ และเข้าใช้ล่าสุดเมื่อไหร่ — ปิดบัญชีได้ที่นี่</p>
+        <div class="tablewrap"><table id="admin-user-table"><tbody></tbody></table></div>
+        <p class="sub" style="margin:10px 0 0">เพิ่มบัญชีใหม่ทำที่ Supabase &gt; Authentication &gt; Add user (ดูคู่มือ)</p>
+      </div>
+
+      <div class="card">
+        <h2>ข้อมูลดิบทั้งหมด</h2>
+        <p class="sub">ทุกรายการพร้อมชื่อผู้บันทึกและเวลาที่บันทึก</p>
+        <div class="tablewrap" style="max-height:60vh;overflow-y:auto"><table id="admin-raw-table"><tbody></tbody></table></div>
+        <div class="actions"><button type="button" class="btn small" id="btn-export">ดาวน์โหลด CSV</button>
+          <button type="button" class="btn small ghost" id="btn-refresh">โหลดข้อมูลใหม่</button></div>
+      </div>
+    </section>
+  </main>
+
+  <nav>
+    <button type="button" data-tab="log" aria-current="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>บันทึกงาน</span><span class="ind"></span></button>
+    <button type="button" data-tab="fleet"><svg viewBox="0 0 24 24"><path d="M3 17h18"/><path d="M5 17v-4l3-5h7l2 5h2v4"/><circle cx="8" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg><span>รถตัดอ้อย</span><span class="ind"></span></button>
+    <button type="button" data-tab="history"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>ประวัติ</span><span class="ind"></span></button>
+    <button type="button" data-tab="admin" id="nav-admin" hidden><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>หลังบ้าน</span><span class="ind"></span></button>
+  </nav>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+/* =====================================================================
+   ตั้งค่าเชื่อมต่อฐานข้อมูล — แก้ 2 บรรทัดนี้หลังสร้างโปรเจกต์ Supabase
+   หาได้ที่ Supabase > Project Settings > API
+   (anon key เปิดเผยได้ ความปลอดภัยอยู่ที่ RLS ในไฟล์ SQL)
+   ===================================================================== */
+var SUPABASE_URL      = "https://wpfcuewsqltpasxetjss.supabase.co";
+var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwZmN1ZXdzcWx0cGFzeGV0anNzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwNzQ3NzQsImV4cCI6MjEwNTY1MDc3NH0.6_EDYV7sFUc8tVycrrXp2rhseU1kdLSeFAr1Z2x1LLw";
+var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อผู้ใช้ ไม่ต้องแก้
+/* ===================================================================== */
+
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+  var nf  = new Intl.NumberFormat('th-TH',{maximumFractionDigits:2});
+  var nf0 = new Intl.NumberFormat('th-TH',{maximumFractionDigits:0});
+  var sb = null;
+
+  var S = { me:null, profile:null, isAdmin:false, machines:[], jobs:[], maint:[], people:[], openMachine:null };
+
+  /* ---------- utils ---------- */
+  function today(){ var d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); }
+  function num(v){ var n=parseFloat(v); return isFinite(n)?n:0; }
+  function thDate(iso){ if(!iso) return '—'; var p=String(iso).slice(0,10).split('-'); if(p.length<3) return iso;
+    var d=new Date(+p[0],+p[1]-1,+p[2]); return isNaN(d)?iso:d.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'}); }
+  function thStamp(v){ if(!v) return '—'; var d=new Date(v); return isNaN(d)?'—':d.toLocaleString('th-TH',{day:'numeric',month:'short',year:'2-digit',hour:'2-digit',minute:'2-digit'}); }
+  function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+  function toast(m){ var t=document.createElement('div'); t.className='toast'; t.textContent=m; document.body.appendChild(t); setTimeout(function(){t.remove();},2800); }
+  function notice(msg,bad){ var n=$('notice'); if(!msg){n.hidden=true;return;} n.className='banner'+(bad?' bad':''); n.textContent=msg; n.hidden=false; }
+  function uuid(){ return (crypto.randomUUID? crypto.randomUUID() : 'r'+Date.now()+Math.random().toString(16).slice(2)); }
+  function machineById(id){ for(var i=0;i<S.machines.length;i++) if(S.machines[i].id===id) return S.machines[i]; return null; }
+  function machineLabel(id){ var m=machineById(id); return m?(m.code||'ไม่มีรหัส'):'—'; }
+  function personName(id){
+    if(!id) return 'ไม่ระบุ';
+    for(var i=0;i<S.people.length;i++) if(S.people[i].id===id) return S.people[i].full_name || S.people[i].username;
+    return (S.me && id===S.me.id) ? (S.profile.full_name||S.profile.username) : 'ผู้ใช้งาน';
+  }
+
+  /* ---------- offline queue ---------- */
+  var QKEY='canecut_queue_v1';
+  function queueGet(){ try{ return JSON.parse(localStorage.getItem(QKEY)||'[]'); }catch(e){ return []; } }
+  function queueSet(a){ try{ localStorage.setItem(QKEY, JSON.stringify(a)); }catch(e){} }
+  function queuePush(row){ var q=queueGet(); q.push(row); queueSet(q); updateConn(); }
+  function updateConn(){
+    var q=queueGet().length;
+    $('conn').textContent = navigator.onLine ? (q? ('รอส่ง '+q+' รายการ') : 'ออนไลน์') : ('ออฟไลน์'+(q?' · ค้าง '+q+' รายการ':''));
+  }
+  function flushQueue(){
+    if(!navigator.onLine || !sb || !S.me) return Promise.resolve();
+    var q=queueGet(); if(!q.length) return Promise.resolve();
+    return sb.from('jobs').insert(q).then(function(r){
+      // 23505 = ส่งซ้ำ (client_ref ซ้ำ) ถือว่าถึงปลายทางแล้ว
+      if(r.error && r.error.code !== '23505'){ updateConn(); return; }
+      queueSet([]); updateConn();
+      if(!r.error) toast('ส่งข้อมูลที่ค้างไว้ '+q.length+' รายการแล้ว');
+      return loadAll();
+    }).catch(function(){ updateConn(); });
+  }
+
+  /* ---------- auth ---------- */
+  function initClient(){
+    if(!/^https:\/\/[a-z0-9-]+\.supabase\.co/.test(SUPABASE_URL) || SUPABASE_ANON_KEY.length < 40){
+      $('login-error').hidden=false;
+      $('login-error').textContent='ยังไม่ได้ตั้งค่าเชื่อมต่อฐานข้อมูล — แก้ SUPABASE_URL และ SUPABASE_ANON_KEY ในไฟล์ index.html';
+      $('lg-submit').disabled=true; return false;
+    }
+    sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return true;
+  }
+
+  function login(e){
+    e.preventDefault();
+    var u=$('lg-user').value.trim().toLowerCase(), p=$('lg-pass').value;
+    if(!u||!p) return;
+    var btn=$('lg-submit'); btn.disabled=true; btn.textContent='กำลังเข้าสู่ระบบ…';
+    $('login-error').hidden=true;
+    sb.auth.signInWithPassword({ email: u.indexOf('@')>-1? u : u+'@'+LOGIN_DOMAIN, password:p })
+      .then(function(r){
+        if(r.error) throw r.error;
+        return afterLogin();
+      })
+      .catch(function(err){
+        $('login-error').hidden=false;
+        $('login-error').textContent = (err && /Invalid login/i.test(err.message||''))
+          ? 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' : ('เข้าสู่ระบบไม่สำเร็จ: '+(err&&err.message||''));
+      })
+      .then(function(){ btn.disabled=false; btn.textContent='เข้าสู่ระบบ'; });
+  }
+
+  function afterLogin(){
+    return sb.auth.getUser().then(function(r){
+      S.me = r.data && r.data.user; if(!S.me) throw new Error('ไม่พบบัญชี');
+      return sb.from('profiles').select('*').eq('id', S.me.id).single();
+    }).then(function(r){
+      if(r.error) throw r.error;
+      S.profile = r.data;
+      if(!S.profile.active){ sb.auth.signOut(); throw new Error('บัญชีนี้ถูกปิดการใช้งาน ติดต่อผู้ดูแลระบบ'); }
+      S.isAdmin = (S.profile.role==='admin');
+      $('me-name').textContent = S.profile.full_name || S.profile.username;
+      $('me-role').textContent = S.isAdmin ? 'แอดมิน' : 'คนขับ';
+      $('nav-admin').hidden = !S.isAdmin;
+      $('fleet-admin-actions').hidden = !S.isAdmin;
+      $('history-scope-note').textContent = S.isAdmin ? 'แอดมินเห็นรายการของทุกคน' : 'คุณเห็นเฉพาะรายการที่ตัวเองบันทึก';
+      $('login').hidden = true; $('app').hidden = false;
+      if(!$('j-driver').value) $('j-driver').value = S.profile.full_name || '';
+      sb.from('profiles').update({ last_seen:new Date().toISOString() }).eq('id',S.me.id).then(function(){});
+      sb.from('activity_log').insert({ user_id:S.me.id, action:'login' }).then(function(){});
+      return loadAll();
+    }).then(function(){ return flushQueue(); });
+  }
+
+  function logout(){
+    sb.auth.signOut().then(function(){ location.reload(); });
+  }
+
+  /* ---------- data ---------- */
+  function loadAll(){
+    var jobsQ = sb.from('jobs').select('*').order('work_date',{ascending:false}).order('created_at',{ascending:false}).limit(1000);
+    return Promise.all([
+      sb.from('machines').select('*').order('code'),
+      jobsQ,
+      sb.from('maintenance').select('*').order('work_date',{ascending:false}).limit(500),
+      sb.from('profiles').select('id,username,full_name,role,active,last_seen,created_at')
+    ]).then(function(r){
+      if(!r[0].error) S.machines = r[0].data||[];
+      if(!r[1].error) S.jobs     = r[1].data||[];
+      if(!r[2].error) S.maint    = r[2].data||[];
+      if(!r[3].error) S.people   = r[3].data||[];
+      renderAll();
+    }).catch(function(){ notice('โหลดข้อมูลไม่สำเร็จ ตรวจสัญญาณอินเทอร์เน็ตแล้วกดโหลดใหม่', true); });
+  }
+
+  /* ---------- render ---------- */
+  function renderAll(){
+    updateConn();
+    renderMachineOptions(); renderMyRecent(); renderFleet(); renderHistory();
+    if(S.isAdmin) renderAdmin();
+  }
+
+  function renderMachineOptions(){
+    var sel=$('j-machine'), keep=sel.value;
+    sel.innerHTML = '<option value="">— เลือกรถ —</option>' + S.machines.map(function(m){
+      return '<option value="'+esc(m.id)+'">'+esc(m.code)+(m.model?' · '+esc(m.model):'')+'</option>'; }).join('');
+    sel.value = keep;
+    var h=$('h-machine'), hk=h.value;
+    h.innerHTML = '<option value="">ทุกคัน</option>' + S.machines.map(function(m){
+      return '<option value="'+esc(m.id)+'">'+esc(m.code)+'</option>'; }).join('');
+    h.value = hk;
+  }
+
+  function jobRow(j, showWho, pending){
+    var ct = j.cane_type==='ไฟไหม้' ? '<span class="chip burn">ไฟไหม้</span>' : '<span class="chip">อ้อยสด</span>';
+    return '<div class="row">'+
+      '<div class="top"><span class="title">'+esc(j.owner_name||'ไม่ระบุเจ้าของไร่')+'</span>'+ct+
+      (pending?'<span class="chip wait">รอส่ง</span>':'')+
+      '<span class="amt">'+nf0.format(num(j.amount))+' ฿</span></div>'+
+      '<div class="meta"><span>'+thDate(j.work_date)+'</span><span>'+esc(machineLabel(j.machine_id))+'</span>'+
+      '<span>'+nf.format(num(j.tons))+' ตัน</span>'+
+      (num(j.rai)?'<span>'+nf.format(num(j.rai))+' ไร่</span>':'')+
+      (num(j.trips)?'<span>'+nf0.format(num(j.trips))+' เที่ยว</span>':'')+
+      (j.plot?'<span>'+esc(j.plot)+'</span>':'')+
+      (showWho?'<span>โดย '+esc(personName(j.created_by))+'</span>':'')+'</div></div>';
+  }
+
+  function renderMyRecent(){
+    var q = queueGet().map(function(j){ return jobRow(j,false,true); });
+    var mine = S.jobs.filter(function(j){ return S.me && j.created_by===S.me.id; }).slice(0,5).map(function(j){ return jobRow(j,false,false); });
+    var html = q.concat(mine).slice(0,7).join('');
+    $('my-recent').innerHTML = html || '<div class="empty">ยังไม่มีรายการ — บันทึกรอบแรกได้เลย</div>';
+  }
+
+  function renderFleet(){
+    var el=$('fleet-list');
+    if(!S.machines.length){ el.innerHTML='<div class="empty">ยังไม่มีข้อมูลรถ</div>'; return; }
+    el.innerHTML = S.machines.map(function(m){
+      var cls = m.status==='กำลังทำงาน'?'work' : m.status==='ซ่อมบำรุง'?'fix':'ok';
+      var h = '<div class="row machine-row" data-machine="'+esc(m.id)+'">'+
+        '<div class="top"><span class="title">'+esc(m.code)+'</span><span class="chip '+cls+'">'+esc(m.status||'ว่าง')+'</span>'+
+        '<span class="amt">'+nf0.format(num(m.engine_hours))+' ชม.</span></div>'+
+        '<div class="meta"><span>'+esc([m.brand,m.model].filter(Boolean).join(' ')||'ไม่ระบุรุ่น')+'</span>'+
+        (m.year?'<span>ปี '+esc(m.year)+'</span>':'')+(m.driver_name?'<span>คนขับ: '+esc(m.driver_name)+'</span>':'')+'</div>';
+      if(S.openMachine===m.id) h += machineDetail(m);
+      return h+'</div>';
+    }).join('');
+  }
+
+  function machineDetail(m){
+    var jobs = S.jobs.filter(function(j){ return j.machine_id===m.id; }).slice(0,5);
+    var mt   = S.maint.filter(function(x){ return x.machine_id===m.id; }).slice(0,5);
+    var tons=0, fuel=0;
+    S.jobs.forEach(function(j){ if(j.machine_id===m.id){ tons+=num(j.tons); fuel+=num(j.fuel_liters); } });
+    var h='<div class="detail"><dl class="kv">'+
+      '<dt>อ้อยสะสม</dt><dd>'+nf.format(tons)+' ตัน</dd>'+
+      '<dt>น้ำมันสะสม</dt><dd>'+nf.format(fuel)+' ลิตร</dd>'+
+      '<dt>ลิตรต่อตัน</dt><dd>'+(tons?nf.format(fuel/tons):'—')+'</dd>'+
+      (m.note?'<dt>หมายเหตุ</dt><dd>'+esc(m.note)+'</dd>':'')+'</dl>';
+    h += '<div><p class="eyebrow">งานล่าสุด</p>'+(jobs.length? jobs.map(function(j){
+      return '<div class="meta" style="padding:3px 0"><span>'+thDate(j.work_date)+'</span><span>'+esc(j.owner_name||'')+'</span><span>'+nf.format(num(j.tons))+' ตัน</span></div>';
+    }).join('') : '<div class="meta">ยังไม่มีงาน</div>')+'</div>';
+    h += '<div><p class="eyebrow">ประวัติซ่อมบำรุง</p>'+(mt.length? mt.map(function(x){
+      return '<div class="meta" style="padding:3px 0"><span>'+thDate(x.work_date)+'</span><span>'+esc(x.kind||'')+'</span><span>'+nf0.format(num(x.cost))+' ฿</span>'+(x.note?'<span>'+esc(x.note)+'</span>':'')+'</div>';
+    }).join('') : '<div class="meta">ยังไม่มีประวัติ</div>')+'</div>';
+    h += '<div class="actions"><button type="button" class="btn small ghost" data-maint="'+esc(m.id)+'">+ บันทึกซ่อมบำรุง</button>'+
+      (S.isAdmin?'<button type="button" class="btn small ghost" data-edit="'+esc(m.id)+'">แก้ไขข้อมูลรถ</button>':'')+'</div></div>';
+    return h;
+  }
+
+  function renderHistory(){
+    var mf=$('h-machine').value, from=$('h-from').value;
+    var list = S.jobs.filter(function(j){
+      if(mf && j.machine_id!==mf) return false;
+      if(from && (j.work_date||'')<from) return false;
+      return true;
+    });
+    $('history-list').innerHTML = list.length ? list.map(function(j){ return jobRow(j,S.isAdmin,false); }).join('')
+      : '<div class="empty">ไม่พบรายการตามเงื่อนไข</div>';
+  }
+
+  function filteredJobs(){
+    var f=$('a-from').value, t=$('a-to').value;
+    return S.jobs.filter(function(j){
+      if(f && (j.work_date||'')<f) return false;
+      if(t && (j.work_date||'')>t) return false;
+      return true;
+    });
+  }
+
+  function renderAdmin(){
+    var jobs=filteredJobs(), tons=0, amount=0, fuel=0, hours=0, rai=0;
+    jobs.forEach(function(j){ tons+=num(j.tons); amount+=num(j.amount); fuel+=num(j.fuel_liters); hours+=num(j.hours); rai+=num(j.rai); });
+    $('admin-tiles').innerHTML = [
+      ['อ้อยรวม', nf.format(tons),'ตัน'], ['ค่าตัดรวม', nf0.format(amount),'บาท'],
+      ['จำนวนรอบงาน', nf0.format(jobs.length),'รอบ'], ['พื้นที่รวม', nf.format(rai),'ไร่'],
+      ['น้ำมันรวม', nf.format(fuel),'ลิตร'], ['ลิตร/ตัน', tons?nf.format(fuel/tons):'—','เฉลี่ย']
+    ].map(function(t){ return '<div class="tile"><div class="k">'+t[0]+'</div><div class="v">'+t[1]+' <span class="u">'+t[2]+'</span></div></div>'; }).join('');
+    $('admin-range').textContent = ($('a-from').value||$('a-to').value)
+      ? 'ช่วง '+($('a-from').value?thDate($('a-from').value):'เริ่มต้น')+' – '+($('a-to').value?thDate($('a-to').value):'ล่าสุด') : 'ทุกช่วงเวลา';
+
+    var byM={};
+    jobs.forEach(function(j){ var k=j.machine_id||'-'; byM[k]=byM[k]||{n:0,tons:0,hours:0,fuel:0,amount:0};
+      byM[k].n++; byM[k].tons+=num(j.tons); byM[k].hours+=num(j.hours); byM[k].fuel+=num(j.fuel_liters); byM[k].amount+=num(j.amount); });
+    var rows=Object.keys(byM).sort(function(a,b){return byM[b].tons-byM[a].tons;}).map(function(k){ var v=byM[k];
+      return '<tr><td>'+esc(machineLabel(k))+'</td><td class="num">'+nf0.format(v.n)+'</td><td class="num">'+nf.format(v.tons)+
+        '</td><td class="num">'+nf.format(v.hours)+'</td><td class="num">'+nf.format(v.fuel)+'</td><td class="num">'+nf0.format(v.amount)+'</td></tr>'; }).join('');
+    $('admin-machine-table').innerHTML='<thead><tr><th>รถ</th><th>รอบ</th><th>ตัน</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th></tr></thead><tbody>'+
+      (rows||'<tr><td colspan="6" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
+
+    var stat={};
+    S.jobs.forEach(function(j){ var k=j.created_by||'-'; stat[k]=stat[k]||{n:0,tons:0,last:''};
+      stat[k].n++; stat[k].tons+=num(j.tons); if((j.created_at||'')>stat[k].last) stat[k].last=j.created_at||''; });
+    var urows = S.people.map(function(p){
+      var s=stat[p.id]||{n:0,tons:0,last:''};
+      return '<tr><td>'+esc(p.full_name||p.username)+'</td><td>'+esc(p.username)+'</td>'+
+        '<td>'+(p.role==='admin'?'แอดมิน':'คนขับ')+'</td><td class="num">'+nf0.format(s.n)+'</td><td class="num">'+nf.format(s.tons)+'</td>'+
+        '<td>'+thStamp(s.last)+'</td><td>'+thStamp(p.last_seen)+'</td>'+
+        '<td>'+(p.active?'<span class="chip ok">ใช้งาน</span>':'<span class="chip fix">ปิด</span>')+'</td>'+
+        '<td>'+(p.id!==S.me.id?'<button type="button" class="btn small ghost" data-toggle="'+esc(p.id)+'" data-active="'+(p.active?'1':'0')+'">'+(p.active?'ปิดบัญชี':'เปิดใช้')+'</button>':'')+'</td></tr>';
+    }).join('');
+    $('admin-user-table').innerHTML='<thead><tr><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>สิทธิ์</th><th>บันทึก</th><th>ตันรวม</th><th>บันทึกล่าสุด</th><th>เข้าใช้ล่าสุด</th><th>สถานะ</th><th></th></tr></thead><tbody>'+
+      (urows||'<tr><td colspan="9" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
+
+    var raw = jobs.map(function(j){
+      return '<tr><td>'+thDate(j.work_date)+'</td><td>'+esc(machineLabel(j.machine_id))+'</td><td>'+esc(j.driver_name||'')+'</td>'+
+        '<td>'+esc(j.owner_name||'')+'</td><td>'+esc(j.plot||'')+'</td><td>'+esc(j.cane_type||'')+'</td>'+
+        '<td class="num">'+nf.format(num(j.tons))+'</td><td class="num">'+nf.format(num(j.rai))+'</td>'+
+        '<td class="num">'+nf.format(num(j.hours))+'</td><td class="num">'+nf.format(num(j.fuel_liters))+'</td>'+
+        '<td class="num">'+nf0.format(num(j.amount))+'</td><td>'+esc(personName(j.created_by))+'</td><td>'+thStamp(j.created_at)+'</td>'+
+        '<td><button type="button" class="btn small danger" data-del="'+esc(j.id)+'">ลบ</button></td></tr>';
+    }).join('');
+    $('admin-raw-table').innerHTML='<thead><tr><th>วันที่</th><th>รถ</th><th>คนขับ</th><th>เจ้าของไร่</th><th>แปลง</th><th>ประเภท</th>'+
+      '<th>ตัน</th><th>ไร่</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th><th>ผู้บันทึก</th><th>เวลาบันทึก</th><th></th></tr></thead><tbody>'+
+      (raw||'<tr><td colspan="14" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
+  }
+
+  /* ---------- actions ---------- */
+  function recalc(){ var t=num($('j-tons').value)*num($('j-rate').value); $('j-total').textContent=nf0.format(t); return t; }
+
+  function showTab(name){
+    ['log','fleet','history','admin'].forEach(function(t){ $('tab-'+t).hidden=(t!==name); });
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
+      b.setAttribute('aria-current', b.dataset.tab===name?'true':'false'); });
+    document.querySelector('main').scrollTop=0;
+    if(name==='admin' && S.isAdmin) renderAdmin();
+  }
+
+  function submitJob(e){
+    e.preventDefault();
+    if(!$('j-machine').value){ toast('เลือกรถตัดก่อน'); return; }
+    var ct=document.querySelector('input[name="canetype"]:checked');
+    var row={
+      work_date:$('j-date').value, machine_id:$('j-machine').value, driver_name:$('j-driver').value.trim(),
+      owner_name:$('j-owner').value.trim(), plot:$('j-plot').value.trim(), cane_type:ct?ct.value:'สด',
+      rai:num($('j-rai').value), tons:num($('j-tons').value), trips:num($('j-trips').value),
+      queue_no:$('j-queue').value.trim(), hours:num($('j-hours').value), fuel_liters:num($('j-fuel').value),
+      fuel_cost:num($('j-fuelcost').value), rate:num($('j-rate').value), amount:recalc(),
+      note:$('j-note').value.trim(), created_by:S.me.id, client_ref:uuid()
+    };
+    var btn=$('j-submit'); btn.disabled=true; btn.textContent='กำลังบันทึก…';
+    var done=function(){ btn.disabled=false; btn.textContent='บันทึกรอบนี้'; };
+
+    if(!navigator.onLine){ queuePush(row); toast('ไม่มีสัญญาณ — เก็บไว้ในเครื่อง จะส่งให้อัตโนมัติ'); resetForm(); renderMyRecent(); done(); return; }
+
+    sb.from('jobs').insert(row).then(function(r){
+      if(r.error) throw r.error;
+      toast('บันทึกแล้ว '+nf.format(row.tons)+' ตัน');
+      resetForm();
+      return loadAll();
+    }).catch(function(err){
+      var msg=(err&&err.message)||'';
+      if(/fetch|network|Failed/i.test(msg)){ queuePush(row); toast('ส่งไม่ได้ — เก็บไว้ในเครื่องก่อน'); resetForm(); renderMyRecent(); }
+      else toast('บันทึกไม่สำเร็จ: '+msg);
+    }).then(done);
+  }
+
+  function resetForm(){
+    ['j-owner','j-plot','j-note','j-queue','j-rai','j-tons','j-trips','j-hours','j-fuel','j-fuelcost'].forEach(function(id){ $(id).value=''; });
+    recalc(); document.querySelector('main').scrollTop=0;
+  }
+
+  function openMachineForm(m){
+    $('mf-title').textContent = m?'แก้ไขข้อมูลรถ':'เพิ่มรถตัดอ้อย';
+    $('m-id').value=m?m.id:''; $('m-code').value=m?(m.code||''):''; $('m-brand').value=m?(m.brand||''):'';
+    $('m-model').value=m?(m.model||''):''; $('m-year').value=m&&m.year?m.year:'';
+    $('m-hours').value=m&&m.engine_hours?m.engine_hours:''; $('m-status').value=m?(m.status||'ว่าง'):'ว่าง';
+    $('m-driver').value=m?(m.driver_name||''):''; $('m-note').value=m?(m.note||''):'';
+    $('machine-form-card').hidden=false; $('machine-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function openMaint(id){
+    var m=machineById(id);
+    $('mt-machine').value=id; $('mt-date').value=today();
+    $('mt-hours').value=m&&m.engine_hours?m.engine_hours:'';
+    $('maint-for').textContent=m?('รถ '+m.code+(m.model?' · '+m.model:'')):'';
+    $('maint-form-card').hidden=false; $('maint-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function exportCsv(){
+    var head=['วันที่','รถ','คนขับ','เจ้าของไร่','แปลง','ประเภทอ้อย','ไร่','ตัน','เที่ยว','คิว','ชั่วโมง','ลิตร','บาท/ตัน','ค่าตัดรวม','ค่าน้ำมัน','หมายเหตุ','ผู้บันทึก','เวลาบันทึก'];
+    var q=function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; };
+    var lines=[head.map(q).join(',')];
+    filteredJobs().forEach(function(j){
+      lines.push([j.work_date,machineLabel(j.machine_id),j.driver_name,j.owner_name,j.plot,j.cane_type,num(j.rai),num(j.tons),
+        num(j.trips),j.queue_no,num(j.hours),num(j.fuel_liters),num(j.rate),num(j.amount),num(j.fuel_cost),j.note,
+        personName(j.created_by),j.created_at].map(q).join(','));
+    });
+    var blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
+    var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='canecut-'+today()+'.csv';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+  }
+
+  /* ---------- wiring ---------- */
+  function wire(){
+    $('login-form').addEventListener('submit', login);
+    $('btn-logout').addEventListener('click', logout);
+    Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
+      b.addEventListener('click', function(){ showTab(b.dataset.tab); }); });
+    ['j-tons','j-rate'].forEach(function(id){ $(id).addEventListener('input', recalc); });
+    $('j-machine').addEventListener('change', function(){
+      var m=machineById(this.value); if(m&&m.driver_name&&!$('j-driver').value) $('j-driver').value=m.driver_name; });
+    $('job-form').addEventListener('submit', submitJob);
+    $('j-reset').addEventListener('click', function(){ resetForm(); });
+    $('h-machine').addEventListener('change', renderHistory);
+    $('h-from').addEventListener('change', renderHistory);
+    $('a-from').addEventListener('change', renderAdmin);
+    $('a-to').addEventListener('change', renderAdmin);
+    $('btn-refresh').addEventListener('click', function(){ loadAll().then(function(){ toast('โหลดข้อมูลใหม่แล้ว'); }); });
+    $('btn-export').addEventListener('click', exportCsv);
+    $('btn-add-machine').addEventListener('click', function(){ openMachineForm(null); });
+    $('mf-cancel').addEventListener('click', function(){ $('machine-form-card').hidden=true; });
+    $('mt-cancel').addEventListener('click', function(){ $('maint-form-card').hidden=true; });
+
+    $('fleet-list').addEventListener('click', function(e){
+      var b=e.target.closest('[data-maint]'); if(b){ openMaint(b.dataset.maint); return; }
+      var ed=e.target.closest('[data-edit]'); if(ed){ openMachineForm(machineById(ed.dataset.edit)); return; }
+      var row=e.target.closest('[data-machine]');
+      if(row){ S.openMachine = (S.openMachine===row.dataset.machine)? null : row.dataset.machine; renderFleet(); }
+    });
+
+    $('machine-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var id=$('m-id').value||null;
+      var data={ code:$('m-code').value.trim(), brand:$('m-brand').value.trim(), model:$('m-model').value.trim(),
+        year:$('m-year').value?num($('m-year').value):null, engine_hours:num($('m-hours').value),
+        status:$('m-status').value, driver_name:$('m-driver').value.trim(), note:$('m-note').value.trim() };
+      var p = id ? sb.from('machines').update(data).eq('id',id) : sb.from('machines').insert(data);
+      p.then(function(r){ if(r.error) throw r.error; $('machine-form-card').hidden=true; toast(id?'แก้ไขแล้ว':'เพิ่มรถแล้ว'); return loadAll(); })
+       .catch(function(err){ toast('บันทึกไม่สำเร็จ: '+(err.message||'')); });
+    });
+
+    $('maint-form').addEventListener('submit', function(e){
+      e.preventDefault();
+      var data={ machine_id:$('mt-machine').value, work_date:$('mt-date').value, kind:$('mt-type').value,
+        at_hours:num($('mt-hours').value), cost:num($('mt-cost').value), note:$('mt-note').value.trim(), created_by:S.me.id };
+      sb.from('maintenance').insert(data).then(function(r){ if(r.error) throw r.error;
+        $('maint-form-card').hidden=true; $('mt-note').value=''; $('mt-cost').value=''; toast('บันทึกซ่อมบำรุงแล้ว'); return loadAll(); })
+       .catch(function(err){ toast('บันทึกไม่สำเร็จ: '+(err.message||'')); });
+    });
+
+    $('admin-raw-table').addEventListener('click', function(e){
+      var b=e.target.closest('[data-del]'); if(!b) return;
+      if(!confirm('ลบรายการนี้ถาวร?')) return;
+      sb.from('jobs').delete().eq('id',b.dataset.del).then(function(r){ if(r.error) throw r.error; toast('ลบแล้ว'); return loadAll(); })
+       .catch(function(err){ toast('ลบไม่สำเร็จ: '+(err.message||'')); });
+    });
+
+    $('admin-user-table').addEventListener('click', function(e){
+      var b=e.target.closest('[data-toggle]'); if(!b) return;
+      var on = b.dataset.active!=='1';
+      sb.from('profiles').update({active:on}).eq('id',b.dataset.toggle).then(function(r){ if(r.error) throw r.error;
+        toast(on?'เปิดใช้บัญชีแล้ว':'ปิดบัญชีแล้ว'); return loadAll(); })
+       .catch(function(err){ toast('ทำรายการไม่สำเร็จ: '+(err.message||'')); });
+    });
+
+    window.addEventListener('online',  function(){ updateConn(); flushQueue(); });
+    window.addEventListener('offline', updateConn);
+  }
+
+  /* ---------- start ---------- */
+  $('j-date').value = today();
+  $('mt-date').value = today();
+  wire();
+  if(initClient()){
+    sb.auth.getSession().then(function(r){ if(r.data && r.data.session) return afterLogin(); }).catch(function(){});
+  }
+  updateConn();
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+})();
+</script>
+</body>
+</html>
