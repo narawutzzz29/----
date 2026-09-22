@@ -164,9 +164,14 @@
   <div class="loginbox">
     <div class="logo">
       <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M12 21V8"/><path d="M12 8c0-3 2-5 5-5 0 3-2 5-5 5Z" fill="#fff" stroke="none"/><path d="M12 12c0-3-2-5-5-5 0 3 2 5 5 5Z" fill="#fff" stroke="none"/><path d="M5 21h14"/></svg></span>
-      <h1>บันทึกงานรถตัดอ้อย<small>เข้าสู่ระบบด้วยชื่อผู้ใช้ที่ได้รับ</small></h1>
+      <h1>บันทึกงานรถตัดอ้อย<small id="login-sub">เข้าสู่ระบบด้วยชื่อผู้ใช้ของคุณ</small></h1>
     </div>
     <div class="card">
+      <div class="segmented" style="margin-bottom:14px">
+        <label><input type="radio" name="authmode" value="login" checked><span>เข้าสู่ระบบ</span></label>
+        <label><input type="radio" name="authmode" value="register"><span>ลงทะเบียน</span></label>
+      </div>
+
       <form id="login-form">
         <div class="f" style="margin-bottom:10px">
           <label for="lg-user">ชื่อผู้ใช้</label>
@@ -179,8 +184,40 @@
         <button type="submit" class="btn block" id="lg-submit">เข้าสู่ระบบ</button>
         <div id="login-error" hidden></div>
       </form>
+
+      <form id="reg-form" hidden>
+        <div class="f" style="margin-bottom:10px">
+          <label for="rg-user">ตั้งชื่อผู้ใช้</label>
+          <input id="rg-user" autocomplete="username" autocapitalize="none" spellcheck="false" required placeholder="เช่น somsak">
+          <span class="hint" style="font-size:11.5px;color:var(--ink-faint)">ภาษาอังกฤษพิมพ์เล็กหรือตัวเลข 3–30 ตัว ไม่เว้นวรรค ใช้เข้าระบบทุกครั้ง</span>
+        </div>
+        <div class="f" style="margin-bottom:10px">
+          <label for="rg-name">ชื่อ–นามสกุล</label>
+          <input id="rg-name" required placeholder="เช่น สมศักดิ์ ทองดี" autocomplete="name">
+        </div>
+        <div class="f" style="margin-bottom:10px">
+          <label for="rg-phone">เบอร์โทร</label>
+          <input id="rg-phone" type="tel" inputmode="tel" placeholder="08x-xxx-xxxx" autocomplete="tel">
+        </div>
+        <div class="f" style="margin-bottom:10px" id="rg-code-wrap" hidden>
+          <label for="rg-code">รหัสเชิญ</label>
+          <input id="rg-code" placeholder="รหัสที่ได้รับจากผู้ดูแล" autocapitalize="characters" spellcheck="false">
+        </div>
+        <div class="f" style="margin-bottom:10px">
+          <label for="rg-pass">ตั้งรหัสผ่าน</label>
+          <input id="rg-pass" type="password" autocomplete="new-password" required minlength="6">
+          <span class="hint" style="font-size:11.5px;color:var(--ink-faint)">อย่างน้อย 6 ตัว</span>
+        </div>
+        <div class="f" style="margin-bottom:14px">
+          <label for="rg-pass2">ยืนยันรหัสผ่าน</label>
+          <input id="rg-pass2" type="password" autocomplete="new-password" required minlength="6">
+        </div>
+        <button type="submit" class="btn block" id="rg-submit">ลงทะเบียนและเข้าใช้งาน</button>
+        <div id="reg-error" hidden style="color:var(--red);font-size:13px;margin-top:10px"></div>
+      </form>
     </div>
-    <p style="font-size:12px;color:var(--ink-faint);margin-top:12px">ลืมรหัสผ่าน หรือยังไม่มีชื่อผู้ใช้ — ติดต่อผู้ดูแลระบบ</p>
+    <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 3 · 22 ก.ย. 2569 · มีหน้าลงทะเบียน</p>
   </div>
 </div>
 
@@ -325,10 +362,29 @@
       </div>
 
       <div class="card">
+        <h2>การลงทะเบียน</h2>
+        <p class="sub">เลือกว่าจะให้ลูกค้าสมัครเข้ามาอย่างไร — ทุกคนที่สมัครได้สิทธิ์ "คนขับ" เสมอ</p>
+        <div class="grid">
+          <div class="f wide"><label for="set-mode">วิธีรับสมัคร</label><select id="set-mode">
+            <option value="approve">สมัครได้เลย แล้วคุณกดอนุมัติ — ลูกค้าไม่ต้องจำรหัสอะไร</option>
+            <option value="code">ต้องมีรหัสเชิญ — สมัครเสร็จใช้ได้ทันที</option>
+            <option value="open">ใครก็สมัครและใช้ได้ทันที — ไม่กันคนนอก</option>
+          </select></div>
+          <div class="f" id="set-code-wrap" hidden><label for="set-code">รหัสเชิญ</label><input id="set-code" spellcheck="false" autocapitalize="characters"></div>
+          <div class="f"><label for="set-open">รับลงทะเบียน</label><select id="set-open">
+            <option value="1">เปิด — ลูกค้าสมัครได้</option><option value="0">ปิด — ไม่รับสมัครใหม่</option></select></div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn small" id="btn-save-settings">บันทึกการตั้งค่า</button>
+          <button type="button" class="btn small ghost" id="btn-gen-code" hidden>สุ่มรหัสใหม่</button>
+        </div>
+      </div>
+
+      <div class="card">
         <h2>ผู้ใช้งานระบบ</h2>
-        <p class="sub">ใครบันทึกไปกี่รายการ และเข้าใช้ล่าสุดเมื่อไหร่ — ปิดบัญชีได้ที่นี่</p>
+        <p class="sub" id="admin-user-sub">ใครบันทึกไปกี่รายการ เข้าใช้ล่าสุดเมื่อไหร่ — อนุมัติหรือปิดบัญชีได้ที่นี่</p>
         <div class="tablewrap"><table id="admin-user-table"><tbody></tbody></table></div>
-        <p class="sub" style="margin:10px 0 0">เพิ่มบัญชีใหม่ทำที่ Supabase &gt; Authentication &gt; Add user (ดูคู่มือ)</p>
+        <p class="sub" style="margin:10px 0 0">ลูกค้าสมัครเองด้วยรหัสเชิญด้านบน · รีเซ็ตรหัสผ่านให้คนที่ลืม ทำที่ Supabase &gt; Authentication &gt; Users</p>
       </div>
 
       <div class="card">
@@ -432,9 +488,16 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
         return afterLogin();
       })
       .catch(function(err){
+        var m = (err && err.message) || '';
+        if(/PENDING_APPROVAL/.test(m)){
+          sb.auth.signOut();
+          $('login-error').hidden=false;
+          $('login-error').textContent = 'บัญชีนี้ยังไม่ได้รับอนุมัติ หรือถูกปิดการใช้งาน — ติดต่อผู้ดูแลระบบ';
+          return;
+        }
         $('login-error').hidden=false;
-        $('login-error').textContent = (err && /Invalid login/i.test(err.message||''))
-          ? 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' : ('เข้าสู่ระบบไม่สำเร็จ: '+(err&&err.message||''));
+        $('login-error').textContent = /Invalid login/i.test(m)
+          ? 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง' : ('เข้าสู่ระบบไม่สำเร็จ: '+m);
       })
       .then(function(){ btn.disabled=false; btn.textContent='เข้าสู่ระบบ'; });
   }
@@ -446,7 +509,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     }).then(function(r){
       if(r.error) throw r.error;
       S.profile = r.data;
-      if(!S.profile.active){ sb.auth.signOut(); throw new Error('บัญชีนี้ถูกปิดการใช้งาน ติดต่อผู้ดูแลระบบ'); }
+      if(!S.profile.active){ throw new Error('PENDING_APPROVAL'); }
       S.isAdmin = (S.profile.role==='admin');
       $('me-name').textContent = S.profile.full_name || S.profile.username;
       $('me-role').textContent = S.isAdmin ? 'แอดมิน' : 'คนขับ';
@@ -461,8 +524,113 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     }).then(function(){ return flushQueue(); });
   }
 
+  function applySignupMode(mode){
+    S.signupMode = mode || 'approve';
+    $('rg-code-wrap').hidden = (S.signupMode !== 'code');
+    var closed = (S.signupMode === 'closed');
+    document.querySelector('input[name="authmode"][value="register"]').closest('label').hidden = closed;
+    if(closed){ var lg=document.querySelector('input[name="authmode"][value="login"]'); lg.checked=true; setAuthMode('login'); }
+  }
+
+  function pendingScreen(){
+    $('login').hidden = false; $('app').hidden = true;
+    document.querySelector('input[name="authmode"][value="login"]').checked = true;
+    setAuthMode('login');
+    $('login-error').hidden = false;
+    $('login-error').textContent = 'ลงทะเบียนเรียบร้อยแล้ว — รอผู้ดูแลกดอนุมัติก่อนจึงเข้าใช้งานได้ แจ้งผู้ดูแลได้เลย';
+  }
+
+  function setAuthMode(mode){
+    var reg = (mode==='register');
+    $('login-form').hidden = reg;
+    $('reg-form').hidden = !reg;
+    $('login-error').hidden = true; $('reg-error').hidden = true;
+    $('login-sub').textContent = reg ? 'ลงทะเบียนครั้งแรก แล้วตั้งรหัสผ่านเอง' : 'เข้าสู่ระบบด้วยชื่อผู้ใช้ของคุณ';
+    $('login-foot').textContent = reg
+      ? 'ลงทะเบียนครั้งเดียว ครั้งต่อไปเข้าด้วยชื่อผู้ใช้กับรหัสที่ตั้งไว้'
+      : 'ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ';
+  }
+
+  function regError(msg){ $('reg-error').hidden=false; $('reg-error').textContent=msg; }
+
+  function register(e){
+    e.preventDefault();
+    var u = $('rg-user').value.trim().toLowerCase();
+    var name = $('rg-name').value.trim();
+    var code = $('rg-code').value.trim();
+    var p1 = $('rg-pass').value, p2 = $('rg-pass2').value;
+    $('reg-error').hidden = true;
+
+    if(!/^[a-z0-9._-]{3,30}$/.test(u)) return regError('ชื่อผู้ใช้ใช้ได้เฉพาะ a-z 0-9 . _ - ยาว 3–30 ตัว ไม่มีภาษาไทยและไม่เว้นวรรค');
+    if(S.signupMode === 'code' && !code) return regError('กรอกรหัสเชิญที่ได้รับจากผู้ดูแล');
+    if(p1.length < 6) return regError('รหัสผ่านต้องยาวอย่างน้อย 6 ตัว');
+    if(p1 !== p2)     return regError('ยืนยันรหัสผ่านไม่ตรงกัน');
+
+    var btn=$('rg-submit'); btn.disabled=true; btn.textContent='กำลังลงทะเบียน…';
+    var done=function(){ btn.disabled=false; btn.textContent='ลงทะเบียนและเข้าใช้งาน'; };
+
+    sb.rpc('username_available', { u: u }).then(function(r){
+      if(!r.error && r.data === false) throw new Error('USERNAME_TAKEN');
+      return sb.auth.signUp({
+        email: u + '@' + LOGIN_DOMAIN,
+        password: p1,
+        options: { data: { username:u, full_name:name, phone:$('rg-phone').value.trim(), invite_code:code, source:'app' } }
+      });
+    }).then(function(r){
+      if(r && r.error) throw r.error;
+      if(r && r.data && !r.data.session){
+        // ไม่ได้ session กลับมา = ยังเปิด Confirm email อยู่
+        throw new Error('NEED_EMAIL_OFF');
+      }
+      return afterLogin().catch(function(err){
+        if(err && /PENDING_APPROVAL/.test(err.message||'')){ sb.auth.signOut(); pendingScreen(); return; }
+        throw err;
+      });
+    }).catch(function(err){
+      var m = (err && err.message) || '';
+      if(/USERNAME_TAKEN/.test(m))            regError('ชื่อผู้ใช้นี้มีคนใช้แล้ว ลองชื่ออื่น');
+      else if(/BAD_INVITE_CODE/.test(m))      regError('รหัสเชิญไม่ถูกต้อง ตรวจอีกครั้งหรือขอรหัสใหม่จากผู้ดูแล');
+      else if(/SIGNUP_CLOSED/.test(m))        regError('ขณะนี้ปิดรับลงทะเบียน ติดต่อผู้ดูแลระบบ');
+      else if(/INVALID_USERNAME/.test(m))     regError('ชื่อผู้ใช้ไม่ถูกรูปแบบ ใช้ a-z 0-9 . _ - เท่านั้น');
+      else if(/duplicate|already registered/i.test(m)) regError('ชื่อผู้ใช้นี้มีคนใช้แล้ว ลองชื่ออื่น');
+      else if(/NEED_EMAIL_OFF/.test(m))       regError('ลงทะเบียนแล้วแต่เข้าระบบอัตโนมัติไม่ได้ — แจ้งผู้ดูแลให้ปิด Confirm email ใน Supabase แล้วลองเข้าสู่ระบบอีกครั้ง');
+      else if(/Password/i.test(m))            regError('รหัสผ่านไม่ผ่านเกณฑ์ ลองตั้งให้ยาวขึ้น');
+      else                                    regError('ลงทะเบียนไม่สำเร็จ: ' + m);
+    }).then(done);
+  }
+
   function logout(){
     sb.auth.signOut().then(function(){ location.reload(); });
+  }
+
+  /* ---------- settings (admin) ---------- */
+  function loadSettings(){
+    if(!S.isAdmin) return Promise.resolve();
+    return sb.from('app_settings').select('*').eq('id',1).single().then(function(r){
+      if(r.error || !r.data) return;
+      S.settings = r.data;
+      $('set-code').value = r.data.invite_code || '';
+      $('set-open').value = r.data.signup_open ? '1' : '0';
+      $('set-mode').value = r.data.signup_mode || 'approve';
+      syncModeFields();
+    }).catch(function(){});
+  }
+
+  function syncModeFields(){
+    var isCode = $('set-mode').value === 'code';
+    $('set-code-wrap').hidden = !isCode;
+    $('btn-gen-code').hidden  = !isCode;
+  }
+
+  function saveSettings(){
+    var mode = $('set-mode').value;
+    var code = $('set-code').value.trim();
+    if(mode==='code' && code.length < 4){ toast('รหัสเชิญควรยาวอย่างน้อย 4 ตัว'); return; }
+    if(mode==='open' && !confirm('เปิดให้ใครก็สมัครและใช้งานได้ทันที?\n\nคนที่ได้ลิงก์จะเห็นทะเบียนรถ ประวัติซ่อม และเพิ่มรายการงานเข้ามาได้')) return;
+    sb.from('app_settings').update({ signup_mode:mode, invite_code:(code||'OI2569'),
+        signup_open:$('set-open').value==='1', updated_at:new Date().toISOString() })
+      .eq('id',1).then(function(r){ if(r.error) throw r.error; toast('บันทึกการตั้งค่าแล้ว'); return loadSettings(); })
+      .catch(function(err){ toast('บันทึกไม่สำเร็จ: '+(err.message||'')); });
   }
 
   /* ---------- data ---------- */
@@ -479,6 +647,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       if(!r[2].error) S.maint    = r[2].data||[];
       if(!r[3].error) S.people   = r[3].data||[];
       renderAll();
+      return loadSettings();
     }).catch(function(){ notice('โหลดข้อมูลไม่สำเร็จ ตรวจสัญญาณอินเทอร์เน็ตแล้วกดโหลดใหม่', true); });
   }
 
@@ -605,9 +774,18 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       return '<tr><td>'+esc(p.full_name||p.username)+'</td><td>'+esc(p.username)+'</td>'+
         '<td>'+(p.role==='admin'?'แอดมิน':'คนขับ')+'</td><td class="num">'+nf0.format(s.n)+'</td><td class="num">'+nf.format(s.tons)+'</td>'+
         '<td>'+thStamp(s.last)+'</td><td>'+thStamp(p.last_seen)+'</td>'+
-        '<td>'+(p.active?'<span class="chip ok">ใช้งาน</span>':'<span class="chip fix">ปิด</span>')+'</td>'+
-        '<td>'+(p.id!==S.me.id?'<button type="button" class="btn small ghost" data-toggle="'+esc(p.id)+'" data-active="'+(p.active?'1':'0')+'">'+(p.active?'ปิดบัญชี':'เปิดใช้')+'</button>':'')+'</td></tr>';
+        '<td>'+(p.active?'<span class="chip ok">ใช้งาน</span>'
+              : (!p.last_seen && !s.n ? '<span class="chip wait">รออนุมัติ</span>' : '<span class="chip fix">ปิด</span>'))+'</td>'+
+        '<td>'+(p.id!==S.me.id
+          ? '<button type="button" class="btn small ghost" data-toggle="'+esc(p.id)+'" data-active="'+(p.active?'1':'0')+'">'+
+              (p.active?'ปิดบัญชี':(!p.last_seen && !s.n ? 'อนุมัติ' : 'เปิดใช้'))+'</button> '+
+            '<button type="button" class="btn small ghost" data-role="'+esc(p.id)+'" data-to="'+(p.role==='admin'?'driver':'admin')+'">'+(p.role==='admin'?'ลดเป็นคนขับ':'ตั้งเป็นแอดมิน')+'</button>'
+          : '')+'</td></tr>';
     }).join('');
+    var pend = S.people.filter(function(p){ return !p.active && !p.last_seen && !(stat[p.id]||{}).n; }).length;
+    $('admin-user-sub').textContent = pend
+      ? ('มี ' + pend + ' คนรออนุมัติ — กดปุ่ม "อนุมัติ" ในแถวของเขา')
+      : 'ใครบันทึกไปกี่รายการ เข้าใช้ล่าสุดเมื่อไหร่ — อนุมัติหรือปิดบัญชีได้ที่นี่';
     $('admin-user-table').innerHTML='<thead><tr><th>ชื่อ</th><th>ชื่อผู้ใช้</th><th>สิทธิ์</th><th>บันทึก</th><th>ตันรวม</th><th>บันทึกล่าสุด</th><th>เข้าใช้ล่าสุด</th><th>สถานะ</th><th></th></tr></thead><tbody>'+
       (urows||'<tr><td colspan="9" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
 
@@ -703,7 +881,18 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   /* ---------- wiring ---------- */
   function wire(){
     $('login-form').addEventListener('submit', login);
+    $('reg-form').addEventListener('submit', register);
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="authmode"]'), function(r){
+      r.addEventListener('change', function(){ setAuthMode(r.value); }); });
     $('btn-logout').addEventListener('click', logout);
+    $('btn-save-settings').addEventListener('click', saveSettings);
+    $('set-mode').addEventListener('change', syncModeFields);
+    $('btn-gen-code').addEventListener('click', function(){
+      var abc='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s='';
+      for(var i=0;i<6;i++) s += abc[Math.floor(Math.random()*abc.length)];
+      $('set-code').value = s;
+      toast('สุ่มแล้ว — กดบันทึกการตั้งค่าเพื่อใช้จริง');
+    });
     Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
       b.addEventListener('click', function(){ showTab(b.dataset.tab); }); });
     ['j-tons','j-rate'].forEach(function(id){ $(id).addEventListener('input', recalc); });
@@ -756,11 +945,20 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     });
 
     $('admin-user-table').addEventListener('click', function(e){
-      var b=e.target.closest('[data-toggle]'); if(!b) return;
-      var on = b.dataset.active!=='1';
-      sb.from('profiles').update({active:on}).eq('id',b.dataset.toggle).then(function(r){ if(r.error) throw r.error;
-        toast(on?'เปิดใช้บัญชีแล้ว':'ปิดบัญชีแล้ว'); return loadAll(); })
-       .catch(function(err){ toast('ทำรายการไม่สำเร็จ: '+(err.message||'')); });
+      var b=e.target.closest('[data-toggle]');
+      if(b){
+        var on = b.dataset.active!=='1';
+        sb.from('profiles').update({active:on}).eq('id',b.dataset.toggle).then(function(r){ if(r.error) throw r.error;
+          toast(on?'เปิดใช้บัญชีแล้ว':'ปิดบัญชีแล้ว'); return loadAll(); })
+         .catch(function(err){ toast('ทำรายการไม่สำเร็จ: '+(err.message||'')); });
+        return;
+      }
+      var rb=e.target.closest('[data-role]'); if(!rb) return;
+      var to=rb.dataset.to;
+      if(!confirm(to==='admin'?'ตั้งคนนี้เป็นแอดมิน? จะเห็นข้อมูลของทุกคนและแก้ไขได้':'ลดคนนี้เป็นคนขับ?')) return;
+      sb.from('profiles').update({role:to}).eq('id',rb.dataset.role).then(function(r){ if(r.error) throw r.error;
+        toast('เปลี่ยนสิทธิ์แล้ว'); return loadAll(); })
+       .catch(function(err){ toast('เปลี่ยนสิทธิ์ไม่สำเร็จ: '+(err.message||'')); });
     });
 
     window.addEventListener('online',  function(){ updateConn(); flushQueue(); });
@@ -772,7 +970,13 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   $('mt-date').value = today();
   wire();
   if(initClient()){
-    sb.auth.getSession().then(function(r){ if(r.data && r.data.session) return afterLogin(); }).catch(function(){});
+    sb.rpc('signup_mode').then(function(r){ applySignupMode(r && !r.error ? r.data : 'approve'); })
+      .catch(function(){ applySignupMode('approve'); });
+    sb.auth.getSession().then(function(r){
+      if(r.data && r.data.session) return afterLogin().catch(function(err){
+        if(err && /PENDING_APPROVAL/.test(err.message||'')){ sb.auth.signOut(); pendingScreen(); }
+      });
+    }).catch(function(){});
   }
   updateConn();
   if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
