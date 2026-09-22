@@ -1,6 +1,6 @@
 /* Service worker — ให้แอปเปิดได้แม้ไม่มีสัญญาณ
    เก็บเฉพาะตัวแอป ไม่เก็บข้อมูลจากฐานข้อมูล */
-var CACHE = 'canecut-v3';
+var CACHE = 'canecut-v6';
 var SHELL = ['./', './index.html', './manifest.webmanifest'];
 
 self.addEventListener('install', function(e){
