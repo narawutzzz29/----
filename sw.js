@@ -1,6 +1,6 @@
 /* Service worker — ให้แอปเปิดได้แม้ไม่มีสัญญาณ
    เก็บเฉพาะตัวแอปและรูปสไลด์ ไม่เก็บข้อมูลจากฐานข้อมูล */
-var CACHE  = 'canecut-v14';
+var CACHE  = 'canecut-v15';
 var SLIDES = 'canecut-slides-v1';   // รูปสไลด์ แยกไว้ ไม่ถูกลบตอนอัปเดตแอป
 var SHELL  = ['./', './index.html', './guide.js', './illustrations.js', './manifest.webmanifest'];
 
