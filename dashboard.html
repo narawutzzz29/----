@@ -221,8 +221,14 @@
       </section>
 
       <section class="card c12">
-        <h2>ผลงานรายคนขับ</h2>
-        <p class="sub">เรียงตามตันที่ตัดได้</p>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap">
+          <div><h2 id="t-tbl">ผลงานรายคนขับ</h2><p class="sub">เรียงตามตันที่ตัดได้</p></div>
+          <div class="seg noprint" id="grp" role="radiogroup" aria-label="จัดกลุ่มตาม">
+            <label><input type="radio" name="grp" value="driver" checked><span>รายคนขับ</span></label>
+            <label><input type="radio" name="grp" value="mno"><span>รายรถ</span></label>
+            <label><input type="radio" name="grp" value="mowner"><span>รายเจ้าของรถ</span></label>
+          </div>
+        </div>
         <div class="tscroll"><table class="t" id="tbl"></table></div>
       </section>
 
@@ -281,7 +287,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   /* ---------- ดึงข้อมูล (แบ่งหน้า 1,000 แถว) ---------- */
-  var COLS = 'id,work_date,created_by,driver_name,plot,owner_name,tons,rai,hours,fuel_liters,fuel_cost,rate,amount,trips,lat,lng,plot_polygon,area_method,created_at';
+  var COLS = 'id,work_date,created_by,driver_name,plot,owner_name,tons,rai,hours,fuel_liters,fuel_cost,rate,amount,trips,lat,lng,plot_polygon,area_method,machine_no,machine_owner,created_at';
+  var OPTIONAL = ['lat','lng','plot_polygon','area_method','machine_no','machine_owner'];
   function fetchJobs(from, to){
     var out = [], page = 0, cols = COLS;
     function one(){
@@ -289,8 +296,9 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       if(from) q = q.gte('work_date', from); if(to) q = q.lte('work_date', to);
       return q.then(function(r){
         if(r.error){
-          // ยังไม่ได้รัน SQL 07 → ไม่มีคอลัมน์พิกัด ให้ดึงแบบไม่มีพิกัด
-          if(cols === COLS && /lat|lng|plot_polygon|area_method/.test(r.error.message || '')){ cols = COLS.replace(',lat,lng,plot_polygon,area_method', ''); return one(); }
+          // ยังไม่ได้รัน SQL 07/08 → ตัดคอลัมน์ที่ยังไม่มีออกแล้วดึงใหม่
+          var m = /column [a-z_]+\.([a-z_]+) does not exist/.exec(r.error.message || '');
+          if(m && OPTIONAL.indexOf(m[1]) > -1 && cols.indexOf(',' + m[1]) > -1){ cols = cols.replace(',' + m[1], ''); return one(); }
           throw r.error;
         }
         out = out.concat(r.data || []);
@@ -374,18 +382,25 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       : '<div class="empty">ยังไม่มีข้อมูลค่าตัด</div>';
 
     // ---- อันดับ / ตาราง
-    var per = {};
+    var per = {}, grp = (document.querySelector('input[name="grp"]:checked') || {}).value || 'driver';
+    var gkey = function(j){ return grp === 'mno' ? (j.machine_no || '—') : grp === 'mowner' ? (j.machine_owner || '—') : j.created_by; };
+    var gname = function(k){ return grp === 'driver' ? pname(k) : (k === '—' ? 'ไม่ได้ระบุ' : k); };
+    $('t-tbl').textContent = grp === 'mno' ? 'ผลงานรายรถ' : grp === 'mowner' ? 'ผลงานรายเจ้าของรถ' : 'ผลงานรายคนขับ';
+    var perD = {};
     jobs.forEach(function(j){
-      var p = per[j.created_by] = per[j.created_by] || { id:j.created_by, n:0, t:0, r:0, h:0, l:0, a:0, f:0, d:{} };
+      var d0 = perD[j.created_by] = perD[j.created_by] || { id:j.created_by, n:0, t:0 }; d0.n++; d0.t += num(j.tons);
+      var gk = gkey(j);
+      var p = per[gk] = per[gk] || { id:gk, n:0, t:0, r:0, h:0, l:0, a:0, f:0, d:{} };
       p.n++; p.t += num(j.tons); p.r += num(j.rai); p.h += num(j.hours); p.l += num(j.fuel_liters); p.a += num(j.amount); p.f += num(j.fuel_cost); p.d[j.work_date] = 1;
     });
     var rows = Object.keys(per).map(function(k){ return per[k]; }).sort(function(a, b){ return b.t - a.t; });
+    var drows = Object.keys(perD).map(function(k){ return perD[k]; }).sort(function(a, b){ return b.t - a.t; });
     $('t-rank').textContent = who ? 'ผลงานของ ' + pname(who) : 'อันดับคนขับ (ตัน)';
-    hbars($('rank'), rows.map(function(p){ return { k:pname(p.id), v:p.t, s:p.n + ' รอบ' }; }), 10);
+    hbars($('rank'), drows.map(function(p){ return { k:pname(p.id), v:p.t, s:p.n + ' รอบ' }; }), 10);
     var ft = function(v, d){ return v ? nf.format(v) : (d || '—'); };
-    $('tbl').innerHTML = '<thead><tr><th>คนขับ</th><th>วันทำงาน</th><th>รอบงาน</th><th>ตัน</th><th>ไร่</th><th>ตัน/ไร่</th><th>ชั่วโมง</th><th>ตัน/ชม.</th><th>ลิตร/ตัน</th><th>ค่าตัด (บาท)</th><th>ค่าน้ำมัน (บาท)</th><th>คงเหลือ (บาท)</th></tr></thead><tbody>' +
+    $('tbl').innerHTML = '<thead><tr><th>' + (grp === 'mno' ? 'หมายเลขรถ' : grp === 'mowner' ? 'เจ้าของรถ' : 'คนขับ') + '</th><th>วันทำงาน</th><th>รอบงาน</th><th>ตัน</th><th>ไร่</th><th>ตัน/ไร่</th><th>ชั่วโมง</th><th>ตัน/ชม.</th><th>ลิตร/ตัน</th><th>ค่าตัด (บาท)</th><th>ค่าน้ำมัน (บาท)</th><th>คงเหลือ (บาท)</th></tr></thead><tbody>' +
       (rows.length ? rows.map(function(p){
-        return '<tr><td>' + esc(pname(p.id)) + '</td><td>' + Object.keys(p.d).length + '</td><td>' + p.n + '</td><td><b>' + nf.format(p.t) + '</b></td><td>' + ft(p.r) + '</td><td>' + (p.r ? nf.format(p.t / p.r) : '—') +
+        return '<tr><td>' + esc(gname(p.id)) + '</td><td>' + Object.keys(p.d).length + '</td><td>' + p.n + '</td><td><b>' + nf.format(p.t) + '</b></td><td>' + ft(p.r) + '</td><td>' + (p.r ? nf.format(p.t / p.r) : '—') +
           '</td><td>' + ft(p.h) + '</td><td>' + (p.h ? nf.format(p.t / p.h) : '—') + '</td><td>' + (p.t ? nf.format(p.l / p.t) : '—') + '</td><td>' + nf0.format(p.a) + '</td><td>' + nf0.format(p.f) + '</td><td>' + nf0.format(p.a - p.f) + '</td></tr>';
       }).join('') : '<tr><td colspan="12" class="empty">ยังไม่มีงานในช่วงนี้</td></tr>') + '</tbody>' +
       (rows.length > 1 ? '<tfoot><tr><td>รวม</td><td></td><td>' + jobs.length + '</td><td>' + nf.format(T) + '</td><td>' + ft(R) + '</td><td>' + (R ? nf.format(T / R) : '—') + '</td><td>' + ft(H) + '</td><td>' + (H ? nf.format(T / H) : '—') +
@@ -528,7 +543,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
         var pop = document.createElement('div');
         var b = document.createElement('b'); b.textContent = j.plot || j.owner_name || 'แปลงที่ปักหมุดไว้'; pop.appendChild(b);
         var d = document.createElement('div'); d.textContent = thd(j.work_date) + ' · ' + nf.format(num(j.tons)) + ' ตัน' + (num(j.rai) ? ' · ' + nf.format(num(j.rai)) + ' ไร่' : ''); pop.appendChild(d);
-        var w = document.createElement('div'); w.textContent = 'คนขับ ' + pname(j.created_by); pop.appendChild(w);
+        var w = document.createElement('div'); w.textContent = (j.machine_no ? 'รถ ' + j.machine_no + ' · ' : '') + 'คนขับ ' + pname(j.created_by); pop.appendChild(w);
         m.bindPopup(pop); pts.push([j.lat, j.lng]);
       });
       S.layer = g.addTo(S.map);
@@ -561,6 +576,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     $('rng').addEventListener('change', function(){ if(range().key === 'custom' && !$('c-from').value){ $('c-from').value = add(today(), -29); $('c-to').value = today(); } load(); });
     $('c-from').addEventListener('change', load); $('c-to').addEventListener('change', load);
     $('drv').addEventListener('change', render);
+    $('grp').addEventListener('change', render);
     $('b-refresh').addEventListener('click', load);
     $('b-print').addEventListener('click', function(){ window.print(); });
     $('b-full').addEventListener('click', function(){
