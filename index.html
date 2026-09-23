@@ -227,6 +227,28 @@
   .hint-ai{font-size:12.5px; color:var(--amber); margin:8px 0 0}
   .chip.doc-btn{border:none; cursor:pointer; background:var(--blue-soft); color:var(--blue)}
   .chip.dup{background:var(--red-soft); color:var(--red)}
+  /* ---------- แผนที่แปลง ---------- */
+  .plotinfo{font-size:13px; background:var(--surface-2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; line-height:1.55; font-variant-numeric:tabular-nums; margin:6px 0 2px}
+  .plotinfo b{font-weight:600}
+  .plotinfo button{background:none; border:none; color:var(--red); font-size:12.5px; padding:0 0 0 8px; text-decoration:underline}
+  .chip.map-btn{border:none; cursor:pointer; background:var(--green-soft); color:var(--green-ink)}
+  #mapx{position:fixed; inset:0; z-index:85; background:#0c0e0b; color:#eef0e8; display:flex; flex-direction:column;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+  #mapx[hidden]{display:none!important}
+  .mxmap{flex:1; min-height:220px; background:#20241e}
+  .mxpanel{padding:10px 14px 2px; border-top:1px solid #22271f}
+  .mxread{font-size:18px; font-weight:700; font-variant-numeric:tabular-nums; line-height:1.35}
+  .mxread small{display:block; font-size:12.5px; font-weight:400; color:#a9b0a1}
+  .mxhint{font-size:12.5px; color:#a9b0a1; margin-top:4px; line-height:1.45}
+  #mapx .vnav{padding:10px 0; flex-wrap:wrap; border-top:none}
+  #mapx .vnav .vbtn{flex:1 1 auto}
+  .vbtn.pri{background:var(--green); border-color:var(--green); color:var(--on-green); font-weight:600}
+  .vbtn.on{background:#3a4434; border-color:#6b7a5f}
+  .vbtn.warn{background:#5a2a1f; border-color:#8a3d2c}
+  .mx-v{width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid #e8a33d; box-shadow:0 0 0 1px #0007; box-sizing:border-box}
+  .mx-v.first{border-color:#d9412b}
+  .mx-pin{width:24px; height:24px; border-radius:50% 50% 50% 0; background:#d9412b; transform:rotate(-45deg); border:2px solid #fff; box-shadow:0 1px 4px #0009; box-sizing:border-box}
+  .mx-gps{width:16px; height:16px; border-radius:50%; background:#2f7de1; border:2px solid #fff; box-shadow:0 0 0 7px rgba(47,125,225,.25); box-sizing:border-box}
   .pstrip-cap{font-size:11.5px; color:var(--ink-faint); margin:6px 0 0}
   .pic-tag{font-size:11px; font-weight:600; color:var(--green-ink); background:var(--green-soft); padding:1px 7px; border-radius:99px; margin-left:6px; white-space:nowrap}
 
@@ -329,7 +351,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 15 · 23 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 16 · 23 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -357,7 +379,7 @@
         <form id="job-form">
           <div class="scanbox" id="scanbox">
             <b style="font-size:14px">ถ่ายรูปเอกสาร ให้ AI กรอกให้</b>
-            <p class="sub">ถ่ายใบชั่งได้หลายใบ ระบบรวมน้ำหนักและนับเที่ยวให้ · รูปจะแนบไปกับรายการเป็นหลักฐาน</p>
+            <p class="sub">ถ่ายใบชั่งได้หลายใบ ระบบรวมน้ำหนักให้ · รูปจะแนบไปกับรายการเป็นหลักฐาน</p>
             <div class="actions">
               <button type="button" class="btn small" data-scan="weigh">+ ใบชั่งน้ำหนัก</button>
               <button type="button" class="btn small ghost" data-scan="fuel">+ บิลน้ำมัน</button>
@@ -368,20 +390,17 @@
           </div>
           <div class="grid">
             <div class="f"><label for="j-date">วันที่ตัด</label><input type="date" id="j-date" required></div>
-            <div class="f"><label for="j-machine">รถตัด</label><select id="j-machine" required></select></div>
-            <div class="f wide"><label for="j-driver">คนขับ</label><input id="j-driver" autocomplete="off" placeholder="ชื่อคนขับ"></div>
-            <div class="f"><label for="j-owner">เจ้าของไร่</label><input id="j-owner" required autocomplete="off" placeholder="เช่น สมชาย ใจดี"></div>
-            <div class="f"><label for="j-plot">แปลง / ที่ตั้ง</label><input id="j-plot" autocomplete="off" placeholder="เช่น แปลง 3 หนองแวง"></div>
-            <div class="f wide"><label>ประเภทอ้อย</label>
-              <div class="segmented">
-                <label><input type="radio" name="canetype" value="สด" checked><span>อ้อยสด</span></label>
-                <label><input type="radio" name="canetype" value="ไฟไหม้"><span>อ้อยไฟไหม้</span></label>
+            <div class="f"><label for="j-driver">คนขับ</label><input id="j-driver" autocomplete="off" placeholder="ชื่อคนขับ"></div>
+            <div class="f wide"><label>แปลงที่ตัด</label>
+              <div class="actions" style="margin-top:2px">
+                <button type="button" class="btn small ghost" id="j-pin">ปักหมุดแปลง</button>
+                <button type="button" class="btn small ghost" id="j-measure">วัดพื้นที่แปลง</button>
               </div>
+              <div class="plotinfo" id="j-plotinfo" hidden></div>
+              <input id="j-plot" autocomplete="off" placeholder="ชื่อเรียกแปลง (ไม่บังคับ) เช่น แปลงหลังวัด" style="margin-top:6px">
             </div>
-            <div class="f"><label for="j-rai">พื้นที่ (ไร่)</label><input type="number" id="j-rai" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
+            <div class="f"><label for="j-rai">พื้นที่ (ไร่)</label><input type="number" id="j-rai" inputmode="decimal" step="0.01" min="0" placeholder="0"></div>
             <div class="f"><label for="j-tons">น้ำหนักอ้อย (ตัน)</label><input type="number" id="j-tons" inputmode="decimal" step="0.01" min="0" required placeholder="0"></div>
-            <div class="f"><label for="j-trips">จำนวนเที่ยวรถบรรทุก</label><input type="number" id="j-trips" inputmode="numeric" step="1" min="0" placeholder="0"></div>
-            <div class="f"><label for="j-queue">เลขคิว / โรงงาน</label><input id="j-queue" autocomplete="off" placeholder="เช่น คิว 1204"></div>
             <div class="f"><label for="j-hours">ชั่วโมงทำงาน (ชม.)</label><input type="number" id="j-hours" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
             <div class="f"><label for="j-fuel">น้ำมันที่เติม (ลิตร)</label><input type="number" id="j-fuel" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
             <div class="f"><label for="j-rate">ค่าตัด (บาท/ตัน)</label><input type="number" id="j-rate" inputmode="decimal" step="1" min="0" value="180"></div>
@@ -558,6 +577,16 @@
   </div>
 </div>
 
+<div id="mapx" hidden role="dialog" aria-modal="true" aria-label="แผนที่แปลง">
+  <div class="vbar"><b id="mx-title">แผนที่แปลง</b><button type="button" class="vbtn" id="mx-layer">แผนที่ถนน</button><button type="button" class="vbtn" id="mx-close">ปิด ✕</button></div>
+  <div class="mxmap" id="mx-map"></div>
+  <div class="mxpanel">
+    <div class="mxread" id="mx-read"></div>
+    <div class="mxhint" id="mx-hint"></div>
+    <div class="vnav" id="mx-tools"></div>
+  </div>
+</div>
+
 <script src="guide.js"></script>
 <script src="illustrations.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -608,14 +637,34 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     var q=queueGet().length;
     $('conn').textContent = navigator.onLine ? (q? ('รอส่ง '+q+' รายการ') : 'ออนไลน์') : ('ออฟไลน์'+(q?' · ค้าง '+q+' รายการ':''));
   }
+  /* คอลัมน์ที่เพิ่มทีหลัง (SQL 04, 07) — ถ้ายังไม่ได้รัน ให้บันทึกได้โดยตัดคอลัมน์นั้นออก */
+  var OPT_COLS = ['docs','lat','lng','plot_polygon','area_method'];
+  function missingCol(err){ var m = /'([a-z_]+)' column/.exec((err && err.message) || ''); return (m && OPT_COLS.indexOf(m[1]) > -1) ? m[1] : null; }
+  function dropKey(r, k){ var o = {}; Object.keys(r).forEach(function(x){ if(x !== k) o[x] = r[x]; }); return o; }
+  function insertJobs(rows, dropped){
+    dropped = dropped || [];
+    return sb.from('jobs').insert(rows).then(function(r){
+      var c = r.error && missingCol(r.error);
+      if(c && dropped.indexOf(c) < 0){
+        dropped.push(c);
+        rows = Array.isArray(rows) ? rows.map(function(x){ return dropKey(x, c); }) : dropKey(rows, c);
+        return insertJobs(rows, dropped);
+      }
+      r.dropped = dropped; return r;
+    });
+  }
+  function droppedMsg(d){
+    var m = [];
+    if(d.indexOf('docs') > -1) m.push('ยังแนบรูปไม่ได้ (รัน SQL 04)');
+    if(d.indexOf('lat') > -1 || d.indexOf('plot_polygon') > -1) m.push('ยังเก็บพิกัดแปลงไม่ได้ (รัน SQL 07)');
+    return m.join(' · ');
+  }
+
   function flushQueue(){
     if(!navigator.onLine || !sb || !S.me) return Promise.resolve();
     flushPhotos();
     var q=queueGet(); if(!q.length) return Promise.resolve();
-    return sb.from('jobs').insert(q).then(function(r){
-      if(r.error && noDocsCol(r.error)){ q=q.map(stripDocs); return sb.from('jobs').insert(q); }
-      return r;
-    }).then(function(r){
+    return insertJobs(q).then(function(r){
       // 23505 = ส่งซ้ำ (client_ref ซ้ำ) ถือว่าถึงปลายทางแล้ว
       if(r.error && r.error.code !== '23505'){ updateConn(); return; }
       queueSet([]); updateConn();
@@ -680,7 +729,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       sb.from('profiles').update({ last_seen:new Date().toISOString() }).eq('id',S.me.id).then(function(){});
       sb.from('activity_log').insert({ user_id:S.me.id, action:'login' }).then(function(){});
       return loadAll();
-    }).then(function(){ return flushQueue(); });
+    }).then(function(){ setTimeout(function(){ if(navigator.onLine) loadLeaflet().catch(function(){}); }, 2500); return flushQueue(); });
   }
 
   function applySignupMode(mode){
@@ -846,10 +895,6 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function renderMachineOptions(){
-    var sel=$('j-machine'), keep=sel.value;
-    sel.innerHTML = '<option value="">— เลือกรถ —</option>' + S.machines.map(function(m){
-      return '<option value="'+esc(m.id)+'">'+esc(m.code)+(m.model?' · '+esc(m.model):'')+'</option>'; }).join('');
-    sel.value = keep;
     var h=$('h-machine'), hk=h.value;
     h.innerHTML = '<option value="">ทุกคัน</option>' + S.machines.map(function(m){
       return '<option value="'+esc(m.id)+'">'+esc(m.code)+'</option>'; }).join('');
@@ -857,16 +902,20 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function jobRow(j, showWho, pending){
-    var ct = j.cane_type==='ไฟไหม้' ? '<span class="chip burn">ไฟไหม้</span>' : '<span class="chip">อ้อยสด</span>';
+    var hasGeo = j.lat != null && j.lng != null;
+    var title = j.plot || j.owner_name || (hasGeo ? 'แปลงที่ปักหมุดไว้' : 'รอบตัด');
     return '<div class="row">'+
-      '<div class="top"><span class="title">'+esc(j.owner_name||'ไม่ระบุเจ้าของไร่')+'</span>'+ct+
-      (pending?'<span class="chip wait">รอส่ง</span>':'')+docChips(j,pending)+
+      '<div class="top"><span class="title">'+esc(title)+'</span>'+
+      (pending?'<span class="chip wait">รอส่ง</span>':'')+
+      (hasGeo ? (pending ? '<span class="chip">มีพิกัด</span>' : '<button type="button" class="chip map-btn" data-mapjob="'+esc(j.id)+'">แผนที่</button>') : '')+
+      docChips(j,pending)+
       '<span class="amt">'+nf0.format(num(j.amount))+' ฿</span></div>'+
-      '<div class="meta"><span>'+thDate(j.work_date)+'</span><span>'+esc(machineLabel(j.machine_id))+'</span>'+
+      '<div class="meta"><span>'+thDate(j.work_date)+'</span>'+
+      (j.machine_id?'<span>'+esc(machineLabel(j.machine_id))+'</span>':'')+
       '<span>'+nf.format(num(j.tons))+' ตัน</span>'+
-      (num(j.rai)?'<span>'+nf.format(num(j.rai))+' ไร่</span>':'')+
-      (num(j.trips)?'<span>'+nf0.format(num(j.trips))+' เที่ยว</span>':'')+
-      (j.plot?'<span>'+esc(j.plot)+'</span>':'')+
+      (num(j.rai)?'<span>'+nf.format(num(j.rai))+' ไร่'+(j.area_method==='walk'||j.area_method==='tap'?' (วัดจากแผนที่)':'')+'</span>':'')+
+      (num(j.trips)?'<span>'+nf0.format(num(j.trips))+' ใบชั่ง</span>':'')+
+      (j.driver_name?'<span>คนขับ '+esc(j.driver_name)+'</span>':'')+
       (showWho?'<span>โดย '+esc(personName(j.created_by))+'</span>':'')+'</div></div>';
   }
 
@@ -903,7 +952,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       '<dt>ลิตรต่อตัน</dt><dd>'+(tons?nf.format(fuel/tons):'—')+'</dd>'+
       (m.note?'<dt>หมายเหตุ</dt><dd>'+esc(m.note)+'</dd>':'')+'</dl>';
     h += '<div><p class="eyebrow">งานล่าสุด</p>'+(jobs.length? jobs.map(function(j){
-      return '<div class="meta" style="padding:3px 0"><span>'+thDate(j.work_date)+'</span><span>'+esc(j.owner_name||'')+'</span><span>'+nf.format(num(j.tons))+' ตัน</span></div>';
+      return '<div class="meta" style="padding:3px 0"><span>'+thDate(j.work_date)+'</span><span>'+esc(j.plot||j.owner_name||'')+'</span><span>'+nf.format(num(j.tons))+' ตัน</span></div>';
     }).join('') : '<div class="meta">ยังไม่มีงาน</div>')+'</div>';
     h += '<div><p class="eyebrow">ประวัติซ่อมบำรุง</p>'+(mt.length? mt.map(function(x){
       return '<div class="meta" style="padding:3px 0"><span>'+thDate(x.work_date)+'</span><span>'+esc(x.kind||'')+'</span><span>'+nf0.format(num(x.cost))+' ฿</span>'+(x.note?'<span>'+esc(x.note)+'</span>':'')+'</div>';
@@ -977,16 +1026,17 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       (urows||'<tr><td colspan="9" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
 
     var raw = jobs.map(function(j){
-      return '<tr><td>'+thDate(j.work_date)+'</td><td>'+esc(machineLabel(j.machine_id))+'</td><td>'+esc(j.driver_name||'')+'</td>'+
-        '<td>'+esc(j.owner_name||'')+'</td><td>'+esc(j.plot||'')+'</td><td>'+esc(j.cane_type||'')+'</td>'+
+      return '<tr><td>'+thDate(j.work_date)+'</td><td>'+esc(j.driver_name||'')+'</td>'+
+        '<td>'+esc(j.plot||j.owner_name||'')+'</td><td>'+(j.lat!=null&&j.lng!=null
+          ? '<button type="button" class="chip map-btn" data-mapjob="'+esc(j.id)+'">ดูแผนที่</button>' : '')+'</td>'+
         '<td class="num">'+nf.format(num(j.tons))+'</td><td class="num">'+nf.format(num(j.rai))+'</td>'+
         '<td class="num">'+nf.format(num(j.hours))+'</td><td class="num">'+nf.format(num(j.fuel_liters))+'</td>'+
         '<td class="num">'+nf0.format(num(j.amount))+'</td><td>'+docChips(j,false)+'</td><td>'+esc(personName(j.created_by))+'</td><td>'+thStamp(j.created_at)+'</td>'+
         '<td><button type="button" class="btn small danger" data-del="'+esc(j.id)+'">ลบ</button></td></tr>';
     }).join('');
-    $('admin-raw-table').innerHTML='<thead><tr><th>วันที่</th><th>รถ</th><th>คนขับ</th><th>เจ้าของไร่</th><th>แปลง</th><th>ประเภท</th>'+
+    $('admin-raw-table').innerHTML='<thead><tr><th>วันที่</th><th>คนขับ</th><th>แปลง</th><th>พิกัด</th>'+
       '<th>ตัน</th><th>ไร่</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th><th>เอกสาร</th><th>ผู้บันทึก</th><th>เวลาบันทึก</th><th></th></tr></thead><tbody>'+
-      (raw||'<tr><td colspan="15" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
+      (raw||'<tr><td colspan="13" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
   }
 
   /* ---------- actions ---------- */
@@ -1161,20 +1211,21 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
 
   function submitJob(e){
     e.preventDefault();
-    if(!$('j-machine').value){ toast('เลือกรถตัดก่อน'); return; }
     if(DOCS.some(function(d){ return d.status==='prep' || d.status==='reading'; })){ toast('รอ AI อ่านรูปให้เสร็จก่อน'); return; }
     var ref=uuid(), photos=DOCS.filter(function(d){ return d.blob; });
-    var ct=document.querySelector('input[name="canetype"]:checked');
+    var nTickets=DOCS.filter(function(d){ return d.kind==='weigh' && !d.dup; }).length;
     var row={
-      work_date:$('j-date').value, machine_id:$('j-machine').value, driver_name:$('j-driver').value.trim(),
-      owner_name:$('j-owner').value.trim(), plot:$('j-plot').value.trim(), cane_type:ct?ct.value:'สด',
-      rai:num($('j-rai').value), tons:num($('j-tons').value), trips:num($('j-trips').value),
-      queue_no:$('j-queue').value.trim(), hours:num($('j-hours').value), fuel_liters:num($('j-fuel').value),
+      work_date:$('j-date').value, driver_name:$('j-driver').value.trim(), plot:$('j-plot').value.trim(),
+      rai:num($('j-rai').value), tons:num($('j-tons').value), trips:nTickets,
+      hours:num($('j-hours').value), fuel_liters:num($('j-fuel').value),
       fuel_cost:num($('j-fuelcost').value), rate:num($('j-rate').value), amount:recalc(),
       note:$('j-note').value.trim(), created_by:S.me.id, client_ref:ref
     };
     var docs=docsForRow(ref);
     if(docs.length) row.docs=docs;
+    if(PLOT.lat!=null){ row.lat=PLOT.lat; row.lng=PLOT.lng; }
+    if(PLOT.poly && PLOT.poly.length>2) row.plot_polygon=PLOT.poly;
+    if(num(row.rai)) row.area_method = (PLOT.method && PLOT.areaRai!=null && Math.abs(PLOT.areaRai-num(row.rai))<0.005) ? PLOT.method : 'manual';
     var btn=$('j-submit'); btn.disabled=true; btn.textContent='กำลังบันทึก…';
     var done=function(){ btn.disabled=false; btn.textContent='บันทึกรอบนี้'; };
 
@@ -1184,16 +1235,13 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       return;
     }
     if(files.length) btn.textContent='กำลังส่งรูป…';
-    var noDocs=false;
     savePhotos(files).then(function(){
       btn.textContent='กำลังบันทึก…';
-      return sb.from('jobs').insert(row);
-    }).then(function(r){
-      if(r.error && noDocsCol(r.error)){ noDocs=true; return sb.from('jobs').insert(stripDocs(row)); }
-      return r;
+      return insertJobs(row);
     }).then(function(r){
       if(r.error) throw r.error;
-      toast(noDocs ? 'บันทึกแล้ว แต่ยังแนบรูปไม่ได้ — แอดมินต้องรัน SQL ไฟล์ 04' : 'บันทึกแล้ว '+nf.format(row.tons)+' ตัน');
+      var dm=droppedMsg(r.dropped||[]);
+      toast(dm ? 'บันทึกแล้ว แต่'+dm+' — แจ้งแอดมิน' : 'บันทึกแล้ว '+nf.format(row.tons)+' ตัน');
       resetForm();
       return loadAll();
     }).catch(function(err){
@@ -1204,7 +1252,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function resetForm(){
-    ['j-owner','j-plot','j-note','j-queue','j-rai','j-tons','j-trips','j-hours','j-fuel','j-fuelcost'].forEach(function(id){ $(id).value=''; });
+    ['j-plot','j-note','j-rai','j-tons','j-hours','j-fuel','j-fuelcost'].forEach(function(id){ $(id).value=''; });
+    PLOT={lat:null,lng:null,poly:null,method:null,areaRai:null}; renderPlotInfo();
     DOCS=[]; renderDocs();
     Array.prototype.forEach.call(document.querySelectorAll('#job-form .ai'), function(el){ el.classList.remove('ai'); });
     delete $('j-date').dataset.touched; $('doc-hint').hidden=true;
@@ -1229,12 +1278,14 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function exportCsv(){
-    var head=['วันที่','รถ','คนขับ','เจ้าของไร่','แปลง','ประเภทอ้อย','ไร่','ตัน','เที่ยว','คิว','ชั่วโมง','ลิตร','บาท/ตัน','ค่าตัดรวม','ค่าน้ำมัน','หมายเหตุ','เลขใบชั่ง','จำนวนรูป','ผู้บันทึก','เวลาบันทึก'];
+    var head=['วันที่','คนขับ','แปลง','ละติจูด','ลองจิจูด','ลิงก์แผนที่','ไร่','วิธีได้พื้นที่','ตัน','จำนวนใบชั่ง','ชั่วโมง','ลิตร','บาท/ตัน','ค่าตัดรวม','ค่าน้ำมัน','หมายเหตุ','เลขใบชั่ง','จำนวนรูป','ผู้บันทึก','เวลาบันทึก'];
+    var AM={walk:'เดินวัด GPS',tap:'แตะมุมบนแผนที่',manual:'กรอกเอง'};
     var q=function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; };
     var lines=[head.map(q).join(',')];
     filteredJobs().forEach(function(j){
-      lines.push([j.work_date,machineLabel(j.machine_id),j.driver_name,j.owner_name,j.plot,j.cane_type,num(j.rai),num(j.tons),
-        num(j.trips),j.queue_no,num(j.hours),num(j.fuel_liters),num(j.rate),num(j.amount),num(j.fuel_cost),j.note,
+      var geo=(j.lat!=null&&j.lng!=null);
+      lines.push([j.work_date,j.driver_name,j.plot||j.owner_name,geo?j.lat:'',geo?j.lng:'',geo?('https://www.google.com/maps?q='+j.lat+','+j.lng):'',
+        num(j.rai),AM[j.area_method]||'',num(j.tons),num(j.trips),num(j.hours),num(j.fuel_liters),num(j.rate),num(j.amount),num(j.fuel_cost),j.note,
         (j.docs||[]).filter(function(d){ return d.ticket_no; }).map(function(d){ return d.ticket_no; }).join(' '),(j.docs||[]).length,
         personName(j.created_by),j.created_at].map(q).join(','));
     });
@@ -1340,15 +1391,9 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     if(W.length){
       var kg = W.reduce(function(s, d){ return s + num(d.data.net_kg); }, 0);
       setAI('j-tons', Math.round(kg / 10) / 100);
-      setAI('j-trips', W.length);
       var w0 = W[0].data;
-      if(!$('j-owner').value && w0.farmer) setAI('j-owner', w0.farmer);
-      if(!$('j-queue').value && (w0.mill || w0.queue_no)) setAI('j-queue', [w0.mill, w0.queue_no ? 'คิว ' + w0.queue_no : ''].filter(Boolean).join(' · '));
       if(w0.date && /^\d{4}-\d{2}-\d{2}$/.test(w0.date) && w0.date <= today() && !$('j-date').dataset.touched) setAI('j-date', w0.date);
-      var types = W.map(function(d){ return d.data.cane_type; });
-      if(types[0] && types.every(function(t){ return t === types[0]; })){
-        var rb = document.querySelector('input[name="canetype"][value="' + types[0] + '"]'); if(rb) rb.checked = true; }
-    } else clearAI(['j-tons', 'j-trips']);
+    } else clearAI(['j-tons']);
     if(F.length){
       var L = F.reduce(function(s, d){ return s + num(d.data.liters); }, 0), B = F.reduce(function(s, d){ return s + num(d.data.total_baht); }, 0);
       if(L) setAI('j-fuel', Math.round(L * 10) / 10); else clearAI(['j-fuel']);
@@ -1393,8 +1438,6 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       return o;
     });
   }
-  function noDocsCol(err){ return /docs/.test((err && (err.message || '')) + '') && /column|schema/i.test(err.message || ''); }
-  function stripDocs(r){ var o = {}; Object.keys(r).forEach(function(k){ if(k !== 'docs') o[k] = r[k]; }); return o; }
 
   /* รูปที่ยังส่งไม่ได้ เก็บใน IndexedDB แล้วส่งตามทีหลัง */
   var idbP = null;
@@ -1446,7 +1489,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     sb.storage.from('receipts').createSignedUrls(j.docs.map(function(d){ return d.path; }), 3600).then(function(r){
       var urls = (r.data || []).map(function(x){ return x.signedUrl; }).filter(Boolean);
       if(!urls.length){ toast('รูปยังไม่ถูกส่งขึ้นระบบ (เครื่องคนขับยังไม่มีสัญญาณ)'); return; }
-      openViewerList(urls, 0, 'เอกสาร · ' + (j.owner_name || '') + ' ' + thDate(j.work_date));
+      openViewerList(urls, 0, ['เอกสาร', j.plot || j.owner_name, thDate(j.work_date)].filter(Boolean).join(' · '));
     }).catch(function(){ toast('เปิดรูปไม่ได้ — ตรวจสัญญาณ'); });
   }
 
@@ -1454,6 +1497,246 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     var inT = 0, outT = 0; S.scan.forEach(function(x){ inT += num(x.in_tokens); outT += num(x.out_tokens); });
     var usd = inT / 1e6 * 1 + outT / 1e6 * 5;   // ราคา Claude Haiku 4.5: $1 / $5 ต่อล้าน token
     return ['สแกน AI 30 วัน', nf0.format(S.scan.length), 'รูป · ≈ $' + usd.toFixed(usd < 1 ? 3 : 2)];
+  }
+
+  /* ---------- แผนที่: ปักหมุด / วัดพื้นที่แปลง (Leaflet) ---------- */
+  var PLOT = { lat:null, lng:null, poly:null, method:null, areaRai:null };
+  var MX = { map:null, mode:'pin', sat:true, base:{}, pts:[], pin:null, sub:'tap', walking:false, watch:null, lock:null,
+             acc:null, layer:null, vmarks:[], pinMark:null, gpsMark:null, job:null };
+  var lfP = null;
+  function loadLeaflet(){
+    if(window.L && window.L.map) return Promise.resolve(window.L);
+    if(lfP) return lfP;
+    lfP = new Promise(function(res, rej){
+      var css = document.createElement('link'); css.rel = 'stylesheet';
+      css.href = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'; document.head.appendChild(css);
+      var sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';
+      sc.onload = function(){ res(window.L); };
+      sc.onerror = function(){ lfP = null; css.remove(); sc.remove(); rej(new Error('LEAFLET')); };
+      document.head.appendChild(sc);
+    });
+    return lfP;
+  }
+
+  /* พื้นที่ (ตร.ม.) จากจุด [lat,lng] — ฉายแบบระนาบรอบจุดกลาง แม่นพอสำหรับแปลงขนาดไม่กี่ตร.กม. */
+  function polyArea(pts){
+    if(!pts || pts.length < 3) return 0;
+    var rad = Math.PI / 180, R = 6371008.8, lat0 = 0;
+    pts.forEach(function(p){ lat0 += p[0]; }); lat0 /= pts.length;
+    var k = Math.cos(lat0 * rad), a = 0;
+    for(var i = 0; i < pts.length; i++){
+      var q = pts[(i + 1) % pts.length], p = pts[i];
+      a += (R * k * p[1] * rad) * (R * q[0] * rad) - (R * k * q[1] * rad) * (R * p[0] * rad);
+    }
+    return Math.abs(a) / 2;
+  }
+  function dist(a, b){
+    var rad = Math.PI / 180, R = 6371008.8, dLat = (b[0] - a[0]) * rad, dLng = (b[1] - a[1]) * rad;
+    var h = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(a[0]*rad) * Math.cos(b[0]*rad) * Math.sin(dLng/2) * Math.sin(dLng/2);
+    return 2 * R * Math.asin(Math.min(1, Math.sqrt(h)));
+  }
+  function perim(pts){ var d = 0; for(var i = 0; i < pts.length; i++) d += dist(pts[i], pts[(i + 1) % pts.length]); return pts.length > 2 ? d : (pts.length === 2 ? dist(pts[0], pts[1]) : 0); }
+  function centroid(pts){ var la = 0, ln = 0; pts.forEach(function(p){ la += p[0]; ln += p[1]; }); return [la / pts.length, ln / pts.length]; }
+  function raiText(m2){
+    var wa = Math.round(m2 / 4), rai = Math.floor(wa / 400), ngan = Math.floor((wa % 400) / 100); wa = wa % 100;
+    return rai + ' ไร่ ' + ngan + ' งาน ' + wa + ' ตร.วา';
+  }
+  function r6(x){ return Math.round(x * 1e6) / 1e6; }
+
+  function renderPlotInfo(){
+    var el = $('j-plotinfo'), h = [];
+    if(PLOT.lat != null) h.push('<div><b>หมุดแปลง</b> ' + PLOT.lat.toFixed(5) + ', ' + PLOT.lng.toFixed(5) + '<button type="button" data-plotclr="all">ลบ</button></div>');
+    if(PLOT.poly && PLOT.poly.length > 2){
+      var m2 = polyArea(PLOT.poly);
+      h.push('<div><b>วัดได้</b> ' + raiText(m2) + ' · ' + nf.format(m2 / 1600) + ' ไร่ · ' + (PLOT.method === 'walk' ? 'เดินวัด GPS' : 'แตะมุมบนแผนที่') +
+        '<button type="button" data-plotclr="area">ลบเส้นแปลง</button></div>');
+    }
+    el.innerHTML = h.join(''); el.hidden = !h.length;
+    $('j-pin').textContent = PLOT.lat != null ? 'ย้ายหมุด' : 'ปักหมุดแปลง';
+    $('j-measure').textContent = (PLOT.poly && PLOT.poly.length > 2) ? 'แก้เส้นแปลง' : 'วัดพื้นที่แปลง';
+  }
+
+  function openMap(mode, job){
+    MX.mode = mode; MX.job = job || null;
+    var src = job || PLOT;
+    MX.pin = (src.lat != null && src.lng != null) ? [src.lat, src.lng] : null;
+    MX.pts = (src.poly || src.plot_polygon || []).map(function(p){ return [p[0], p[1]]; });
+    MX.sub = (PLOT.method === 'walk' && !job) ? 'walk' : 'tap';
+    $('mx-title').textContent = mode === 'pin' ? 'ปักหมุดแปลง' : mode === 'measure' ? 'วัดพื้นที่แปลง' : ((job && (job.plot || job.owner_name)) || 'ตำแหน่งแปลง') + (job ? ' · ' + thDate(job.work_date) : '');
+    $('mapx').hidden = false; document.body.style.overflow = 'hidden';
+    $('mx-read').textContent = 'กำลังโหลดแผนที่…'; $('mx-hint').textContent = ''; $('mx-tools').innerHTML = '';
+    loadLeaflet().then(function(L){
+      if(!MX.map) initMap(L);
+      setTimeout(function(){ MX.map.invalidateSize(); drawMap(); fitMap(); }, 60);
+    }).catch(function(){
+      $('mx-read').textContent = 'โหลดแผนที่ไม่ได้';
+      $('mx-hint').textContent = 'ต้องต่ออินเทอร์เน็ตครั้งแรกเพื่อโหลดตัวแผนที่ หลังจากนั้นเปิดได้แม้ไม่มีสัญญาณ';
+      $('mx-tools').innerHTML = '<button type="button" class="vbtn" data-mx="close">ปิด</button>';
+    });
+  }
+
+  function initMap(L){
+    MX.map = L.map('mx-map', { zoomControl:true, attributionControl:true, maxZoom:20 });
+    MX.map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+    MX.base.sat = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      { maxZoom:20, maxNativeZoom:18, crossOrigin:true, attribution:'ภาพ © Esri, Maxar, Earthstar Geographics' });
+    MX.base.osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom:20, maxNativeZoom:19, crossOrigin:true, attribution:'© OpenStreetMap' });
+    setLayer(MX.sat);
+    MX.map.on('click', function(e){
+      if(MX.mode === 'pin'){ MX.pin = [r6(e.latlng.lat), r6(e.latlng.lng)]; drawMap(); }
+      else if(MX.mode === 'measure' && MX.sub === 'tap'){ MX.pts.push([r6(e.latlng.lat), r6(e.latlng.lng)]); drawMap(); }
+    });
+    MX.map.on('moveend', function(){ try{ var c = MX.map.getCenter(); localStorage.setItem('canecut_mapc', JSON.stringify([c.lat, c.lng, MX.map.getZoom()])); }catch(e){} });
+  }
+  function setLayer(sat){
+    MX.sat = sat;
+    if(!MX.map) return;
+    [MX.base.sat, MX.base.osm].forEach(function(l){ if(MX.map.hasLayer(l)) MX.map.removeLayer(l); });
+    (sat ? MX.base.sat : MX.base.osm).addTo(MX.map);
+    $('mx-layer').textContent = sat ? 'แผนที่ถนน' : 'ดาวเทียม';
+  }
+  function fitMap(){
+    var L = window.L, all = MX.pts.slice(); if(MX.pin) all.push(MX.pin);
+    if(all.length > 1){ MX.map.fitBounds(L.latLngBounds(all), { padding:[40, 40], maxZoom:18 }); return; }
+    if(all.length === 1){ MX.map.setView(all[0], 17); return; }
+    var c = null; try{ c = JSON.parse(localStorage.getItem('canecut_mapc') || 'null'); }catch(e){}
+    MX.map.setView(c ? [c[0], c[1]] : [15.2, 102.0], c ? c[2] : 6);
+    if(MX.mode !== 'view') locateMe(true);
+  }
+  function locateMe(quiet){
+    if(!navigator.geolocation){ if(!quiet) toast('เครื่องนี้ไม่รองรับ GPS'); return; }
+    if(!quiet) $('mx-hint').textContent = 'กำลังหาตำแหน่ง GPS…';
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var ll = [r6(pos.coords.latitude), r6(pos.coords.longitude)];
+      MX.acc = pos.coords.accuracy; showGps(ll);
+      MX.map.setView(ll, Math.max(MX.map.getZoom(), 17));
+      if(!quiet && MX.mode === 'pin'){ MX.pin = ll; }
+      drawMap();
+    }, function(err){
+      if(!quiet) toast(err && err.code === 1 ? 'ยังไม่ได้อนุญาตให้แอปใช้ตำแหน่ง — เปิดในตั้งค่าเบราว์เซอร์' : 'หาตำแหน่งไม่ได้ ลองออกที่โล่ง');
+      drawMap();
+    }, { enableHighAccuracy:true, timeout:15000, maximumAge:5000 });
+  }
+  function showGps(ll){
+    var L = window.L;
+    if(!MX.gpsMark) MX.gpsMark = L.marker(ll, { icon:L.divIcon({ className:'', html:'<div class="mx-gps"></div>', iconSize:[16,16], iconAnchor:[8,8] }), interactive:false, zIndexOffset:500 }).addTo(MX.map);
+    else MX.gpsMark.setLatLng(ll);
+  }
+
+  function drawMap(){
+    var L = window.L, map = MX.map; if(!map) return;
+    if(MX.layer){ map.removeLayer(MX.layer); MX.layer = null; }
+    MX.vmarks.forEach(function(m){ map.removeLayer(m); }); MX.vmarks = [];
+    if(MX.pinMark){ map.removeLayer(MX.pinMark); MX.pinMark = null; }
+    if(MX.pts.length > 1){
+      MX.layer = (MX.pts.length > 2 ? L.polygon(MX.pts, { color:'#f2c14e', weight:3, fillColor:'#f2c14e', fillOpacity:.22 })
+                                     : L.polyline(MX.pts, { color:'#f2c14e', weight:3 })).addTo(map);
+    }
+    if(MX.mode === 'measure'){
+      var many = MX.sub === 'walk' || MX.pts.length > 40;
+      MX.pts.forEach(function(p, i){
+        if(many && i !== 0 && i !== MX.pts.length - 1) return;   // เดินวัด: แสดงแค่จุดเริ่ม/จุดล่าสุด ไม่ให้รก
+        var m = L.marker(p, { draggable:!MX.walking, icon:L.divIcon({ className:'', html:'<div class="mx-v' + (i === 0 ? ' first' : '') + '"></div>', iconSize:[18,18], iconAnchor:[9,9] }) }).addTo(map);
+        m.on('drag', function(e){ MX.pts[i] = [r6(e.latlng.lat), r6(e.latlng.lng)]; if(MX.layer) MX.layer.setLatLngs(MX.pts); mapPanel(); });
+        MX.vmarks.push(m);
+      });
+    } else if(MX.mode === 'view' && MX.pts.length === 1){
+      MX.vmarks.push(L.circleMarker(MX.pts[0], { radius:5, color:'#f2c14e' }).addTo(map));
+    }
+    if(MX.pin) MX.pinMark = L.marker(MX.pin, { icon:L.divIcon({ className:'', html:'<div class="mx-pin"></div>', iconSize:[24,24], iconAnchor:[12,28] }), interactive:false, zIndexOffset:400 }).addTo(map);
+    mapPanel();
+  }
+
+  function mapPanel(){
+    var read = '', hint = '', t = [];
+    var off = navigator.onLine ? '' : ' · ไม่มีสัญญาณ ภาพแผนที่อาจไม่ขึ้น แต่ GPS ยังใช้ได้';
+    if(MX.mode === 'pin'){
+      read = MX.pin ? MX.pin[0].toFixed(5) + ', ' + MX.pin[1].toFixed(5) : 'ยังไม่ได้ปักหมุด';
+      hint = 'แตะบนแผนที่ตรงแปลงที่ตัด หรือกด "ตำแหน่งฉัน" ถ้ายืนอยู่ที่แปลง' + off;
+      t.push('<button type="button" class="vbtn" data-mx="gps">ตำแหน่งฉัน</button>');
+      t.push('<button type="button" class="vbtn pri" data-mx="ok"' + (MX.pin ? '' : ' disabled') + '>ใช้หมุดนี้</button>');
+    } else if(MX.mode === 'measure'){
+      var m2 = polyArea(MX.pts);
+      read = MX.pts.length > 2 ? raiText(m2) + '<small>= ' + nf.format(m2 / 1600) + ' ไร่ · รอบแปลง ' + nf0.format(perim(MX.pts)) + ' ม. · ' + MX.pts.length + ' จุด</small>'
+                               : 'ยังไม่ครบ 3 จุด<small>' + MX.pts.length + ' จุด</small>';
+      if(MX.sub === 'walk'){
+        hint = MX.walking ? ('กำลังเก็บจุด — เดินหรือขับไปตามขอบแปลงจนครบรอบ แล้วกดหยุด' + (MX.acc != null ? ' · GPS แม่น ±' + Math.round(MX.acc) + ' ม.' : ''))
+                          : 'กด "เริ่มเดิน" ที่มุมแปลง แล้วเดินหรือขับรอบแปลง ระบบเก็บจุดทุก 5 ม. (เปิดหน้าจอไว้)';
+      } else hint = 'แตะที่มุมแปลงทีละจุดบนภาพดาวเทียม เรียงตามขอบ ลากจุดเพื่อแก้ได้';
+      hint += off;
+      t.push('<button type="button" class="vbtn' + (MX.sub === 'tap' ? ' on' : '') + '" data-mx="tap"' + (MX.walking ? ' disabled' : '') + '>แตะมุม</button>');
+      t.push('<button type="button" class="vbtn' + (MX.sub === 'walk' ? ' on' : '') + '" data-mx="walkmode"' + (MX.walking ? ' disabled' : '') + '>เดินรอบแปลง</button>');
+      if(MX.sub === 'walk') t.push(MX.walking ? '<button type="button" class="vbtn warn" data-mx="stop">หยุดเดิน</button>' : '<button type="button" class="vbtn" data-mx="start">เริ่มเดิน</button>');
+      t.push('<button type="button" class="vbtn" data-mx="undo"' + (MX.pts.length && !MX.walking ? '' : ' disabled') + '>ย้อน</button>');
+      t.push('<button type="button" class="vbtn" data-mx="clear"' + (MX.pts.length && !MX.walking ? '' : ' disabled') + '>ล้าง</button>');
+      t.push('<button type="button" class="vbtn pri" data-mx="ok"' + (MX.pts.length > 2 && !MX.walking ? '' : ' disabled') + '>ใช้พื้นที่นี้</button>');
+    } else {
+      var j = MX.job || {}, m2v = polyArea(MX.pts);
+      read = (MX.pts.length > 2 ? raiText(m2v) + '<small>= ' + nf.format(m2v / 1600) + ' ไร่' + (MX.pin ? ' · ' : '') : '<small>') +
+             (MX.pin ? MX.pin[0].toFixed(5) + ', ' + MX.pin[1].toFixed(5) : '') + '</small>';
+      hint = [j.driver_name ? 'คนขับ ' + j.driver_name : '', num(j.tons) ? nf.format(num(j.tons)) + ' ตัน' : ''].filter(Boolean).join(' · ');
+      if(MX.pin) t.push('<a class="vbtn pri" style="text-align:center;text-decoration:none" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=' + MX.pin[0] + ',' + MX.pin[1] + '">นำทางด้วย Google Maps</a>');
+      t.push('<button type="button" class="vbtn" data-mx="close">ปิด</button>');
+    }
+    $('mx-read').innerHTML = read; $('mx-hint').textContent = hint; $('mx-tools').innerHTML = t.join('');
+  }
+
+  function mapTool(e){
+    var b = e.target.closest('[data-mx]'); if(!b || b.disabled) return;
+    var a = b.dataset.mx;
+    if(a === 'close'){ closeMap(); return; }
+    if(a === 'gps'){ locateMe(false); return; }
+    if(a === 'tap'){ MX.sub = 'tap'; drawMap(); return; }
+    if(a === 'walkmode'){ MX.sub = 'walk'; drawMap(); return; }
+    if(a === 'start'){ startWalk(); return; }
+    if(a === 'stop'){ stopWalk(); drawMap(); return; }
+    if(a === 'undo'){ MX.pts.pop(); drawMap(); return; }
+    if(a === 'clear'){ if(confirm('ล้างจุดทั้งหมด?')){ MX.pts = []; drawMap(); } return; }
+    if(a === 'ok'){
+      if(MX.mode === 'pin'){ PLOT.lat = MX.pin[0]; PLOT.lng = MX.pin[1]; }
+      else {
+        var m2 = polyArea(MX.pts);
+        PLOT.poly = MX.pts.map(function(p){ return [r6(p[0]), r6(p[1])]; });
+        PLOT.method = MX.sub === 'walk' ? 'walk' : 'tap';
+        PLOT.areaRai = Math.round(m2 / 1600 * 100) / 100;
+        $('j-rai').value = PLOT.areaRai; $('j-rai').classList.remove('ai');
+        if(PLOT.lat == null){ var c = centroid(PLOT.poly); PLOT.lat = r6(c[0]); PLOT.lng = r6(c[1]); }
+      }
+      renderPlotInfo(); closeMap();
+      toast(MX.mode === 'pin' ? 'ปักหมุดแล้ว' : 'ได้พื้นที่ ' + nf.format(PLOT.areaRai) + ' ไร่');
+    }
+  }
+
+  function startWalk(){
+    if(!navigator.geolocation){ toast('เครื่องนี้ไม่รองรับ GPS'); return; }
+    if(MX.pts.length && !confirm('เริ่มเดินใหม่ จะล้างจุดเดิม ตกลงไหม?')) return;
+    MX.pts = []; MX.walking = true; MX.acc = null; drawMap();
+    try{ if(navigator.wakeLock) navigator.wakeLock.request('screen').then(function(l){ MX.lock = l; }).catch(function(){}); }catch(e){}
+    MX.watch = navigator.geolocation.watchPosition(function(pos){
+      var ll = [r6(pos.coords.latitude), r6(pos.coords.longitude)];
+      MX.acc = pos.coords.accuracy; showGps(ll);
+      if(MX.acc <= 30){
+        var last = MX.pts[MX.pts.length - 1];
+        if(!last || dist(last, ll) >= Math.max(5, Math.min(15, MX.acc * 0.6))){
+          MX.pts.push(ll);
+          if(MX.pts.length === 1) MX.map.setView(ll, Math.max(MX.map.getZoom(), 17)); else MX.map.panTo(ll);
+          drawMap(); return;
+        }
+      }
+      mapPanel();
+    }, function(err){
+      toast(err && err.code === 1 ? 'ยังไม่ได้อนุญาตให้แอปใช้ตำแหน่ง' : 'สัญญาณ GPS ขาดหาย'); if(err && err.code === 1){ stopWalk(); drawMap(); }
+    }, { enableHighAccuracy:true, maximumAge:0, timeout:20000 });
+  }
+  function stopWalk(){
+    if(MX.watch != null && navigator.geolocation) navigator.geolocation.clearWatch(MX.watch);
+    MX.watch = null; MX.walking = false;
+    try{ if(MX.lock){ MX.lock.release(); MX.lock = null; } }catch(e){}
+  }
+  function closeMap(){
+    if(MX.walking && !confirm('กำลังเดินวัดอยู่ ปิดแผนที่แล้วจุดที่เก็บจะหาย ตกลงไหม?')) return;
+    stopWalk(); $('mapx').hidden = true; document.body.style.overflow = '';
   }
 
   /* ---------- wiring ---------- */
@@ -1508,8 +1791,22 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
       b.addEventListener('click', function(){ showTab(b.dataset.tab); }); });
     ['j-tons','j-rate'].forEach(function(id){ $(id).addEventListener('input', recalc); });
-    $('j-machine').addEventListener('change', function(){
-      var m=machineById(this.value); if(m&&m.driver_name&&!$('j-driver').value) $('j-driver').value=m.driver_name; });
+    $('j-pin').addEventListener('click', function(){ openMap('pin'); });
+    $('j-measure').addEventListener('click', function(){ openMap('measure'); });
+    $('j-plotinfo').addEventListener('click', function(e){
+      var b = e.target.closest('[data-plotclr]'); if(!b) return;
+      if(b.dataset.plotclr === 'area'){ PLOT.poly = null; PLOT.method = null; if(PLOT.areaRai != null && num($('j-rai').value) === PLOT.areaRai) $('j-rai').value = ''; PLOT.areaRai = null; }
+      else { PLOT = {lat:null,lng:null,poly:null,method:null,areaRai:null}; $('j-rai').value = ''; }
+      renderPlotInfo();
+    });
+    $('mx-close').addEventListener('click', closeMap);
+    $('mx-layer').addEventListener('click', function(){ setLayer(!MX.sat); });
+    $('mx-tools').addEventListener('click', mapTool);
+    document.addEventListener('click', function(e){
+      var b = e.target.closest('[data-mapjob]'); if(!b) return;
+      var j = null; S.jobs.forEach(function(x){ if(x.id === b.dataset.mapjob) j = x; });
+      if(j) openMap('view', j);
+    });
     $('job-form').addEventListener('submit', submitJob);
     $('scanbox').addEventListener('click', function(e){
       var b = e.target.closest('[data-scan]');
