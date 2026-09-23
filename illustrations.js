@@ -34,162 +34,162 @@ window.GUIDE_ILL = {
 /* รูปถ่ายจริงประกอบหัวข้อย่อย (ตัดหัว-ท้ายสไลด์ และเบลอโลโก้แล้ว) */
 window.GUIDE_PHOTOS = {
 "spec:6": [
-"photos/t1-08.jpg"
+"photo-t1-08.jpg"
 ],
 "control:0": [
-"photos/t2-01.jpg"
+"photo-t2-01.jpg"
 ],
 "control:1": [
-"photos/t2-04.jpg",
-"photos/t2-09.jpg",
-"photos/t2-10.jpg"
+"photo-t2-04.jpg",
+"photo-t2-09.jpg",
+"photo-t2-10.jpg"
 ],
 "control:3": [
-"photos/t2-12.jpg",
-"photos/t2-13.jpg"
+"photo-t2-12.jpg",
+"photo-t2-13.jpg"
 ],
 "control:5": [
-"photos/t2-15.jpg"
+"photo-t2-15.jpg"
 ],
 "control:6": [
-"photos/t2-20.jpg"
+"photo-t2-20.jpg"
 ],
 "control:7": [
-"photos/t2-16.jpg",
-"photos/t2-17.jpg",
-"photos/t2-18.jpg",
-"photos/t2-19.jpg"
+"photo-t2-16.jpg",
+"photo-t2-17.jpg",
+"photo-t2-18.jpg",
+"photo-t2-19.jpg"
 ],
 "safety:4": [
-"photos/t3-06.jpg"
+"photo-t3-06.jpg"
 ],
 "safety:5": [
-"photos/t3-07.jpg"
+"photo-t3-07.jpg"
 ],
 "safety:6": [
-"photos/t3-11.jpg"
+"photo-t3-11.jpg"
 ],
 "safety:7": [
-"photos/t3-08.jpg"
+"photo-t3-08.jpg"
 ],
 "safety:1": [
-"photos/t3-10.jpg"
+"photo-t3-10.jpg"
 ],
 "field:2": [
-"photos/t5-01.jpg",
-"photos/t5-07.jpg",
-"photos/t5-09.jpg"
+"photo-t5-01.jpg",
+"photo-t5-07.jpg",
+"photo-t5-09.jpg"
 ],
 "field:3": [
-"photos/t5-02.jpg"
+"photo-t5-02.jpg"
 ],
 "move:0": [
-"photos/t5-10.jpg"
+"photo-t5-10.jpg"
 ],
 "move:3": [
-"photos/t5-12.jpg",
-"photos/t5-16.jpg"
+"photo-t5-12.jpg",
+"photo-t5-16.jpg"
 ],
 "move:4": [
-"photos/t5-13.jpg"
+"photo-t5-13.jpg"
 ],
 "setup:0": [
-"photos/t7-03.jpg",
-"photos/t7-04.jpg",
-"photos/t7-05.jpg"
+"photo-t7-03.jpg",
+"photo-t7-04.jpg",
+"photo-t7-05.jpg"
 ],
 "setup:1": [
-"photos/t7-06.jpg"
+"photo-t7-06.jpg"
 ],
 "setup:2": [
-"photos/t7-01.jpg"
+"photo-t7-01.jpg"
 ],
 "setup:3": [
-"photos/t7-02.jpg"
+"photo-t7-02.jpg"
 ],
 "setup:4": [
-"photos/t7-08.jpg",
-"photos/t7-09.jpg"
+"photo-t7-08.jpg",
+"photo-t7-09.jpg"
 ],
 "setup:8": [
-"photos/t6-4.jpg"
+"photo-t6-4.jpg"
 ],
 "setup:11": [
-"photos/t7-11.jpg"
+"photo-t7-11.jpg"
 ],
 "trouble:0": [
-"photos/t7-13.jpg"
+"photo-t7-13.jpg"
 ],
 "trouble:1": [
-"photos/t7-14.jpg"
+"photo-t7-14.jpg"
 ],
 "parts:0": [
-"photos/t8-01.jpg"
+"photo-t8-01.jpg"
 ],
 "parts:1": [
-"photos/t8-06.jpg",
-"photos/t8-07.jpg"
+"photo-t8-06.jpg",
+"photo-t8-07.jpg"
 ],
 "parts:3": [
-"photos/t8-04.jpg",
-"photos/t8-05.jpg"
+"photo-t8-04.jpg",
+"photo-t8-05.jpg"
 ],
 "parts:4": [
-"photos/t8-12.jpg",
-"photos/t8-14.jpg"
+"photo-t8-12.jpg",
+"photo-t8-14.jpg"
 ],
 "parts:5": [
-"photos/t8-17.jpg",
-"photos/t8-18.jpg"
+"photo-t8-17.jpg",
+"photo-t8-18.jpg"
 ],
 "parts:6": [
-"photos/t8-20.jpg"
+"photo-t8-20.jpg"
 ],
 "parts:7": [
-"photos/t8-21.jpg"
+"photo-t8-21.jpg"
 ],
 "parts:8": [
-"photos/t8-02.jpg",
-"photos/t8-03.jpg"
+"photo-t8-02.jpg",
+"photo-t8-03.jpg"
 ],
 "maintain:1": [
-"photos/t9-04.jpg"
+"photo-t9-04.jpg"
 ],
 "maintain:2": [
-"photos/t9-05.jpg"
+"photo-t9-05.jpg"
 ],
 "maintain:3": [
-"photos/t9-31.jpg"
+"photo-t9-31.jpg"
 ],
 "maintain:4": [
-"photos/t9-07.jpg"
+"photo-t9-07.jpg"
 ],
 "maintain:5": [
-"photos/t9-08.jpg"
+"photo-t9-08.jpg"
 ],
 "maintain:8": [
-"photos/t9-12.jpg"
+"photo-t9-12.jpg"
 ],
 "maintain:9": [
-"photos/t9-19.jpg"
+"photo-t9-19.jpg"
 ],
 "maintain:10": [
-"photos/t9-20.jpg"
+"photo-t9-20.jpg"
 ],
 "maintain:12": [
-"photos/t9-22.jpg",
-"photos/t9-23.jpg"
+"photo-t9-22.jpg",
+"photo-t9-23.jpg"
 ],
 "maintain:13": [
-"photos/t9-25.jpg",
-"photos/t9-26.jpg",
-"photos/t9-27.jpg",
-"photos/t9-28.jpg",
-"photos/t9-29.jpg"
+"photo-t9-25.jpg",
+"photo-t9-26.jpg",
+"photo-t9-27.jpg",
+"photo-t9-28.jpg",
+"photo-t9-29.jpg"
 ],
 "maintain:14": [
-"photos/t9-30.jpg",
-"photos/t9-32.jpg",
-"photos/t9-33.jpg"
+"photo-t9-30.jpg",
+"photo-t9-32.jpg",
+"photo-t9-33.jpg"
 ]
 };

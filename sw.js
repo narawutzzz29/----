@@ -1,6 +1,6 @@
 /* Service worker — ให้แอปเปิดได้แม้ไม่มีสัญญาณ
    เก็บเฉพาะตัวแอปและรูปสไลด์ ไม่เก็บข้อมูลจากฐานข้อมูล */
-var CACHE  = 'canecut-v11';
+var CACHE  = 'canecut-v12';
 var SLIDES = 'canecut-slides-v1';   // รูปสไลด์ แยกไว้ ไม่ถูกลบตอนอัปเดตแอป
 var SHELL  = ['./', './index.html', './guide.js', './illustrations.js', './manifest.webmanifest'];
 
@@ -23,8 +23,8 @@ self.addEventListener('fetch', function(e){
   // ข้อมูลจาก Supabase — ต่อเน็ตเท่านั้น ไม่ cache
   if(url.hostname.indexOf('supabase') > -1) return;
 
-  // รูปสไลด์: ใช้ของในเครื่องก่อน ไม่มีค่อยโหลด แล้วเก็บไว้
-  if(url.origin === location.origin && /\/(slides[12]|photos)\//.test(url.pathname)){
+  // รูปจริง (photo-*.jpg): ใช้ของในเครื่องก่อน ไม่มีค่อยโหลด แล้วเก็บไว้
+  if(url.origin === location.origin && /\/photo-[^\/]+\.jpg$/.test(url.pathname)){
     e.respondWith(
       caches.match(req).then(function(hit){
         return hit || fetch(req).then(function(res){
