@@ -333,6 +333,38 @@
   @keyframes pop{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
 
   @media (max-width:420px){ .grid{grid-template-columns:1fr} }
+  /* v22 คู่มือคนขับ + ตั้งรหัสใหม่ */
+  .resetbox{margin-top:12px; padding:12px; border-radius:8px; background:var(--green-soft, #e6f2ea); font-size:14px; line-height:1.6}
+  .resetbox code{font-size:20px; font-weight:700; letter-spacing:.08em; padding:2px 8px; background:var(--surface,#fff); border-radius:6px; user-select:all}
+  .resetbox .actions{margin-top:8px}
+  #dguide{position:fixed; inset:0; z-index:90; background:#e9ebe4; overflow:auto; color:#1b1f18}
+  #dguide .gbar{position:sticky; top:0; display:flex; gap:8px; align-items:center; padding:10px 14px; background:#0c0e0b; color:#eef0e8; z-index:1}
+  #dguide .gbar b{flex:1; font-size:15px}
+  .gpage{background:#fff; width:210mm; max-width:100%; min-height:297mm; margin:14px auto; padding:12mm 13mm; box-sizing:border-box; box-shadow:0 2px 12px rgba(0,0,0,.12); font-size:14.5px; line-height:1.6}
+  .gpage h1{font-size:26px; margin:0 0 2px; line-height:1.3}
+  .gpage .gsub{color:#555; margin:0 0 12px; font-size:13px}
+  .ghead{display:flex; gap:16px; align-items:center; border:2px solid #2f8a55; border-radius:10px; padding:12px 14px; margin-bottom:12px}
+  .ghead .qr{width:52mm; height:52mm; flex:0 0 auto}
+  .ghead .qr svg{width:100%; height:100%; display:block}
+  .ghead .qrtxt{font-size:15px}
+  .ghead .qrtxt b{display:block; font-size:18px; margin-bottom:4px}
+  .ghead .url{font-family:ui-monospace,Menlo,monospace; font-size:12.5px; word-break:break-all; color:#1d5e3a}
+  .gsteps{display:grid; grid-template-columns:1fr 1fr; gap:12px 14px}
+  .gstep{border:1px solid #d5d9ce; border-radius:10px; padding:10px 12px; break-inside:avoid}
+  .gstep h3{font-size:16px; margin:0 0 4px; display:flex; gap:8px; align-items:center}
+  .gstep h3 .n{flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:#2f8a55; color:#fff; font-size:13.5px; display:inline-flex; align-items:center; justify-content:center}
+  .gstep ul{margin:0; padding-left:18px} .gstep li{margin:1px 0}
+  .gstep.wide{grid-column:1 / -1}
+  .gkey{display:inline-block; border:1px solid #9aa391; border-radius:5px; padding:0 6px; font-weight:600; background:#f4f6f0; white-space:nowrap}
+  .gfoot{margin-top:12px; padding:10px 12px; border-radius:10px; background:#fff6d6; border:1px solid #e8d48a; font-size:14px}
+  @media (max-width:640px){ .gpage{padding:14px; min-height:0} .gsteps{grid-template-columns:1fr} .ghead{flex-direction:column; text-align:center} .ghead .qr{width:60vw; height:60vw} }
+  @media print{
+    @page{size:A4 portrait; margin:0}
+    body.print-guide > *:not(#dguide){display:none !important}
+    body.print-guide #dguide{position:static; background:#fff; overflow:visible}
+    body.print-guide #dguide .gbar{display:none}
+    body.print-guide .gpage{margin:0; box-shadow:none; width:210mm; height:297mm; min-height:0; overflow:hidden}
+  }
 </style>
 </head>
 <body>
@@ -396,7 +428,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 21 · 23 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 22 · 23 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -581,11 +613,26 @@
         <h2>ประวัติงานตัด</h2>
         <p class="sub" id="history-scope-note">คนขับจะเห็นเฉพาะรายการที่ตัวเองบันทึก</p>
         <div class="grid">
-          <div class="f"><label for="h-machine">กรองตามรถ</label><select id="h-machine"><option value="">ทุกคัน</option></select></div>
+          <div class="f"><label for="h-machine">กรองตามหมายเลขรถ</label><select id="h-machine"><option value="">ทุกคัน</option></select></div>
           <div class="f"><label for="h-from">ตั้งแต่วันที่</label><input type="date" id="h-from"></div>
         </div>
       </div>
       <div class="rows" id="history-list"><div class="empty">ยังไม่มีรายการ</div></div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>บัญชีของฉัน</h2>
+        <p class="sub" id="acc-who">เปลี่ยนรหัสผ่านของตัวเอง — เช่น หลังแอดมินตั้งรหัสใหม่ให้</p>
+        <form id="acc-form" novalidate>
+          <div class="grid">
+            <div class="f"><label for="acc-pass">รหัสผ่านใหม่</label>
+              <span class="pw"><input id="acc-pass" type="password" autocomplete="new-password" minlength="6" maxlength="72"><button type="button" class="eye" data-eye="acc-pass" aria-pressed="false" aria-label="แสดงรหัสผ่าน"></button></span></div>
+            <div class="f"><label for="acc-pass2">พิมพ์ซ้ำอีกครั้ง</label>
+              <span class="pw"><input id="acc-pass2" type="password" autocomplete="new-password" minlength="6" maxlength="72"><button type="button" class="eye" data-eye="acc-pass2" aria-pressed="false" aria-label="แสดงรหัสผ่าน"></button></span></div>
+          </div>
+          <div id="acc-msg" hidden style="font-size:13px;margin-top:8px"></div>
+          <div class="actions"><button type="submit" class="btn small" id="acc-submit">เปลี่ยนรหัสผ่าน</button></div>
+        </form>
+      </div>
     </section>
 
     <!-- หลังบ้าน -->
@@ -607,7 +654,7 @@
 
       <div class="card">
         <h2>สรุปรายคัน</h2>
-        <p class="sub">ผลงานของรถแต่ละคันในช่วงที่เลือก</p>
+        <p class="sub">ผลงานของรถแต่ละคันในช่วงที่เลือก แยกตามหมายเลขรถที่กรอกตอนบันทึกงาน</p>
         <div class="tablewrap"><table id="admin-machine-table"><tbody></tbody></table></div>
       </div>
 
@@ -634,7 +681,18 @@
         <h2>ผู้ใช้งานระบบ</h2>
         <p class="sub" id="admin-user-sub">ใครบันทึกไปกี่รายการ เข้าใช้ล่าสุดเมื่อไหร่ — อนุมัติหรือปิดบัญชีได้ที่นี่</p>
         <div class="tablewrap"><table id="admin-user-table"><tbody></tbody></table></div>
-        <p class="sub" style="margin:10px 0 0">ลูกค้าสมัครเองด้วยรหัสเชิญด้านบน · รีเซ็ตรหัสผ่านให้คนที่ลืม ทำที่ Supabase &gt; Authentication &gt; Users</p>
+        <div class="resetbox" id="reset-box" hidden></div>
+        <p class="sub" style="margin:10px 0 0">คนที่ลืมรหัสผ่าน กด "ตั้งรหัสใหม่" ในแถวของเขา แล้วส่งรหัสที่ได้ให้เจ้าตัว เจ้าตัวเปลี่ยนเองได้ที่ ประวัติ → บัญชีของฉัน</p>
+      </div>
+
+      <div class="card">
+        <h2>คู่มือสั้นสำหรับคนขับ</h2>
+        <p class="sub">หน้าเดียว มี QR code เข้าแอป วิธีติดตั้งลงมือถือ สมัคร และบันทึกงาน — พิมพ์แจก หรือเปิดให้คนขับสแกนจากจอได้เลย</p>
+        <div class="grid">
+          <div class="f"><label for="gd-name">ชื่อผู้ติดต่อ (แอดมิน)</label><input id="gd-name" placeholder="เช่น คุณนราวุธ"></div>
+          <div class="f"><label for="gd-phone">เบอร์โทร / LINE</label><input id="gd-phone" inputmode="tel" placeholder="เช่น 08x-xxx-xxxx"></div>
+        </div>
+        <div class="actions"><button type="button" class="btn small" id="btn-dguide">เปิดคู่มือคนขับ</button></div>
       </div>
 
       <div class="card">
@@ -665,6 +723,11 @@
     <button type="button" class="vbtn" id="v-zoom">ขยาย</button>
     <button type="button" class="vbtn" id="v-next">ถัดไป ›</button>
   </div>
+</div>
+
+<div id="dguide" hidden role="dialog" aria-modal="true" aria-label="คู่มือคนขับ">
+  <div class="gbar"><b>คู่มือสั้นสำหรับคนขับ</b><button type="button" class="vbtn" id="dg-print">พิมพ์ / บันทึก PDF</button><button type="button" class="vbtn" id="dg-close">ปิด ✕</button></div>
+  <div class="gpage" id="dg-page"></div>
 </div>
 
 <div id="mapx" hidden role="dialog" aria-modal="true" aria-label="แผนที่แปลง">
@@ -915,6 +978,156 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     sb.auth.signOut().then(function(){ location.reload(); });
   }
 
+  /* ---------- รหัสผ่าน: แอดมินตั้งให้ / เปลี่ยนเอง ---------- */
+  function genPassword(){
+    var A='abcdefghjkmnpqrstuvwxyz23456789', out='', r=new Uint32Array(8);
+    (window.crypto||window.msCrypto).getRandomValues(r);
+    for(var i=0;i<8;i++) out+=A.charAt(r[i]%A.length);
+    return /[0-9]/.test(out) ? out : out.slice(0,7)+'7';
+  }
+
+  function fnMsg(err, fallback, notInstalled){
+    var c = err && err.context;
+    if(c && typeof c.json === 'function'){
+      if(c.status === 404) return Promise.resolve(notInstalled);
+      return c.json().then(function(b){ return (b && b.message) || fallback; }, function(){ return fallback; });
+    }
+    return Promise.resolve(navigator.onLine ? fallback : 'ไม่มีสัญญาณ ลองใหม่เมื่อมีเน็ต');
+  }
+
+  function resetPassword(uid, btn){
+    var p = S.people.filter(function(x){ return x.id===uid; })[0]; if(!p) return;
+    var who = (p.full_name||p.username) + ' (' + p.username + ')';
+    if(!confirm('ตั้งรหัสผ่านใหม่ให้ ' + who + '?\n\nรหัสเดิมจะใช้ไม่ได้ทันที ต้องส่งรหัสใหม่ให้เจ้าตัว')) return;
+    if(!navigator.onLine){ toast('ไม่มีสัญญาณ ลองใหม่เมื่อมีเน็ต'); return; }
+    var pw = genPassword(), box = $('reset-box');
+    btn.disabled = true; btn.textContent = 'กำลังตั้ง…';
+    sb.functions.invoke('admin-reset-password', { body:{ user_id:uid, password:pw } }).then(function(r){
+      if(r.error) return fnMsg(r.error, 'ตั้งรหัสใหม่ไม่สำเร็จ',
+        'ยังไม่ได้ติดตั้งระบบตั้งรหัสใหม่ (admin-reset-password) — ทำตามไฟล์ 10-ตั้งค่าปุ่มตั้งรหัสใหม่.md').then(function(m){ throw new Error(m); });
+      box.innerHTML = 'ตั้งรหัสใหม่ให้ <b>'+esc(who)+'</b> แล้ว<br>ชื่อผู้ใช้ <code>'+esc(p.username)+'</code> รหัสผ่านใหม่ <code id="reset-pw">'+esc(pw)+'</code>'+
+        '<div class="sub" style="margin:6px 0 0">ส่งให้เจ้าตัวทางโทรศัพท์หรือ LINE ส่วนตัว แล้วให้เปลี่ยนเองที่ ประวัติ → บัญชีของฉัน · รหัสนี้จะไม่แสดงอีกเมื่อออกจากหน้านี้</div>'+
+        '<div class="actions"><button type="button" class="btn small" id="reset-copy">คัดลอกข้อความ</button><button type="button" class="btn small ghost" id="reset-hide">ซ่อน</button></div>';
+      box.hidden = false;
+      $('reset-copy').onclick = function(){
+        var t = 'เข้าแอปบันทึกงานรถตัดอ้อย\nชื่อผู้ใช้: '+p.username+'\nรหัสผ่านใหม่: '+pw+'\nเข้าได้แล้วเปลี่ยนรหัสเองที่ ประวัติ → บัญชีของฉัน';
+        copyText(t).then(function(ok){ toast(ok ? 'คัดลอกแล้ว วางในแชทได้เลย' : 'คัดลอกไม่ได้ — จดรหัสจากหน้าจอแทน'); });
+      };
+      $('reset-hide').onclick = function(){ box.hidden = true; box.innerHTML = ''; };
+      box.scrollIntoView({block:'nearest', behavior:'smooth'});
+    }).catch(function(err){
+      if(err && err.context) return fnMsg(err, 'ตั้งรหัสใหม่ไม่สำเร็จ', 'ยังไม่ได้ติดตั้งระบบตั้งรหัสใหม่ (admin-reset-password)').then(function(m){ toast(m); });
+      toast((err && err.message) || 'ตั้งรหัสใหม่ไม่สำเร็จ');
+    }).then(function(){ btn.disabled = false; btn.textContent = 'ตั้งรหัสใหม่'; });
+  }
+
+  function copyText(t){
+    if(navigator.clipboard && window.isSecureContext)
+      return navigator.clipboard.writeText(t).then(function(){ return true; }, function(){ return legacyCopy(t); });
+    return Promise.resolve(legacyCopy(t));
+  }
+  function legacyCopy(t){
+    var a=document.createElement('textarea'); a.value=t; a.setAttribute('readonly',''); a.style.position='fixed'; a.style.opacity='0';
+    document.body.appendChild(a); a.select(); var ok=false; try{ ok=document.execCommand('copy'); }catch(e){} a.remove(); return ok;
+  }
+
+  function changeMyPassword(e){
+    e.preventDefault();
+    var a=$('acc-pass').value, b=$('acc-pass2').value, msg=$('acc-msg');
+    function say(t, bad){ msg.textContent=t; msg.style.color = bad ? 'var(--red)' : 'var(--green, #2f8a55)'; msg.hidden=false; }
+    if(a.length < 6) return say('รหัสผ่านต้องยาวอย่างน้อย 6 ตัว', true);
+    if(a.length > 72) return say('รหัสผ่านยาวเกินไป (ไม่เกิน 72 ตัว)', true);
+    if(a !== b) return say('รหัสผ่านสองช่องไม่ตรงกัน', true);
+    if(!navigator.onLine) return say('ไม่มีสัญญาณ — เปลี่ยนรหัสต้องใช้เน็ต', true);
+    var btn=$('acc-submit'); btn.disabled=true; btn.textContent='กำลังเปลี่ยน…';
+    sb.auth.updateUser({ password:a }).then(function(r){
+      if(r.error) throw r.error;
+      $('acc-pass').value=''; $('acc-pass2').value='';
+      say('เปลี่ยนรหัสผ่านแล้ว ครั้งหน้าเข้าด้วยรหัสใหม่', false);
+      toast('เปลี่ยนรหัสผ่านแล้ว');
+      try{ sb.from('activity_log').insert({ user_id:S.me.id, action:'change_password' }).then(function(){}, function(){}); }catch(x){}
+    }).catch(function(err){
+      var m = (err && err.message) || '';
+      say(/different from the old|same.*password/i.test(m) ? 'รหัสใหม่ต้องไม่ซ้ำกับรหัสเดิม'
+        : /reauth|recent|nonce/i.test(m) ? 'ต้องเข้าสู่ระบบใหม่ก่อน — กด "ออก" แล้วเข้าใหม่ จากนั้นเปลี่ยนรหัสอีกครั้ง'
+        : /weak|short|characters/i.test(m) ? 'รหัสผ่านง่ายหรือสั้นเกินไป ลองตั้งให้ยาวขึ้น'
+        : 'เปลี่ยนรหัสไม่สำเร็จ: ' + (m || 'ลองใหม่อีกครั้ง'), true);
+    }).then(function(){ btn.disabled=false; btn.textContent='เปลี่ยนรหัสผ่าน'; });
+  }
+
+  /* ---------- คู่มือสั้นสำหรับคนขับ (หน้าเดียว มี QR) ---------- */
+  var QR_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js';
+  var qrLoading = null;
+  function loadQR(){
+    if(window.qrcode) return Promise.resolve(window.qrcode);
+    if(qrLoading) return qrLoading;
+    qrLoading = new Promise(function(ok, bad){
+      var sc=document.createElement('script'); sc.src=QR_SRC; sc.async=true;
+      sc.onload=function(){ window.qrcode ? ok(window.qrcode) : bad(new Error('QR')); };
+      sc.onerror=function(){ qrLoading=null; bad(new Error('QR')); };
+      document.head.appendChild(sc);
+    });
+    return qrLoading;
+  }
+  function appUrl(){ return location.origin + location.pathname.replace(/index\.html?$/i,''); }
+
+  function guideContact(){
+    try{ return JSON.parse(localStorage.getItem('canecut_guide_contact')||'{}')||{}; }catch(e){ return {}; }
+  }
+  function saveGuideContact(){
+    try{ localStorage.setItem('canecut_guide_contact', JSON.stringify({ name:$('gd-name').value.trim(), phone:$('gd-phone').value.trim() })); }catch(e){}
+  }
+
+  function driverGuideHtml(qrSvg){
+    var url=appUrl(), c=guideContact(), st=S.settings||{}, mode=st.signup_mode||S.signupMode||'approve';
+    var contact = [c.name, c.phone].filter(Boolean).join(' · ') || '……………………………… โทร ……………………';
+    var reg = mode==='code'
+      ? '<li>ใส่ <b>รหัสเชิญ</b>: <span class="gkey">'+esc(st.invite_code||'ขอจากแอดมิน')+'</span> แล้วเข้าใช้ได้ทันที</li>'
+      : mode==='open' ? '<li>สมัครเสร็จ เข้าใช้ได้ทันที</li>'
+      : '<li>สมัครเสร็จ <b>รอแอดมินอนุมัติ</b> แล้วกลับมาเข้าสู่ระบบ</li>';
+    return '<h1>วิธีใช้แอปบันทึกงานรถตัดอ้อย</h1><p class="gsub">สำหรับคนขับ · ใช้ได้ทั้ง Android และ iPhone ไม่ต้องโหลดจาก Play Store / App Store</p>'+
+      '<div class="ghead"><div class="qr">'+(qrSvg||'<div style="border:2px dashed #999;height:100%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:12px;padding:6px">สร้าง QR ไม่ได้<br>(ต้องมีเน็ต)</div>')+'</div>'+
+      '<div class="qrtxt"><b>สแกน QR นี้ด้วยกล้องมือถือ</b>เปิดด้วย <b style="display:inline;font-size:inherit">Chrome</b> (Android) หรือ <b style="display:inline;font-size:inherit">Safari</b> (iPhone)<br>หรือพิมพ์ที่อยู่นี้ในเบราว์เซอร์<div class="url">'+esc(url)+'</div></div></div>'+
+      '<div class="gsteps">'+
+      '<div class="gstep"><h3><span class="n">1</span>ติดตั้งลงหน้าจอมือถือ</h3><ul>'+
+        '<li><b>Android</b>: กด <span class="gkey">⋮</span> มุมขวาบน → <span class="gkey">ติดตั้งแอป</span> หรือ <span class="gkey">เพิ่มลงหน้าจอหลัก</span></li>'+
+        '<li><b>iPhone</b>: กดปุ่มแชร์ <span class="gkey">□↑</span> ด้านล่าง → <span class="gkey">เพิ่มไปยังหน้าจอโฮม</span></li>'+
+        '<li>ครั้งต่อไปเปิดจากไอคอนบนหน้าจอได้เลย</li></ul></div>'+
+      '<div class="gstep"><h3><span class="n">2</span>สมัครใช้งาน (ครั้งแรกครั้งเดียว)</h3><ul>'+
+        '<li>กดแถบ <span class="gkey">ลงทะเบียน</span></li>'+
+        '<li>ตั้ง<b>ชื่อผู้ใช้</b>เป็นภาษาอังกฤษหรือตัวเลข เช่น somsak</li>'+
+        '<li>ใส่ชื่อ-นามสกุล เบอร์โทร และตั้งรหัสผ่าน 6 ตัวขึ้นไป</li>'+reg+
+        '<li><b>จดชื่อผู้ใช้และรหัสผ่านไว้</b></li></ul></div>'+
+      '<div class="gstep wide"><h3><span class="n">3</span>บันทึกงานทุกครั้งที่ตัดเสร็จแต่ละแปลง — แถบ <span class="gkey">บันทึกงาน</span></h3><ul>'+
+        '<li><b>วันที่</b> ตั้งเป็นวันนี้ให้แล้ว · <b>หมายเลขรถ</b> และ <b>เจ้าของรถ</b> กรอกครั้งแรกครั้งเดียว ครั้งต่อไประบบจำให้</li>'+
+        '<li>ยืนอยู่ที่แปลง กด <span class="gkey">ปักหมุดแปลง</span> หรือ <span class="gkey">วัดพื้นที่แปลง</span> (เดินรอบแปลง หรือแตะมุมบนแผนที่) ระบบคิดไร่ให้</li>'+
+        '<li>กด <span class="gkey">+ ใบชั่งน้ำหนัก</span> ถ่ายใบชั่งทีละใบ และ <span class="gkey">+ บิลน้ำมัน</span> ระบบอ่านตัวเลขและกรอกให้ — <b>ช่องสีเหลืองคือช่องที่ระบบกรอก ตรวจกับกระดาษก่อน</b></li>'+
+        '<li>ใส่ชั่วโมงทำงาน แล้วกด <span class="gkey">บันทึกรอบนี้</span></li></ul></div>'+
+      '<div class="gstep"><h3><span class="n">4</span>ในไร่ไม่มีสัญญาณ</h3><ul>'+
+        '<li>บันทึกได้ตามปกติ รายการจะขึ้นป้าย <span class="gkey">รอส่ง</span></li>'+
+        '<li>พอมีสัญญาณ แอปส่งให้เอง (เปิดแอปไว้สักครู่)</li>'+
+        '<li><b>ห้ามลบแอปหรือล้างข้อมูลเบราว์เซอร์</b> ตอนยังมีรายการรอส่ง</li></ul></div>'+
+      '<div class="gstep"><h3><span class="n">5</span>ลืมรหัสผ่าน</h3><ul>'+
+        '<li>โทรหาแอดมิน ให้ตั้งรหัสใหม่ให้</li>'+
+        '<li>เข้าได้แล้ว เปลี่ยนเป็นรหัสของตัวเองที่ <span class="gkey">ประวัติ</span> → <b>บัญชีของฉัน</b></li></ul></div>'+
+      '<div class="gstep wide"><h3><span class="n">6</span>ดูคู่มือรถ — แถบ <span class="gkey">คู่มือ</span></h3><ul>'+
+        '<li>วิธีใช้คันบังคับ ความปลอดภัย การตรวจก่อนทำงาน จุดอัดจาระบี รหัสแจ้งเตือนบนจอ และการแก้ปัญหาเบื้องต้น</li></ul></div>'+
+      '</div>'+
+      '<div class="gfoot"><b>ติดต่อแอดมิน:</b> '+esc(contact)+'</div>';
+  }
+
+  function openDriverGuide(){
+    saveGuideContact();
+    var ov=$('dguide'), pg=$('dg-page');
+    pg.innerHTML = driverGuideHtml('<div style="height:100%;display:flex;align-items:center;justify-content:center;color:#777;font-size:12px">กำลังสร้าง QR…</div>');
+    ov.hidden = false; ov.scrollTop = 0;
+    loadQR().then(function(qrcode){
+      var q = qrcode(0,'M'); q.addData(appUrl()); q.make();
+      pg.innerHTML = driverGuideHtml(q.createSvgTag({ cellSize:4, margin:2, scalable:true }));
+    }).catch(function(){ pg.innerHTML = driverGuideHtml(''); });
+  }
+  function closeDriverGuide(){ $('dguide').hidden = true; document.body.classList.remove('print-guide'); }
+
   /* ---------- settings (admin) ---------- */
   function loadSettings(){
     if(!S.isAdmin) return Promise.resolve();
@@ -986,11 +1199,21 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     if(S.isAdmin) renderAdmin();
   }
 
+  // หมายเลขรถเป็นข้อความที่คนขับพิมพ์เอง — เทียบแบบไม่สนตัวพิมพ์เล็ก/ใหญ่และช่องว่าง
+  function mkey(s){ return String(s==null?'':s).trim().replace(/\s+/g,' ').toLowerCase(); }
+  function jobMachine(j){ var n=String(j.machine_no||'').trim(); return n || (j.machine_id && machineById(j.machine_id) ? machineLabel(j.machine_id) : ''); }
+  function jobOnMachine(j,m){ return (j.machine_id && j.machine_id===m.id) || (!!m.code && mkey(j.machine_no)===mkey(m.code)); }
+
   function renderMachineOptions(){
-    var h=$('h-machine'), hk=h.value;
-    h.innerHTML = '<option value="">ทุกคัน</option>' + S.machines.map(function(m){
-      return '<option value="'+esc(m.id)+'">'+esc(m.code)+'</option>'; }).join('');
-    h.value = hk;
+    var h=$('h-machine'), hk=h.value, seen={}, list=[];
+    function add(name){ var k=mkey(name); if(k && !seen[k]){ seen[k]=1; list.push({k:k,name:String(name).trim()}); } }
+    S.machines.forEach(function(m){ add(m.code); });
+    S.jobs.forEach(function(j){ add(jobMachine(j)); });
+    list.sort(function(a,b){ return a.name.localeCompare(b.name,'th',{numeric:true}); });
+    h.innerHTML = '<option value="">ทุกคัน</option>' + list.map(function(o){
+      return '<option value="'+esc(o.k)+'">'+esc(o.name)+'</option>'; }).join('') +
+      (S.jobs.some(function(j){ return !jobMachine(j); }) ? '<option value="-">ไม่ระบุหมายเลขรถ</option>' : '');
+    h.value = hk; if(h.value!==hk) h.value='';
   }
 
   function jobRow(j, showWho, pending){
@@ -1035,18 +1258,19 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function machineDetail(m){
-    var jobs = S.jobs.filter(function(j){ return j.machine_id===m.id; }).slice(0,5);
+    var mine = S.jobs.filter(function(j){ return jobOnMachine(j,m); });
+    var jobs = mine.slice(0,5);
     var mt   = S.maint.filter(function(x){ return x.machine_id===m.id; }).slice(0,5);
     var tons=0, fuel=0;
-    S.jobs.forEach(function(j){ if(j.machine_id===m.id){ tons+=num(j.tons); fuel+=num(j.fuel_liters); } });
+    mine.forEach(function(j){ tons+=num(j.tons); fuel+=num(j.fuel_liters); });
     var h='<div class="detail"><dl class="kv">'+
       '<dt>อ้อยสะสม</dt><dd>'+nf.format(tons)+' ตัน</dd>'+
       '<dt>น้ำมันสะสม</dt><dd>'+nf.format(fuel)+' ลิตร</dd>'+
       '<dt>ลิตรต่อตัน</dt><dd>'+(tons?nf.format(fuel/tons):'—')+'</dd>'+
       (m.note?'<dt>หมายเหตุ</dt><dd>'+esc(m.note)+'</dd>':'')+'</dl>';
-    h += '<div><p class="eyebrow">งานล่าสุด</p>'+(jobs.length? jobs.map(function(j){
+    h += '<div><p class="eyebrow">งานล่าสุด'+(mine.length?' · ทั้งหมด '+nf0.format(mine.length)+' รอบ':'')+'</p>'+(jobs.length? jobs.map(function(j){
       return '<div class="meta" style="padding:3px 0"><span>'+thDate(j.work_date)+'</span><span>'+esc(j.plot||j.owner_name||'')+'</span><span>'+nf.format(num(j.tons))+' ตัน</span></div>';
-    }).join('') : '<div class="meta">ยังไม่มีงาน</div>')+'</div>';
+    }).join('') : '<div class="meta">ยังไม่มีงานที่กรอกหมายเลขรถ "'+esc(m.code||'')+'"</div>')+'</div>';
     h += '<div><p class="eyebrow">ประวัติซ่อมบำรุง</p>'+(mt.length? mt.map(function(x){
       return '<div class="meta" style="padding:3px 0"><span>'+thDate(x.work_date)+'</span><span>'+esc(x.kind||'')+'</span><span>'+nf0.format(num(x.cost))+' ฿</span>'+(x.note?'<span>'+esc(x.note)+'</span>':'')+'</div>';
     }).join('') : '<div class="meta">ยังไม่มีประวัติ</div>')+'</div>';
@@ -1058,7 +1282,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   function renderHistory(){
     var mf=$('h-machine').value, from=$('h-from').value;
     var list = S.jobs.filter(function(j){
-      if(mf && j.machine_id!==mf) return false;
+      if(mf && (mf==='-' ? !!jobMachine(j) : mkey(jobMachine(j))!==mf)) return false;
       if(from && (j.work_date||'')<from) return false;
       return true;
     });
@@ -1087,13 +1311,17 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       ? 'ช่วง '+($('a-from').value?thDate($('a-from').value):'เริ่มต้น')+' – '+($('a-to').value?thDate($('a-to').value):'ล่าสุด') : 'ทุกช่วงเวลา';
 
     var byM={};
-    jobs.forEach(function(j){ var k=j.machine_id||'-'; byM[k]=byM[k]||{n:0,tons:0,hours:0,fuel:0,amount:0};
-      byM[k].n++; byM[k].tons+=num(j.tons); byM[k].hours+=num(j.hours); byM[k].fuel+=num(j.fuel_liters); byM[k].amount+=num(j.amount); });
-    var rows=Object.keys(byM).sort(function(a,b){return byM[b].tons-byM[a].tons;}).map(function(k){ var v=byM[k];
-      return '<tr><td>'+esc(machineLabel(k))+'</td><td class="num">'+nf0.format(v.n)+'</td><td class="num">'+nf.format(v.tons)+
-        '</td><td class="num">'+nf.format(v.hours)+'</td><td class="num">'+nf.format(v.fuel)+'</td><td class="num">'+nf0.format(v.amount)+'</td></tr>'; }).join('');
-    $('admin-machine-table').innerHTML='<thead><tr><th>รถ</th><th>รอบ</th><th>ตัน</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th></tr></thead><tbody>'+
-      (rows||'<tr><td colspan="6" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
+    jobs.forEach(function(j){ var name=jobMachine(j), k=mkey(name)||'-';
+      var v=byM[k]=byM[k]||{name:name||'ไม่ระบุ',own:{},n:0,tons:0,hours:0,fuel:0,amount:0};
+      var o=String(j.machine_owner||'').trim(); if(o) v.own[o]=(v.own[o]||0)+1;
+      v.n++; v.tons+=num(j.tons); v.hours+=num(j.hours); v.fuel+=num(j.fuel_liters); v.amount+=num(j.amount); });
+    var rows=Object.keys(byM).sort(function(a,b){ if(a==='-') return 1; if(b==='-') return -1; return byM[b].tons-byM[a].tons;}).map(function(k){ var v=byM[k];
+      var owners=Object.keys(v.own).sort(function(a,b){ return v.own[b]-v.own[a]; });
+      return '<tr><td>'+(k==='-'?'<span style="color:var(--ink-faint)">ไม่ระบุ</span>':esc(v.name))+'</td><td>'+esc(owners.slice(0,2).join(', ')+(owners.length>2?' +'+(owners.length-2):''))+'</td>'+
+        '<td class="num">'+nf0.format(v.n)+'</td><td class="num">'+nf.format(v.tons)+
+        '</td><td class="num">'+nf.format(v.hours)+'</td><td class="num">'+nf.format(v.fuel)+'</td><td class="num">'+(v.tons?nf.format(v.fuel/v.tons):'—')+'</td><td class="num">'+nf0.format(v.amount)+'</td></tr>'; }).join('');
+    $('admin-machine-table').innerHTML='<thead><tr><th>หมายเลขรถ</th><th>เจ้าของรถ</th><th>รอบ</th><th>ตัน</th><th>ชม.</th><th>ลิตร</th><th>ลิตร/ตัน</th><th>ค่าตัด ฿</th></tr></thead><tbody>'+
+      (rows||'<tr><td colspan="8" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
 
     var stat={};
     S.jobs.forEach(function(j){ var k=j.created_by||'-'; stat[k]=stat[k]||{n:0,tons:0,last:''};
@@ -1108,7 +1336,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
         '<td>'+(p.id!==S.me.id
           ? '<button type="button" class="btn small ghost" data-toggle="'+esc(p.id)+'" data-active="'+(p.active?'1':'0')+'">'+
               (p.active?'ปิดบัญชี':(!p.last_seen && !s.n ? 'อนุมัติ' : 'เปิดใช้'))+'</button> '+
-            '<button type="button" class="btn small ghost" data-role="'+esc(p.id)+'" data-to="'+(p.role==='admin'?'driver':'admin')+'">'+(p.role==='admin'?'ลดเป็นคนขับ':'ตั้งเป็นแอดมิน')+'</button>'
+            '<button type="button" class="btn small ghost" data-role="'+esc(p.id)+'" data-to="'+(p.role==='admin'?'driver':'admin')+'">'+(p.role==='admin'?'ลดเป็นคนขับ':'ตั้งเป็นแอดมิน')+'</button> '+
+            '<button type="button" class="btn small ghost" data-reset="'+esc(p.id)+'">ตั้งรหัสใหม่</button>'
           : '')+'</td></tr>';
     }).join('');
     var pend = S.people.filter(function(p){ return !p.active && !p.last_seen && !(stat[p.id]||{}).n; }).length;
@@ -2095,6 +2324,19 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       r.addEventListener('change', function(){ setAuthMode(r.value); }); });
     $('btn-logout').addEventListener('click', logout);
     $('btn-save-settings').addEventListener('click', saveSettings);
+    $('acc-form').addEventListener('submit', changeMyPassword);
+    $('acc-form').addEventListener('input', function(){ $('acc-msg').hidden = true; });
+    (function(){ var c=guideContact(); $('gd-name').value=c.name||''; $('gd-phone').value=c.phone||''; })();
+    $('gd-name').addEventListener('change', saveGuideContact);
+    $('gd-phone').addEventListener('change', saveGuideContact);
+    $('btn-dguide').addEventListener('click', openDriverGuide);
+    $('dg-close').addEventListener('click', closeDriverGuide);
+    $('dg-print').addEventListener('click', function(){
+      document.body.classList.add('print-guide');
+      setTimeout(function(){ window.print(); }, 50);
+    });
+    window.addEventListener('afterprint', function(){ document.body.classList.remove('print-guide'); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !$('dguide').hidden) closeDriverGuide(); });
     $('set-mode').addEventListener('change', syncModeFields);
     $('btn-gen-code').addEventListener('click', function(){
       var abc='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s='';
@@ -2263,6 +2505,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
          .catch(function(err){ toast('ทำรายการไม่สำเร็จ: '+(err.message||'')); });
         return;
       }
+      var xb=e.target.closest('[data-reset]');
+      if(xb){ resetPassword(xb.dataset.reset, xb); return; }
       var rb=e.target.closest('[data-role]'); if(!rb) return;
       var to=rb.dataset.to;
       if(!confirm(to==='admin'?'ตั้งคนนี้เป็นแอดมิน? จะเห็นข้อมูลของทุกคนและแก้ไขได้':'ลดคนนี้เป็นคนขับ?')) return;

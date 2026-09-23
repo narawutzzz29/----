@@ -1,6 +1,6 @@
 /* Service worker — ให้แอปเปิดได้แม้ไม่มีสัญญาณ
    เก็บเฉพาะตัวแอปและรูปสไลด์ ไม่เก็บข้อมูลจากฐานข้อมูล */
-var CACHE  = 'canecut-v21';
+var CACHE  = 'canecut-v22';
 var SLIDES = 'canecut-slides-v1';   // รูปสไลด์ แยกไว้ ไม่ถูกลบตอนอัปเดตแอป
 var TILES  = 'canecut-tiles-v1';    // ภาพแผนที่ที่เคยเปิด (เก็บไว้ดูตอนไม่มีสัญญาณ) จำกัดจำนวน
 var TILE_MAX = 1500;
