@@ -208,6 +208,25 @@
   .pstrip{display:flex; gap:8px; overflow-x:auto; padding:2px 0 6px; margin:4px 0 8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
   .pstrip button{flex:none; width:168px; padding:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--surface-2); scroll-snap-align:start; cursor:zoom-in}
   .pstrip img{display:block; width:100%; aspect-ratio:1000/469; object-fit:cover}
+  /* ---------- สแกนใบชั่ง / บิลน้ำมัน ---------- */
+  .scanbox{border:1px dashed var(--line); border-radius:var(--r); padding:10px 12px; margin:0 0 14px; background:var(--surface-2)}
+  .scanbox .sub{margin:2px 0 0}
+  .scanbox .actions{margin-top:8px}
+  .docs{display:grid; gap:8px; margin-top:10px}
+  .docs:empty{display:none}
+  .doc{display:grid; grid-template-columns:64px 1fr auto; gap:10px; align-items:start; background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:8px}
+  .doc img{width:64px; height:64px; object-fit:cover; border-radius:6px; background:var(--line); cursor:zoom-in; display:block}
+  .doc .dt{font-weight:600; font-size:13.5px}
+  .doc .dv{font-size:12.5px; color:var(--ink-soft); font-variant-numeric:tabular-nums; line-height:1.55}
+  .doc .dw{font-size:12px; color:var(--amber); margin-top:2px; line-height:1.45}
+  .doc .de{font-size:12px; color:var(--red); margin-top:2px; line-height:1.45}
+  .doc .x{background:transparent; border:none; color:var(--ink-faint); font-size:20px; line-height:1; padding:2px 6px}
+  .spin{display:inline-block; width:12px; height:12px; border:2px solid var(--line); border-top-color:var(--green); border-radius:50%; animation:sp 1s linear infinite; vertical-align:-2px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  #job-form .ai{background:var(--amber-soft); border-color:var(--amber)}
+  .hint-ai{font-size:12.5px; color:var(--amber); margin:8px 0 0}
+  .chip.doc-btn{border:none; cursor:pointer; background:var(--blue-soft); color:var(--blue)}
+  .chip.dup{background:var(--red-soft); color:var(--red)}
   .pstrip-cap{font-size:11.5px; color:var(--ink-faint); margin:6px 0 0}
   .pic-tag{font-size:11px; font-weight:600; color:var(--green-ink); background:var(--green-soft); padding:1px 7px; border-radius:99px; margin-left:6px; white-space:nowrap}
 
@@ -310,7 +329,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 12 · 23 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 14 · 23 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -336,6 +355,17 @@
         <h2>บันทึกรอบการตัด</h2>
         <p class="sub">กรอกหลังตัดเสร็จแต่ละแปลง ระบบคิดค่าตัดให้อัตโนมัติ</p>
         <form id="job-form">
+          <div class="scanbox" id="scanbox">
+            <b style="font-size:14px">ถ่ายรูปเอกสาร ให้ AI กรอกให้</b>
+            <p class="sub">ถ่ายใบชั่งได้หลายใบ ระบบรวมน้ำหนักและนับเที่ยวให้ · รูปจะแนบไปกับรายการเป็นหลักฐาน</p>
+            <div class="actions">
+              <button type="button" class="btn small" data-scan="weigh">+ ใบชั่งน้ำหนัก</button>
+              <button type="button" class="btn small ghost" data-scan="fuel">+ บิลน้ำมัน</button>
+            </div>
+            <input type="file" id="scan-input" accept="image/*" multiple hidden>
+            <div class="docs" id="doc-list"></div>
+            <p class="hint-ai" id="doc-hint" hidden>ช่องสีเหลือง = AI กรอกให้ ตรวจให้ตรงกับกระดาษก่อนกดบันทึก (แก้ได้)</p>
+          </div>
           <div class="grid">
             <div class="f"><label for="j-date">วันที่ตัด</label><input type="date" id="j-date" required></div>
             <div class="f"><label for="j-machine">รถตัด</label><select id="j-machine" required></select></div>
@@ -355,7 +385,7 @@
             <div class="f"><label for="j-hours">ชั่วโมงทำงาน (ชม.)</label><input type="number" id="j-hours" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
             <div class="f"><label for="j-fuel">น้ำมันที่เติม (ลิตร)</label><input type="number" id="j-fuel" inputmode="decimal" step="0.1" min="0" placeholder="0"></div>
             <div class="f"><label for="j-rate">ค่าตัด (บาท/ตัน)</label><input type="number" id="j-rate" inputmode="decimal" step="1" min="0" value="180"></div>
-            <div class="f"><label for="j-fuelcost">ค่าน้ำมัน (บาท)</label><input type="number" id="j-fuelcost" inputmode="decimal" step="1" min="0" placeholder="0"></div>
+            <div class="f"><label for="j-fuelcost">ค่าน้ำมัน (บาท)</label><input type="number" id="j-fuelcost" inputmode="decimal" step="0.01" min="0" placeholder="0"></div>
             <div class="f wide"><label for="j-note">หมายเหตุ</label><textarea id="j-note" placeholder="เช่น อ้อยล้ม ดินแฉะ เสียเวลา 2 ชม."></textarea></div>
           </div>
           <div class="total"><b id="j-total">0</b><span>บาท — ค่าตัดรวมของรอบนี้</span></div>
@@ -580,8 +610,12 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
   function flushQueue(){
     if(!navigator.onLine || !sb || !S.me) return Promise.resolve();
+    flushPhotos();
     var q=queueGet(); if(!q.length) return Promise.resolve();
     return sb.from('jobs').insert(q).then(function(r){
+      if(r.error && noDocsCol(r.error)){ q=q.map(stripDocs); return sb.from('jobs').insert(q); }
+      return r;
+    }).then(function(r){
       // 23505 = ส่งซ้ำ (client_ref ซ้ำ) ถือว่าถึงปลายทางแล้ว
       if(r.error && r.error.code !== '23505'){ updateConn(); return; }
       queueSet([]); updateConn();
@@ -778,8 +812,10 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       sb.from('machines').select('*').order('code'),
       jobsQ,
       sb.from('maintenance').select('*').order('work_date',{ascending:false}).limit(500),
-      sb.from('profiles').select('id,username,full_name,role,active,last_seen,created_at')
+      sb.from('profiles').select('id,username,full_name,role,active,last_seen,created_at'),
+      sb.from('scan_log').select('in_tokens,out_tokens').gte('created_at', new Date(Date.now()-30*864e5).toISOString()).limit(5000)
     ]).then(function(r){
+      S.scan = (r[4] && !r[4].error) ? (r[4].data||[]) : null;
       if(!r[0].error) S.machines = r[0].data||[];
       if(!r[1].error) S.jobs     = r[1].data||[];
       if(!r[2].error) S.maint    = r[2].data||[];
@@ -790,8 +826,21 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   /* ---------- render ---------- */
+  var DUP = {};
+  function countDup(){
+    DUP = {};
+    S.jobs.forEach(function(j){ (j.docs||[]).forEach(function(d){
+      if(d.kind==='weigh' && d.ticket_no && !d.dup) DUP[d.ticket_no] = (DUP[d.ticket_no]||0) + 1; }); });
+  }
+  function docChips(j, pending){
+    var n=(j.docs||[]).length; if(!n) return '';
+    var dup=(j.docs||[]).some(function(d){ return d.kind==='weigh' && d.ticket_no && DUP[d.ticket_no]>1; });
+    return (pending ? '<span class="chip">รูป '+n+'</span>'
+      : '<button type="button" class="chip doc-btn" data-docs="'+esc(j.id)+'">ดูรูป '+n+'</button>') +
+      (dup ? '<span class="chip dup">ใบชั่งซ้ำ</span>' : '');
+  }
   function renderAll(){
-    updateConn();
+    updateConn(); countDup();
     renderMachineOptions(); renderMyRecent(); renderFleet(); renderHistory();
     if(S.isAdmin) renderAdmin();
   }
@@ -811,7 +860,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     var ct = j.cane_type==='ไฟไหม้' ? '<span class="chip burn">ไฟไหม้</span>' : '<span class="chip">อ้อยสด</span>';
     return '<div class="row">'+
       '<div class="top"><span class="title">'+esc(j.owner_name||'ไม่ระบุเจ้าของไร่')+'</span>'+ct+
-      (pending?'<span class="chip wait">รอส่ง</span>':'')+
+      (pending?'<span class="chip wait">รอส่ง</span>':'')+docChips(j,pending)+
       '<span class="amt">'+nf0.format(num(j.amount))+' ฿</span></div>'+
       '<div class="meta"><span>'+thDate(j.work_date)+'</span><span>'+esc(machineLabel(j.machine_id))+'</span>'+
       '<span>'+nf.format(num(j.tons))+' ตัน</span>'+
@@ -891,7 +940,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       ['อ้อยรวม', nf.format(tons),'ตัน'], ['ค่าตัดรวม', nf0.format(amount),'บาท'],
       ['จำนวนรอบงาน', nf0.format(jobs.length),'รอบ'], ['พื้นที่รวม', nf.format(rai),'ไร่'],
       ['น้ำมันรวม', nf.format(fuel),'ลิตร'], ['ลิตร/ตัน', tons?nf.format(fuel/tons):'—','เฉลี่ย']
-    ].map(function(t){ return '<div class="tile"><div class="k">'+t[0]+'</div><div class="v">'+t[1]+' <span class="u">'+t[2]+'</span></div></div>'; }).join('');
+    ].concat(S.scan ? [scanTile()] : []).map(function(t){ return '<div class="tile"><div class="k">'+t[0]+'</div><div class="v">'+t[1]+' <span class="u">'+t[2]+'</span></div></div>'; }).join('');
     $('admin-range').textContent = ($('a-from').value||$('a-to').value)
       ? 'ช่วง '+($('a-from').value?thDate($('a-from').value):'เริ่มต้น')+' – '+($('a-to').value?thDate($('a-to').value):'ล่าสุด') : 'ทุกช่วงเวลา';
 
@@ -932,12 +981,12 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
         '<td>'+esc(j.owner_name||'')+'</td><td>'+esc(j.plot||'')+'</td><td>'+esc(j.cane_type||'')+'</td>'+
         '<td class="num">'+nf.format(num(j.tons))+'</td><td class="num">'+nf.format(num(j.rai))+'</td>'+
         '<td class="num">'+nf.format(num(j.hours))+'</td><td class="num">'+nf.format(num(j.fuel_liters))+'</td>'+
-        '<td class="num">'+nf0.format(num(j.amount))+'</td><td>'+esc(personName(j.created_by))+'</td><td>'+thStamp(j.created_at)+'</td>'+
+        '<td class="num">'+nf0.format(num(j.amount))+'</td><td>'+docChips(j,false)+'</td><td>'+esc(personName(j.created_by))+'</td><td>'+thStamp(j.created_at)+'</td>'+
         '<td><button type="button" class="btn small danger" data-del="'+esc(j.id)+'">ลบ</button></td></tr>';
     }).join('');
     $('admin-raw-table').innerHTML='<thead><tr><th>วันที่</th><th>รถ</th><th>คนขับ</th><th>เจ้าของไร่</th><th>แปลง</th><th>ประเภท</th>'+
-      '<th>ตัน</th><th>ไร่</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th><th>ผู้บันทึก</th><th>เวลาบันทึก</th><th></th></tr></thead><tbody>'+
-      (raw||'<tr><td colspan="14" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
+      '<th>ตัน</th><th>ไร่</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th><th>เอกสาร</th><th>ผู้บันทึก</th><th>เวลาบันทึก</th><th></th></tr></thead><tbody>'+
+      (raw||'<tr><td colspan="15" class="empty">ไม่มีข้อมูล</td></tr>')+'</tbody>';
   }
 
   /* ---------- actions ---------- */
@@ -1113,6 +1162,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   function submitJob(e){
     e.preventDefault();
     if(!$('j-machine').value){ toast('เลือกรถตัดก่อน'); return; }
+    if(DOCS.some(function(d){ return d.status==='prep' || d.status==='reading'; })){ toast('รอ AI อ่านรูปให้เสร็จก่อน'); return; }
+    var ref=uuid(), photos=DOCS.filter(function(d){ return d.blob; });
     var ct=document.querySelector('input[name="canetype"]:checked');
     var row={
       work_date:$('j-date').value, machine_id:$('j-machine').value, driver_name:$('j-driver').value.trim(),
@@ -1120,16 +1171,29 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       rai:num($('j-rai').value), tons:num($('j-tons').value), trips:num($('j-trips').value),
       queue_no:$('j-queue').value.trim(), hours:num($('j-hours').value), fuel_liters:num($('j-fuel').value),
       fuel_cost:num($('j-fuelcost').value), rate:num($('j-rate').value), amount:recalc(),
-      note:$('j-note').value.trim(), created_by:S.me.id, client_ref:uuid()
+      note:$('j-note').value.trim(), created_by:S.me.id, client_ref:ref
     };
+    var docs=docsForRow(ref);
+    if(docs.length) row.docs=docs;
     var btn=$('j-submit'); btn.disabled=true; btn.textContent='กำลังบันทึก…';
     var done=function(){ btn.disabled=false; btn.textContent='บันทึกรอบนี้'; };
 
-    if(!navigator.onLine){ queuePush(row); toast('ไม่มีสัญญาณ — เก็บไว้ในเครื่อง จะส่งให้อัตโนมัติ'); resetForm(); renderMyRecent(); done(); return; }
-
-    sb.from('jobs').insert(row).then(function(r){
+    var files=photos.map(function(d,i){ return {path:docs[i].path, blob:d.blob}; });
+    if(!navigator.onLine){
+      savePhotos(files).then(function(){ queuePush(row); toast('ไม่มีสัญญาณ — เก็บไว้ในเครื่อง จะส่งให้อัตโนมัติ'); resetForm(); renderMyRecent(); done(); });
+      return;
+    }
+    if(files.length) btn.textContent='กำลังส่งรูป…';
+    var noDocs=false;
+    savePhotos(files).then(function(){
+      btn.textContent='กำลังบันทึก…';
+      return sb.from('jobs').insert(row);
+    }).then(function(r){
+      if(r.error && noDocsCol(r.error)){ noDocs=true; return sb.from('jobs').insert(stripDocs(row)); }
+      return r;
+    }).then(function(r){
       if(r.error) throw r.error;
-      toast('บันทึกแล้ว '+nf.format(row.tons)+' ตัน');
+      toast(noDocs ? 'บันทึกแล้ว แต่ยังแนบรูปไม่ได้ — แอดมินต้องรัน SQL ไฟล์ 04' : 'บันทึกแล้ว '+nf.format(row.tons)+' ตัน');
       resetForm();
       return loadAll();
     }).catch(function(err){
@@ -1141,6 +1205,9 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
 
   function resetForm(){
     ['j-owner','j-plot','j-note','j-queue','j-rai','j-tons','j-trips','j-hours','j-fuel','j-fuelcost'].forEach(function(id){ $(id).value=''; });
+    DOCS=[]; renderDocs();
+    Array.prototype.forEach.call(document.querySelectorAll('#job-form .ai'), function(el){ el.classList.remove('ai'); });
+    delete $('j-date').dataset.touched; $('doc-hint').hidden=true;
     recalc(); document.querySelector('main').scrollTop=0;
   }
 
@@ -1162,17 +1229,231 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function exportCsv(){
-    var head=['วันที่','รถ','คนขับ','เจ้าของไร่','แปลง','ประเภทอ้อย','ไร่','ตัน','เที่ยว','คิว','ชั่วโมง','ลิตร','บาท/ตัน','ค่าตัดรวม','ค่าน้ำมัน','หมายเหตุ','ผู้บันทึก','เวลาบันทึก'];
+    var head=['วันที่','รถ','คนขับ','เจ้าของไร่','แปลง','ประเภทอ้อย','ไร่','ตัน','เที่ยว','คิว','ชั่วโมง','ลิตร','บาท/ตัน','ค่าตัดรวม','ค่าน้ำมัน','หมายเหตุ','เลขใบชั่ง','จำนวนรูป','ผู้บันทึก','เวลาบันทึก'];
     var q=function(v){ return '"'+String(v==null?'':v).replace(/"/g,'""')+'"'; };
     var lines=[head.map(q).join(',')];
     filteredJobs().forEach(function(j){
       lines.push([j.work_date,machineLabel(j.machine_id),j.driver_name,j.owner_name,j.plot,j.cane_type,num(j.rai),num(j.tons),
         num(j.trips),j.queue_no,num(j.hours),num(j.fuel_liters),num(j.rate),num(j.amount),num(j.fuel_cost),j.note,
+        (j.docs||[]).filter(function(d){ return d.ticket_no; }).map(function(d){ return d.ticket_no; }).join(' '),(j.docs||[]).length,
         personName(j.created_by),j.created_at].map(q).join(','));
     });
     var blob=new Blob(['﻿'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'});
     var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='canecut-'+today()+'.csv';
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
+  }
+
+  /* ---------- สแกนใบชั่ง / บิลน้ำมัน (AI อ่านผ่าน Edge Function read-receipt) ---------- */
+  var DOCS = [], scanKind = 'weigh';
+  var KIND_TH = { weigh:'ใบชั่ง', fuel:'บิลน้ำมัน' };
+  var DOC_KEYS = ['ticket_no','queue_no','date','mill','plate','farmer','quota_no','cane_type','gross_kg','tare_kg','deduct_kg','net_kg',
+                  'receipt_no','station','product','liters','price_per_liter','total_baht','confidence'];
+
+  function shrink(file, max){
+    return new Promise(function(res, rej){
+      var u = URL.createObjectURL(file), im = new Image();
+      im.onerror = function(){ URL.revokeObjectURL(u); rej(new Error('IMG')); };
+      im.onload = function(){
+        var w = im.naturalWidth, h = im.naturalHeight, k = Math.min(1, max / Math.max(w, h));
+        var c = document.createElement('canvas'); c.width = Math.round(w*k); c.height = Math.round(h*k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u);
+        var dataUrl = c.toDataURL('image/jpeg', 0.82);
+        c.toBlob(function(b){ res({ blob:b, dataUrl:dataUrl }); }, 'image/jpeg', 0.82);
+      };
+      im.src = u;
+    });
+  }
+
+  function addFiles(kind, files){
+    Array.prototype.forEach.call(files, function(f){
+      var d = { kind:kind, status:'prep', data:null, warn:[], err:'' };
+      DOCS.push(d); renderDocs();
+      shrink(f, 1568).then(function(r){ d.blob = r.blob; d.dataUrl = r.dataUrl; readDoc(d); })
+        .catch(function(){ d.status = 'error'; d.err = 'เปิดรูปนี้ไม่ได้ ลองถ่ายใหม่'; renderDocs(); });
+    });
+  }
+
+  function fnError(err){
+    var c = err && err.context;
+    if(c && typeof c.json === 'function'){
+      if(c.status === 404) return Promise.resolve('ยังไม่ได้ติดตั้งระบบอ่านรูป (read-receipt) — แจ้งแอดมิน · กรอกเองไปก่อน');
+      return c.json().then(function(b){ return (b && b.message) || 'AI อ่านรูปไม่สำเร็จ'; }, function(){ return 'AI อ่านรูปไม่สำเร็จ'; });
+    }
+    return Promise.resolve(navigator.onLine ? 'เชื่อมต่อระบบอ่านรูปไม่ได้ ลองอีกครั้ง' : 'ไม่มีสัญญาณ');
+  }
+
+  function readDoc(d){
+    if(!d || !d.dataUrl) return;
+    if(!navigator.onLine){ d.status = 'offline'; renderDocs(); return; }
+    d.status = 'reading'; d.err = ''; d.warn = []; renderDocs();
+    sb.functions.invoke('read-receipt', { body:{ kind:d.kind, image:d.dataUrl.split(',')[1] } }).then(function(r){
+      if(r.error) return fnError(r.error).then(function(m){ d.status = 'error'; d.err = m; });
+      var x = (r.data && r.data.data) || {};
+      if(x.doc_ok === false){ d.status = 'error'; d.data = null; d.err = 'รูปนี้ไม่เหมือน' + KIND_TH[d.kind] + ' — ถ่ายใหม่ให้เห็นทั้งใบ หรือกรอกเอง'; return; }
+      d.data = x; d.status = 'ok'; d.warn = checkDoc(d);
+      if(d.kind === 'weigh' && x.ticket_no) return sb.rpc('ticket_used', { t:String(x.ticket_no) }).then(function(q){
+        var hit = q && !q.error && q.data && q.data[0];
+        if(hit) d.warn.unshift('ใบชั่งเลขนี้เคยบันทึกไปแล้ว (' + thDate(hit.work_date) + (hit.same_user ? ' โดยคุณเอง' : ' โดยคนอื่น') + ')');
+      }, function(){});
+    }).catch(function(e){ return fnError(e).then(function(m){ d.status = 'error'; d.err = m; }); })
+      .then(function(){ if(DOCS.indexOf(d) > -1){ renderDocs(); applyDocs(); } });
+  }
+
+  function checkDoc(d){
+    var x = d.data, w = [];
+    if(x.confidence === 'low') w.push('AI ไม่ค่อยมั่นใจ — ตรวจตัวเลขให้ดี');
+    if(x.date && (x.date > today() || x.date < '2020-01-01')) w.push('วันที่บนใบดูแปลก — ตรวจอีกครั้ง');
+    if(d.kind === 'weigh'){
+      if(x.net_kg == null) w.push('อ่านน้ำหนักสุทธิไม่ได้ — กรอกเอง');
+      else {
+        if(x.gross_kg != null && x.tare_kg != null){
+          var calc = x.gross_kg - x.tare_kg - (x.deduct_kg || 0);
+          if(Math.abs(calc - x.net_kg) > Math.max(20, x.net_kg * 0.01)) w.push('รวม − รถเปล่า = ' + nf0.format(calc) + ' กก. ไม่ตรงกับสุทธิ — ตรวจอีกครั้ง');
+        }
+        if(x.net_kg < 500 || x.net_kg > 60000) w.push('น้ำหนักสุทธิดูผิดปกติ — ตรวจหน่วย กก./ตัน');
+      }
+    } else {
+      if(x.liters == null || x.total_baht == null) w.push('อ่านลิตรหรือยอดเงินไม่ได้ — กรอกเอง');
+      else if(x.price_per_liter != null && Math.abs(x.liters * x.price_per_liter - x.total_baht) > Math.max(2, x.total_baht * 0.02))
+        w.push('ลิตร × ราคา ไม่เท่ากับยอดเงิน — ตรวจอีกครั้ง');
+    }
+    if(x.note) w.push(String(x.note));
+    return w;
+  }
+
+  function markDups(){
+    var seen = {};
+    DOCS.forEach(function(d){
+      d.dup = false;
+      if(d.kind === 'weigh' && d.status === 'ok' && d.data && d.data.ticket_no != null){
+        var k = String(d.data.ticket_no); if(seen[k]) d.dup = true; seen[k] = 1; }
+    });
+  }
+
+  function setAI(id, v){ var el = $(id); el.value = v; el.classList.add('ai'); }
+  function clearAI(ids){ ids.forEach(function(id){ var el = $(id); if(el.classList.contains('ai')){ el.value = ''; el.classList.remove('ai'); } }); }
+
+  function applyDocs(){
+    markDups();
+    var W = DOCS.filter(function(d){ return d.kind === 'weigh' && d.status === 'ok' && !d.dup && d.data && d.data.net_kg != null; });
+    var F = DOCS.filter(function(d){ return d.kind === 'fuel' && d.status === 'ok' && d.data; });
+    if(W.length){
+      var kg = W.reduce(function(s, d){ return s + num(d.data.net_kg); }, 0);
+      setAI('j-tons', Math.round(kg / 10) / 100);
+      setAI('j-trips', W.length);
+      var w0 = W[0].data;
+      if(!$('j-owner').value && w0.farmer) setAI('j-owner', w0.farmer);
+      if(!$('j-queue').value && (w0.mill || w0.queue_no)) setAI('j-queue', [w0.mill, w0.queue_no ? 'คิว ' + w0.queue_no : ''].filter(Boolean).join(' · '));
+      if(w0.date && /^\d{4}-\d{2}-\d{2}$/.test(w0.date) && w0.date <= today() && !$('j-date').dataset.touched) setAI('j-date', w0.date);
+      var types = W.map(function(d){ return d.data.cane_type; });
+      if(types[0] && types.every(function(t){ return t === types[0]; })){
+        var rb = document.querySelector('input[name="canetype"][value="' + types[0] + '"]'); if(rb) rb.checked = true; }
+    } else clearAI(['j-tons', 'j-trips']);
+    if(F.length){
+      var L = F.reduce(function(s, d){ return s + num(d.data.liters); }, 0), B = F.reduce(function(s, d){ return s + num(d.data.total_baht); }, 0);
+      if(L) setAI('j-fuel', Math.round(L * 10) / 10); else clearAI(['j-fuel']);
+      if(B) setAI('j-fuelcost', Math.round(B * 100) / 100); else clearAI(['j-fuelcost']);
+    } else clearAI(['j-fuel', 'j-fuelcost']);
+    recalc(); renderDocs();
+    $('doc-hint').hidden = !document.querySelector('#job-form .ai');
+  }
+
+  function docLines(d){
+    var x = d.data || {};
+    if(d.kind === 'weigh') return [x.ticket_no ? 'เลขที่ ' + x.ticket_no : '', x.date ? thDate(x.date) : '', x.plate ? 'ทะเบียน ' + x.plate : '',
+      x.mill || '', x.net_kg != null ? 'สุทธิ ' + nf0.format(x.net_kg) + ' กก.' : '',
+      x.gross_kg != null ? 'รวม ' + nf0.format(x.gross_kg) : '', x.tare_kg != null ? 'รถเปล่า ' + nf0.format(x.tare_kg) : ''].filter(Boolean).join(' · ');
+    return [x.date ? thDate(x.date) : '', x.station || '', x.product || '', x.liters != null ? nf.format(x.liters) + ' ลิตร' : '',
+      x.price_per_liter != null ? 'ลิตรละ ' + nf.format(x.price_per_liter) : '', x.total_baht != null ? nf.format(x.total_baht) + ' บาท' : ''].filter(Boolean).join(' · ');
+  }
+
+  function renderDocs(){
+    var cnt = { weigh:0, fuel:0 };
+    $('doc-list').innerHTML = DOCS.map(function(d, i){
+      cnt[d.kind]++;
+      var st = (d.status === 'prep' || d.status === 'reading') ? '<div class="dv"><span class="spin"></span> AI กำลังอ่าน…</div>'
+        : d.status === 'offline' ? '<div class="dw">ไม่มีสัญญาณ — จะอ่านให้อัตโนมัติเมื่อมีเน็ต หรือกรอกเองได้</div>'
+        : d.status === 'error' ? '<div class="de">' + esc(d.err) + '</div>' +
+            (d.dataUrl ? '<button type="button" class="btn small ghost" data-reread="' + i + '" style="margin-top:6px">ลองอ่านอีกครั้ง</button>' : '')
+        : '<div class="dv">' + esc(docLines(d)) + '</div>' +
+          (d.dup ? '<div class="dw">ใบชั่งใบนี้ถ่ายซ้ำ — ไม่นับน้ำหนักซ้ำ (กด × เพื่อลบ)</div>' : '') +
+          d.warn.map(function(w){ return '<div class="dw">' + esc(w) + '</div>'; }).join('');
+      return '<div class="doc">' + (d.dataUrl ? '<img src="' + d.dataUrl + '" alt="รูป' + KIND_TH[d.kind] + '" data-docimg="' + i + '">' : '<img alt="">') +
+        '<div><div class="dt">' + KIND_TH[d.kind] + ' ' + cnt[d.kind] + '</div>' + st + '</div>' +
+        '<button type="button" class="x" data-docdel="' + i + '" aria-label="ลบรูปนี้">×</button></div>';
+    }).join('');
+  }
+
+  function docsForRow(ref){
+    return DOCS.filter(function(d){ return d.blob; }).map(function(d, i){
+      var o = { kind:d.kind, path:S.me.id + '/' + ref + '-' + (i+1) + '.jpg', ai:d.status === 'ok' };
+      if(d.data && d.status === 'ok') DOC_KEYS.forEach(function(k){ if(d.data[k] != null && d.data[k] !== '') o[k] = d.data[k]; });
+      if(o.ticket_no != null) o.ticket_no = String(o.ticket_no);
+      if(d.dup) o.dup = true;
+      return o;
+    });
+  }
+  function noDocsCol(err){ return /docs/.test((err && (err.message || '')) + '') && /column|schema/i.test(err.message || ''); }
+  function stripDocs(r){ var o = {}; Object.keys(r).forEach(function(k){ if(k !== 'docs') o[k] = r[k]; }); return o; }
+
+  /* รูปที่ยังส่งไม่ได้ เก็บใน IndexedDB แล้วส่งตามทีหลัง */
+  var idbP = null;
+  function idb(){
+    if(!idbP) idbP = new Promise(function(res, rej){
+      var r = indexedDB.open('canecut', 1);
+      r.onupgradeneeded = function(){ r.result.createObjectStore('photos'); };
+      r.onsuccess = function(){ res(r.result); }; r.onerror = function(){ rej(r.error); };
+    });
+    return idbP;
+  }
+  function idbDo(mode, fn){
+    return idb().then(function(db){ return new Promise(function(res, rej){
+      var tx = db.transaction('photos', mode), rq = fn(tx.objectStore('photos'));
+      tx.oncomplete = function(){ res(rq ? rq.result : undefined); }; tx.onerror = function(){ rej(tx.error); };
+    }); });
+  }
+  function idbPut(k, v){ return idbDo('readwrite', function(s){ return s.put(v, k); }).catch(function(){}); }
+  function idbDel(k){ return idbDo('readwrite', function(s){ return s.delete(k); }).catch(function(){}); }
+
+  function upPhoto(path, blob){
+    return sb.storage.from('receipts').upload(path, blob, { contentType:'image/jpeg', upsert:false }).then(function(r){
+      return !r.error || /exist|duplicate/i.test(r.error.message || '');
+    }, function(){ return false; });
+  }
+  function savePhotos(files){
+    return Promise.all(files.map(function(f){
+      if(!navigator.onLine) return idbPut(f.path, f.blob);
+      return upPhoto(f.path, f.blob).then(function(ok){ if(!ok) return idbPut(f.path, f.blob); });
+    }));
+  }
+  var flushingPhotos = false;
+  function flushPhotos(){
+    if(flushingPhotos || !navigator.onLine || !sb || !S.me || !window.indexedDB) return Promise.resolve();
+    flushingPhotos = true;
+    return idbDo('readonly', function(s){ return s.getAllKeys(); }).then(function(keys){
+      return (keys || []).filter(function(k){ return String(k).indexOf(S.me.id + '/') === 0; }).reduce(function(p, k){
+        return p.then(function(){ return idbDo('readonly', function(s){ return s.get(k); }).then(function(b){
+          if(!b) return idbDel(k);
+          return upPhoto(k, b).then(function(ok){ if(ok) return idbDel(k); });
+        }); });
+      }, Promise.resolve());
+    }).catch(function(){}).then(function(){ flushingPhotos = false; });
+  }
+
+  function openJobDocs(id){
+    var j = null; S.jobs.forEach(function(x){ if(x.id === id) j = x; });
+    if(!j || !(j.docs || []).length) return;
+    sb.storage.from('receipts').createSignedUrls(j.docs.map(function(d){ return d.path; }), 3600).then(function(r){
+      var urls = (r.data || []).map(function(x){ return x.signedUrl; }).filter(Boolean);
+      if(!urls.length){ toast('รูปยังไม่ถูกส่งขึ้นระบบ (เครื่องคนขับยังไม่มีสัญญาณ)'); return; }
+      openViewerList(urls, 0, 'เอกสาร · ' + (j.owner_name || '') + ' ' + thDate(j.work_date));
+    }).catch(function(){ toast('เปิดรูปไม่ได้ — ตรวจสัญญาณ'); });
+  }
+
+  function scanTile(){
+    var inT = 0, outT = 0; S.scan.forEach(function(x){ inT += num(x.in_tokens); outT += num(x.out_tokens); });
+    var usd = inT / 1e6 * 1 + outT / 1e6 * 5;   // ราคา Claude Haiku 4.5: $1 / $5 ต่อล้าน token
+    return ['สแกน AI 30 วัน', nf0.format(S.scan.length), 'รูป · ≈ $' + usd.toFixed(usd < 1 ? 3 : 2)];
   }
 
   /* ---------- wiring ---------- */
@@ -1230,6 +1511,26 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     $('j-machine').addEventListener('change', function(){
       var m=machineById(this.value); if(m&&m.driver_name&&!$('j-driver').value) $('j-driver').value=m.driver_name; });
     $('job-form').addEventListener('submit', submitJob);
+    $('scanbox').addEventListener('click', function(e){
+      var b = e.target.closest('[data-scan]');
+      if(b){ scanKind = b.dataset.scan; $('scan-input').value = ''; $('scan-input').click(); return; }
+      var x = e.target.closest('[data-docdel]');
+      if(x){ DOCS.splice(+x.dataset.docdel, 1); applyDocs(); return; }
+      var rr = e.target.closest('[data-reread]');
+      if(rr){ readDoc(DOCS[+rr.dataset.reread]); return; }
+      var im = e.target.closest('[data-docimg]');
+      if(im){ var l = DOCS.filter(function(d){ return d.dataUrl; });
+        openViewerList(l.map(function(d){ return d.dataUrl; }), Math.max(0, l.indexOf(DOCS[+im.dataset.docimg])), 'เอกสารแนบ'); }
+    });
+    $('scan-input').addEventListener('change', function(){ if(this.files && this.files.length) addFiles(scanKind, this.files); });
+    $('job-form').addEventListener('input', function(e){
+      var t = e.target; if(!t || !t.classList) return;
+      t.classList.remove('ai'); if(t.id === 'j-date') t.dataset.touched = '1';
+      $('doc-hint').hidden = !document.querySelector('#job-form .ai');
+    });
+    document.addEventListener('click', function(e){
+      var b = e.target.closest('[data-docs]'); if(b){ e.stopPropagation(); openJobDocs(b.dataset.docs); }
+    });
     $('j-reset').addEventListener('click', function(){ resetForm(); });
     $('g-search').addEventListener('input', renderGuide);
     $('g-cache').addEventListener('click', cacheAllSlides);
@@ -1351,7 +1652,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
        .catch(function(err){ toast('เปลี่ยนสิทธิ์ไม่สำเร็จ: '+(err.message||'')); });
     });
 
-    window.addEventListener('online',  function(){ updateConn(); flushQueue(); });
+    window.addEventListener('online',  function(){ updateConn(); flushQueue();
+      DOCS.forEach(function(d){ if(d.status === 'offline') readDoc(d); }); });
     window.addEventListener('offline', updateConn);
   }
 
