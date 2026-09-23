@@ -142,6 +142,92 @@
   td.num{text-align:right; font-variant-numeric:tabular-nums}
   tr:last-child td{border-bottom:none}
 
+  .guide-row{cursor:pointer}
+  .guide-row .top{flex-wrap:nowrap; align-items:flex-start}
+  .guide-row .title{flex:1; min-width:0}
+  .gnum{width:24px;height:24px;flex:none;border-radius:7px;background:var(--green-soft);color:var(--green-ink);
+    display:grid;place-items:center;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+  ul.glist{margin:4px 0 0; padding-left:18px; display:grid; gap:5px}
+  ul.glist li{font-size:13.5px; line-height:1.6}
+  mark{background:var(--amber-soft); color:var(--amber); padding:0 2px; border-radius:3px}
+
+  /* ---------- ภาพประกอบคู่มือ ---------- */
+  .ill{width:100%; height:auto; display:block; margin:8px 0 10px; font-family:inherit; overflow:visible}
+  .ill text{font-family:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif}
+  .ill .t{fill:var(--ink); font-size:12px}
+  .ill .ts{fill:var(--ink-soft); font-size:10.5px}
+  .ill .tb{font-weight:700}
+  .ill .big{fill:var(--ink); font-size:19px; font-weight:700}
+  .ill .mid{fill:var(--ink); font-size:13px; font-weight:600}
+  .ill .tw{fill:var(--on-green); font-size:12px}
+  .ill .lt{fill:#1A2118; font-size:11.5px; font-weight:700}
+  .ill .numc{fill:var(--green)} .ill .numt{fill:var(--on-green); font-size:10.5px; font-weight:700}
+  .ill .mach{fill:var(--green)} .ill .glass{fill:var(--green-soft)} .ill .soft{fill:var(--green-soft)}
+  .ill .tire{fill:var(--ink)} .ill .hub{fill:var(--surface-2)} .ill .ink{fill:var(--ink)}
+  .ill .grille{stroke:var(--green-soft); stroke-width:2; opacity:.6}
+  .ill .arm{stroke:var(--green); stroke-width:5; stroke-linecap:round; fill:none}
+  .ill .amb{fill:var(--amber)} .ill .ambs{fill:var(--amber-soft)}
+  .ill .red{fill:var(--red)} .ill .reds{fill:var(--red-soft)}
+  .ill .blu{fill:var(--blue)} .ill .blus{fill:var(--blue-soft)}
+  .ill .neu{fill:var(--surface-2); stroke:var(--ink-faint); stroke-width:1}
+  .ill .neu2{fill:var(--line)}
+  .ill .card{fill:var(--surface); stroke:var(--line); stroke-width:1}
+  .ill .lbg{fill:var(--surface)}
+  .ill .ln,.ill .a{stroke:var(--ink-soft); stroke-width:1.6; fill:none}
+  .ill .ah{fill:var(--ink-soft)}
+  .ill .thin{stroke:var(--ink-faint); stroke-width:1; fill:none; stroke-dasharray:3 3}
+  .ill .ground{stroke:var(--ink-faint); stroke-width:1.5}
+  .ill .dim{stroke:var(--blue); stroke-width:1.3} .ill .dimh{fill:var(--blue)}
+  .ill .dt{fill:var(--blue); font-size:11.5px; font-weight:700}
+  .ill .ok{fill:var(--green)} .ill .ng{fill:var(--red)} .ill .okm{stroke:var(--surface); stroke-width:2; fill:none; stroke-linecap:round}
+  .ill .per{fill:var(--ink-soft)} .ill .perl{stroke:var(--ink-soft); stroke-width:2; fill:none; stroke-linecap:round}
+  .ill .pern{fill:var(--red)} .ill .pernl{stroke:var(--red); stroke-width:2; fill:none; stroke-linecap:round}
+  .ill .zone1{fill:var(--red-soft)} .ill .zone2{fill:var(--amber-soft)}
+  .ill .cane{stroke:var(--green); stroke-width:2.4; fill:none; stroke-linecap:round}
+  .ill .leaf{stroke:var(--green); stroke-width:1.6; fill:none; stroke-linecap:round}
+  .ill .row{stroke:var(--green); stroke-width:2; opacity:.45}
+  .ill .cut{fill:var(--amber-soft)}
+  .ill .road{fill:var(--line)}
+  .ill .soilf{fill:var(--amber-soft); stroke:var(--amber); stroke-width:1}
+  .ill .soilf2{fill:var(--amber); opacity:.55}
+  .ill .water{fill:var(--blue-soft); stroke:var(--blue); stroke-width:1}
+  .ill .ladder{stroke:var(--ink-faint); stroke-width:2.5; stroke-linecap:round}
+  .ill .hose{stroke:var(--ink); stroke-width:2; fill:none}
+  .ill .tube{fill:var(--surface-2); stroke:var(--ink-faint); stroke-width:1}
+  .ill .fluid{fill:var(--amber)}
+  .ill .mark{stroke:var(--ink); stroke-width:1.5}
+  .ill .slot{stroke:var(--ink-faint); stroke-width:6; stroke-linecap:round}
+  .ill .needle{stroke:var(--red); stroke-width:3; stroke-linecap:round}
+  .ill .sign{fill:var(--red)}
+  .ill .strap{stroke:var(--red); stroke-width:2; stroke-dasharray:4 3}
+  .ill .axis{stroke:var(--ink-soft); stroke-width:1.5}
+  .ill .blade{fill:var(--ink-soft)}
+  .ill .chain{stroke:var(--ink-soft); stroke-width:3; fill:none; stroke-dasharray:6 3}
+  .ill .l1{fill:#5DBB63} .ill .l2{fill:#2E9E4F} .ill .l3{fill:#F2C94C} .ill .l4{fill:#E0A12B} .ill .l5{fill:#D9493A}
+
+  .pstrip{display:flex; gap:8px; overflow-x:auto; padding:2px 0 6px; margin:4px 0 8px; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch}
+  .pstrip button{flex:none; width:168px; padding:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--surface-2); scroll-snap-align:start; cursor:zoom-in}
+  .pstrip img{display:block; width:100%; aspect-ratio:1000/469; object-fit:cover}
+  .pstrip-cap{font-size:11.5px; color:var(--ink-faint); margin:6px 0 0}
+  .pic-tag{font-size:11px; font-weight:600; color:var(--green-ink); background:var(--green-soft); padding:1px 7px; border-radius:99px; margin-left:6px; white-space:nowrap}
+
+  /* ---------- สไลด์ ---------- */
+  .slide-prev{display:block; width:100%; border-radius:8px; border:1px solid var(--line); margin-top:10px; background:var(--surface-2); aspect-ratio:1100/850; object-fit:cover; cursor:zoom-in}
+  #viewer{position:fixed; inset:0; z-index:80; background:#0c0e0b; color:#eef0e8; display:flex; flex-direction:column;
+    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+  #viewer[hidden]{display:none!important}
+  .vbar{display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid #22271f}
+  .vbar b{font-weight:600; font-size:14px; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .vbar span{font-size:13px; color:#a9b0a1; font-variant-numeric:tabular-nums; white-space:nowrap}
+  .vbtn{background:#1c211a; color:#eef0e8; border:1px solid #2e352a; padding:9px 13px; font-size:14px; font-weight:500; border-radius:8px}
+  .vbtn:disabled{opacity:.35}
+  .vstage{flex:1; overflow:auto; display:flex; align-items:center; justify-content:center; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y pinch-zoom}
+  .vstage img{width:100%; max-width:1100px; height:auto; display:block; background:#1a1d18}
+  .vstage.zoom{align-items:flex-start; justify-content:flex-start}
+  .vstage.zoom img{width:230%; max-width:none}
+  .vnav{display:flex; gap:8px; padding:10px 14px; border-top:1px solid #22271f}
+  .vnav .vbtn{flex:1}
+
   .empty{padding:22px 12px; text-align:center; color:var(--ink-faint); font-size:13.5px}
   .banner{border-radius:var(--r); padding:10px 12px; font-size:13px; border:1px solid var(--line); background:var(--amber-soft); color:var(--amber)}
   .banner.bad{background:var(--red-soft); color:var(--red)}
@@ -224,7 +310,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 6 · 22 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 11 · 23 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -337,6 +423,25 @@
       </div>
     </section>
 
+    <!-- คู่มือ -->
+    <section id="tab-guide" hidden>
+      <div class="card">
+        <h2>คู่มือรถตัดอ้อย SH-K1</h2>
+        <p class="sub">ข้อมูลเครื่อง วิธีใช้งาน การบำรุงรักษา และการรับประกัน — เปิดดูได้แม้ไม่มีสัญญาณ</p>
+        <div class="f">
+          <label for="g-search">ค้นหา</label>
+          <input id="g-search" type="search" placeholder="เช่น ใบมีด, น้ำมันเครื่อง, รับประกัน, ลมยาง" autocomplete="off">
+        </div>
+        <p class="sub" id="g-count" style="margin:8px 0 0"></p>
+        <div class="actions" style="margin-top:10px">
+          <button type="button" class="btn small ghost" id="g-cache">เก็บรูปจริงทั้งหมดไว้ดูตอนไม่มีสัญญาณ (~4.5 MB)</button>
+          <span class="sub" id="g-cache-msg" style="margin:0"></span>
+        </div>
+      </div>
+      <div class="rows" id="guide-list"></div>
+      <p class="sub" style="text-align:center;margin:0">เรียบเรียงจากสื่อหลักสูตรรถตัดอ้อยคูโบต้า · สยามคูโบต้า ฝ่ายบริการลูกค้า</p>
+    </section>
+
     <!-- ประวัติ -->
     <section id="tab-history" hidden>
       <div class="card">
@@ -407,11 +512,24 @@
   <nav>
     <button type="button" data-tab="log" aria-current="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>บันทึกงาน</span><span class="ind"></span></button>
     <button type="button" data-tab="fleet"><svg viewBox="0 0 24 24"><path d="M3 17h18"/><path d="M5 17v-4l3-5h7l2 5h2v4"/><circle cx="8" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg><span>รถตัดอ้อย</span><span class="ind"></span></button>
+    <button type="button" data-tab="guide"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5Z"/></svg><span>คู่มือ</span><span class="ind"></span></button>
     <button type="button" data-tab="history"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>ประวัติ</span><span class="ind"></span></button>
     <button type="button" data-tab="admin" id="nav-admin" hidden><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>หลังบ้าน</span><span class="ind"></span></button>
   </nav>
 </div>
 
+<div id="viewer" hidden role="dialog" aria-modal="true" aria-label="สไลด์ประกอบ">
+  <div class="vbar"><b id="v-title">สไลด์ประกอบ</b><span id="v-count">1 / 1</span><button type="button" class="vbtn" id="v-close">ปิด ✕</button></div>
+  <div class="vstage" id="v-stage"><img id="v-img" alt=""></div>
+  <div class="vnav">
+    <button type="button" class="vbtn" id="v-prev">‹ ก่อนหน้า</button>
+    <button type="button" class="vbtn" id="v-zoom">ขยาย</button>
+    <button type="button" class="vbtn" id="v-next">ถัดไป ›</button>
+  </div>
+</div>
+
+<script src="guide.js"></script>
+<script src="illustrations.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 /* =====================================================================
@@ -825,8 +943,167 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   /* ---------- actions ---------- */
   function recalc(){ var t=num($('j-tons').value)*num($('j-rate').value); $('j-total').textContent=nf0.format(t); return t; }
 
+  /* ---------- คู่มือ ---------- */
+  var guideOpen = {};
+  var guideTopic = null;
+
+  function guideMatch(topic, q){
+    if(!q) return topic;
+    var hit = { id:topic.id, title:topic.title, sub:topic.sub, items:[] };
+    if(topic.title.indexOf(q) > -1 || (topic.sub||'').indexOf(q) > -1){ hit.items = topic.items; return hit; }
+    topic.items.forEach(function(it){
+      if(it.h.indexOf(q) > -1){ hit.items.push(it); return; }
+      var lines = it.b.filter(function(l){ return l.indexOf(q) > -1; });
+      if(lines.length) hit.items.push({ h:it.h, b:lines });
+    });
+    return hit.items.length ? hit : null;
+  }
+
+  function mark(text, q){
+    var safe = esc(text);
+    if(!q) return safe;
+    var eq = esc(q).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return safe.replace(new RegExp(eq,'g'), '<mark>$&</mark>');
+  }
+
+  function topicById(id){
+    for(var i=0;i<window.GUIDE.length;i++) if(window.GUIDE[i].id===id) return window.GUIDE[i];
+    return null;
+  }
+
+  function illOf(key){ return (window.GUIDE_ILL && window.GUIDE_ILL[key]) || ''; }
+  function photosOf(key){ return (window.GUIDE_PHOTOS && window.GUIDE_PHOTOS[key]) || []; }
+  function illCount(t){ var n = illOf(t.id) ? 1 : 0; t.items.forEach(function(_, i){ if(illOf(t.id + ':' + i)) n++; n += photosOf(t.id + ':' + i).length; }); return n; }
+  function photoStrip(key, title){
+    var ph = photosOf(key); if(!ph.length) return '';
+    return '<p class="pstrip-cap">รูปจริง ' + ph.length + ' ภาพ — แตะเพื่อดูเต็มจอ</p><div class="pstrip">' + ph.map(function(u, i){
+      return '<button type="button" data-photo="' + esc(key) + '" data-pi="' + i + '" aria-label="' + esc(title) + ' รูปที่ ' + (i+1) + '"><img loading="lazy" alt="" src="' + esc(u) + '"></button>';
+    }).join('') + '</div>';
+  }
+
+  function slidesOf(id){ return (window.GUIDE_SLIDES && window.GUIDE_SLIDES[id]) || []; }
+
+  var V = { list:[], i:0, title:'' };
+  function openViewerList(list, start, title){
+    if(!list || !list.length) return;
+    V.list = list; V.i = start || 0; V.title = title || 'รูปประกอบ';
+    $('v-title').textContent = V.title;
+    $('viewer').hidden = false; document.body.style.overflow = 'hidden';
+    showSlide(); try{ $('v-close').focus(); }catch(e){}
+  }
+  function openViewer(id, start){
+    var t = topicById(id); V.list = slidesOf(id); V.i = start || 0; V.title = t ? t.title : 'สไลด์ประกอบ';
+    if(!V.list.length) return;
+    $('v-title').textContent = V.title;
+    $('viewer').hidden = false; document.body.style.overflow = 'hidden';
+    showSlide(); try{ $('v-close').focus(); }catch(e){}
+  }
+  function showSlide(){
+    $('v-stage').classList.remove('zoom'); $('v-zoom').textContent = 'ขยาย';
+    $('v-img').src = V.list[V.i];
+    $('v-img').alt = V.title + ' หน้า ' + (V.i+1);
+    $('v-count').textContent = (V.i+1) + ' / ' + V.list.length;
+    $('v-prev').disabled = (V.i === 0);
+    $('v-next').disabled = (V.i === V.list.length-1);
+    $('v-stage').scrollTop = 0; $('v-stage').scrollLeft = 0;
+    if(V.list[V.i+1]){ var pre = new Image(); pre.src = V.list[V.i+1]; }
+  }
+  function stepSlide(d){ var n = V.i + d; if(n < 0 || n >= V.list.length) return; V.i = n; showSlide(); }
+  function closeViewer(){ $('viewer').hidden = true; document.body.style.overflow = ''; $('v-img').removeAttribute('src'); }
+
+  function allSlides(){
+    var seen = {}, out = [];
+    [window.GUIDE_SLIDES, window.GUIDE_PHOTOS].forEach(function(src){ if(src) Object.keys(src).forEach(function(k){
+      src[k].forEach(function(u){ if(!seen[u]){ seen[u]=1; out.push(u); } }); }); });
+    return out;
+  }
+  function cacheAllSlides(){
+    var urls = allSlides(), btn = $('g-cache'), msg = $('g-cache-msg');
+    if(!('caches' in window)){ msg.textContent = 'เบราว์เซอร์นี้เก็บรูปไว้ไม่ได้'; return; }
+    btn.disabled = true; var done = 0, fail = 0;
+    caches.open('canecut-slides-v1').then(function(c){
+      var next = function(){
+        if(done + fail >= urls.length){
+          btn.disabled = false;
+          msg.textContent = fail ? ('เก็บได้ ' + done + ' จาก ' + urls.length + ' ภาพ — ต่อเน็ตแล้วลองกดอีกครั้ง') : ('เก็บครบ ' + done + ' ภาพแล้ว ดูได้ตอนไม่มีสัญญาณ');
+          try{ localStorage.setItem('canecut_slides_cached', String(done)); }catch(e){}
+          return;
+        }
+        var u = urls[done + fail];
+        c.match(u).then(function(hit){
+          return hit ? null : fetch(u).then(function(r){ if(!r.ok) throw 0; return c.put(u, r); });
+        }).then(function(){ done++; }, function(){ fail++; }).then(function(){
+          msg.textContent = 'กำลังเก็บ ' + (done + fail) + ' / ' + urls.length + ' ภาพ…'; next();
+        });
+      };
+      next();
+    }).catch(function(){ btn.disabled = false; msg.textContent = 'เก็บรูปไม่สำเร็จ'; });
+  }
+
+  function renderGuide(){
+    var list = $('guide-list');
+    if(!window.GUIDE){ list.innerHTML = '<div class="empty">โหลดคู่มือไม่สำเร็จ — ตรวจว่าไฟล์ guide.js อยู่โฟลเดอร์เดียวกับแอป</div>'; return; }
+    var q = $('g-search').value.trim();
+
+    /* ---- โหมดค้นหา: แสดงผลลัพธ์รวมทุกหัวข้อ ---- */
+    if(q){
+      var topics = [];
+      window.GUIDE.forEach(function(t){ var m = guideMatch(t, q); if(m) topics.push(m); });
+      var n = 0; topics.forEach(function(t){ t.items.forEach(function(i){ n += i.b.length; }); });
+      $('g-count').textContent = topics.length ? ('พบ ' + n + ' รายการ ใน ' + topics.length + ' หัวข้อ') : '';
+      list.innerHTML = topics.length ? topics.map(function(t){
+        return '<div class="row"><div class="top"><span class="title">' + mark(t.title, q) + '</span></div>' +
+          '<div class="detail" style="border-top:none;margin-top:4px;padding-top:0">' + t.items.map(function(it){
+            return '<div><p class="eyebrow">' + mark(it.h, q) + '</p><ul class="glist">' +
+              it.b.map(function(l){ return '<li>' + mark(l, q) + '</li>'; }).join('') + '</ul></div>';
+          }).join('') + '</div></div>';
+      }).join('') : '<div class="empty">ไม่พบคำว่า "' + esc(q) + '" ในคู่มือ</div>';
+      return;
+    }
+
+    /* ---- หน้าในหัวข้อที่เลือก ---- */
+    if(guideTopic){
+      var t = topicById(guideTopic);
+      if(!t){ guideTopic = null; renderGuide(); return; }
+      $('g-count').textContent = t.items.length + ' หัวข้อย่อย';
+      var allOpen = t.items.every(function(_, i){ return guideOpen[t.id + ':' + i]; });
+      var h = '<button type="button" class="btn ghost small" id="g-back" style="align-self:flex-start">← กลับไปสารบัญ</button>' +
+        '<div class="card" style="padding:12px 14px">' +
+          '<h2 style="margin:0">' + esc(t.title) + '</h2>' +
+          '<p class="sub" style="margin:2px 0 0">' + esc(t.sub || '') + '</p>' +
+          illOf(t.id) +
+          (slidesOf(t.id).length ? '<img class="slide-prev" id="g-prev" loading="lazy" alt="สไลด์ประกอบหน้าแรก" src="' + esc(slidesOf(t.id)[0]) + '">' : '') +
+          '<div class="actions" style="margin-top:10px">' +
+            (slidesOf(t.id).length ? '<button type="button" class="btn small" id="g-slides">ดูสไลด์ประกอบ (' + slidesOf(t.id).length + ' ภาพ)</button>' : '') +
+            '<button type="button" class="btn small ghost" id="g-all">' + (allOpen ? 'ย่อทั้งหมด' : 'เปิดอ่านทั้งหมด') + '</button></div>' +
+        '</div>';
+      h += t.items.map(function(it, i){
+        var key = t.id + ':' + i, open = !!guideOpen[key];
+        return '<div class="row guide-row" data-sec="' + esc(key) + '">' +
+          '<div class="top"><span class="title">' + esc(it.h) + ((illOf(key) || photosOf(key).length) && !open ? '<span class="pic-tag">' + (photosOf(key).length ? 'มีรูป' : 'มีภาพ') + '</span>' : '') + '</span>' +
+          '<span class="amt" style="font-weight:400;color:var(--ink-faint);font-size:12px">' + (open ? '−' : '+') + '</span></div>' +
+          (open ? illOf(key) + '<ul class="glist" style="margin-top:8px">' + it.b.map(function(l){ return '<li>' + esc(l) + '</li>'; }).join('') + '</ul>' + photoStrip(key, it.h) : '') +
+          '</div>';
+      }).join('');
+      list.innerHTML = h;
+      return;
+    }
+
+    /* ---- สารบัญ: เลือกหัวข้อ ---- */
+    $('g-count').textContent = window.GUIDE.length + ' หัวข้อ — แตะหัวข้อที่ต้องการ';
+    list.innerHTML = window.GUIDE.map(function(t, i){
+      return '<div class="row guide-row" data-guide="' + esc(t.id) + '">' +
+        '<div class="top"><span class="gnum">' + (i+1) + '</span><span class="title">' + esc(t.title) + '</span>' +
+        '<span class="amt" style="font-weight:400;color:var(--ink-faint);font-size:18px;line-height:1">›</span></div>' +
+        '<div class="meta" style="padding-left:32px"><span>' + esc(t.sub || '') + '</span><span>' + t.items.length + ' หัวข้อย่อย' +
+          (illCount(t) ? ' · ' + illCount(t) + ' ภาพ' : '') + '</span></div>' +
+        '</div>';
+    }).join('');
+  }
+
   function showTab(name){
-    ['log','fleet','history','admin'].forEach(function(t){ $('tab-'+t).hidden=(t!==name); });
+    ['log','fleet','guide','history','admin'].forEach(function(t){ $('tab-'+t).hidden=(t!==name); });
+    if(name==='guide') renderGuide();
     Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
       b.setAttribute('aria-current', b.dataset.tab===name?'true':'false'); });
     document.querySelector('main').scrollTop=0;
@@ -954,6 +1231,65 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       var m=machineById(this.value); if(m&&m.driver_name&&!$('j-driver').value) $('j-driver').value=m.driver_name; });
     $('job-form').addEventListener('submit', submitJob);
     $('j-reset').addEventListener('click', function(){ resetForm(); });
+    $('g-search').addEventListener('input', renderGuide);
+    $('g-cache').addEventListener('click', cacheAllSlides);
+    try{ var nc = localStorage.getItem('canecut_slides_cached'); if(nc) $('g-cache-msg').textContent = 'เคยเก็บไว้แล้ว ' + nc + ' ภาพ'; }catch(e){}
+
+    $('v-close').addEventListener('click', closeViewer);
+    $('v-prev').addEventListener('click', function(){ stepSlide(-1); });
+    $('v-next').addEventListener('click', function(){ stepSlide(1); });
+    $('v-zoom').addEventListener('click', function(){
+      var z = $('v-stage').classList.toggle('zoom'); this.textContent = z ? 'ย่อ' : 'ขยาย'; });
+    $('v-img').addEventListener('click', function(){ $('v-zoom').click(); });
+    document.addEventListener('keydown', function(e){
+      if($('viewer').hidden) return;
+      if(e.key === 'Escape') closeViewer();
+      else if(e.key === 'ArrowLeft') stepSlide(-1);
+      else if(e.key === 'ArrowRight') stepSlide(1);
+    });
+    (function(){
+      var sx = 0, sy = 0, st = $('v-stage');
+      st.addEventListener('touchstart', function(e){ if(e.touches.length !== 1) return; sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+      st.addEventListener('touchend', function(e){
+        if(st.classList.contains('zoom') || !e.changedTouches.length) return;
+        var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+        if(Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) stepSlide(dx < 0 ? 1 : -1);
+      }, {passive:true});
+    })();
+    $('guide-list').addEventListener('click', function(e){
+      var main = document.querySelector('main');
+
+      if(e.target.closest('#g-slides') || e.target.closest('#g-prev')){ openViewer(guideTopic, 0); return; }
+      var pb = e.target.closest('[data-photo]');
+      if(pb){
+        var k2 = pb.dataset.photo, tt = topicById(k2.split(':')[0]), ii = +k2.split(':')[1];
+        openViewerList(photosOf(k2), +pb.dataset.pi, (tt && tt.items[ii]) ? tt.items[ii].h : 'รูปประกอบ');
+        return;
+      }
+
+      if(e.target.closest('#g-back')){ guideTopic = null; renderGuide(); main.scrollTop = 0; return; }
+
+      if(e.target.closest('#g-all')){
+        var t = topicById(guideTopic); if(!t) return;
+        var allOpen = t.items.every(function(_, i){ return guideOpen[t.id + ':' + i]; });
+        t.items.forEach(function(_, i){ guideOpen[t.id + ':' + i] = !allOpen; });
+        renderGuide(); return;
+      }
+
+      var sec = e.target.closest('[data-sec]');
+      if(sec){
+        var k = sec.dataset.sec;
+        guideOpen[k] = !guideOpen[k];
+        renderGuide();
+        var el = document.querySelector('[data-sec="' + k + '"]');
+        if(el && guideOpen[k]) el.scrollIntoView({behavior:'smooth', block:'start'});
+        return;
+      }
+
+      var row = e.target.closest('[data-guide]');
+      if(row){ guideTopic = row.dataset.guide; renderGuide(); main.scrollTop = 0; }
+    });
+
     $('h-machine').addEventListener('change', renderHistory);
     $('h-from').addEventListener('change', renderHistory);
     $('a-from').addEventListener('change', renderAdmin);

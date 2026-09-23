@@ -1,7 +1,8 @@
 /* Service worker — ให้แอปเปิดได้แม้ไม่มีสัญญาณ
-   เก็บเฉพาะตัวแอป ไม่เก็บข้อมูลจากฐานข้อมูล */
-var CACHE = 'canecut-v6';
-var SHELL = ['./', './index.html', './manifest.webmanifest'];
+   เก็บเฉพาะตัวแอปและรูปสไลด์ ไม่เก็บข้อมูลจากฐานข้อมูล */
+var CACHE  = 'canecut-v11';
+var SLIDES = 'canecut-slides-v1';   // รูปสไลด์ แยกไว้ ไม่ถูกลบตอนอัปเดตแอป
+var SHELL  = ['./', './index.html', './guide.js', './illustrations.js', './manifest.webmanifest'];
 
 self.addEventListener('install', function(e){
   self.skipWaiting();
@@ -10,7 +11,7 @@ self.addEventListener('install', function(e){
 
 self.addEventListener('activate', function(e){
   e.waitUntil(caches.keys().then(function(keys){
-    return Promise.all(keys.map(function(k){ return k===CACHE ? null : caches.delete(k); }));
+    return Promise.all(keys.map(function(k){ return (k === CACHE || k === SLIDES) ? null : caches.delete(k); }));
   }).then(function(){ return self.clients.claim(); }));
 });
 
@@ -21,6 +22,19 @@ self.addEventListener('fetch', function(e){
 
   // ข้อมูลจาก Supabase — ต่อเน็ตเท่านั้น ไม่ cache
   if(url.hostname.indexOf('supabase') > -1) return;
+
+  // รูปสไลด์: ใช้ของในเครื่องก่อน ไม่มีค่อยโหลด แล้วเก็บไว้
+  if(url.origin === location.origin && /\/(slides[12]|photos)\//.test(url.pathname)){
+    e.respondWith(
+      caches.match(req).then(function(hit){
+        return hit || fetch(req).then(function(res){
+          if(res.ok){ var copy = res.clone(); caches.open(SLIDES).then(function(c){ c.put(req, copy); }); }
+          return res;
+        });
+      })
+    );
+    return;
+  }
 
   // ตัวแอปเอง: ใช้เน็ตก่อน ถ้าไม่มีค่อยใช้ของที่เก็บไว้
   if(url.origin === location.origin){
