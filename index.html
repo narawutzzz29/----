@@ -17,6 +17,7 @@
     --amber:#A96D14; --amber-soft:#F6E9D2;
     --red:#A2412B; --red-soft:#F6E0D9;
     --blue:#2B5B76; --blue-soft:#DEEAF1;
+    --viz-1:#2f8a55;
     --r:10px; color-scheme:light;
   }
   @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
@@ -26,6 +27,7 @@
     --amber:#DFAA57; --amber-soft:#2D2415;
     --red:#E08D74; --red-soft:#2E1C16;
     --blue:#84B9D8; --blue-soft:#15242E; color-scheme:dark;
+    --viz-1:#3fa46a;
   }}
   :root[data-theme="dark"]{
     --ground:#10140F; --surface:#181D16; --surface-2:#212720; --raise:#1E241C;
@@ -34,6 +36,7 @@
     --amber:#DFAA57; --amber-soft:#2D2415;
     --red:#E08D74; --red-soft:#2E1C16;
     --blue:#84B9D8; --blue-soft:#15242E; color-scheme:dark;
+    --viz-1:#3fa46a;
   }
   *{box-sizing:border-box}
   html,body{height:100%;margin:0}
@@ -249,6 +252,47 @@
   .mx-v.first{border-color:#d9412b}
   .mx-pin{width:24px; height:24px; border-radius:50% 50% 50% 0; background:#d9412b; transform:rotate(-45deg); border:2px solid #fff; box-shadow:0 1px 4px #0009; box-sizing:border-box}
   .mx-gps{width:16px; height:16px; border-radius:50%; background:#2f7de1; border:2px solid #fff; box-shadow:0 0 0 7px rgba(47,125,225,.25); box-sizing:border-box}
+  /* ---------- แดชบอร์ด ---------- */
+  .dfilters{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px}
+  .dfilters .segmented{flex:1 1 280px}
+  .dfilters .segmented label{padding:7px 2px; font-size:13px}
+  .dfilters select{flex:0 1 180px; padding:8px 10px}
+  .hero{display:grid; gap:2px; margin:4px 0 12px}
+  .hero .k{font-size:12.5px; color:var(--ink-soft); font-weight:600}
+  .hero .hv{font-size:48px; font-weight:700; line-height:1.05; letter-spacing:-.01em; color:var(--ink)}
+  .hero .hv small{font-size:16px; font-weight:600; color:var(--ink-soft); margin-left:6px; letter-spacing:0}
+  .hero .hd{font-size:12.5px; color:var(--ink-soft)}
+  .hero .hd b.up{color:var(--green)} .hero .hd b.down{color:var(--red)}
+  .dtiles .tile .v{font-family:inherit; font-size:19px}
+  .chart{position:relative; margin-top:6px}
+  .chart svg{display:block; width:100%; height:auto; overflow:visible}
+  .chart .grid-l{stroke:var(--line); stroke-width:1}
+  .chart .axis-t{fill:var(--ink-faint); font-size:10.5px}
+  .chart .val-t{fill:var(--ink); font-size:11px; font-weight:700}
+  .chart .bar{fill:var(--viz-1); pointer-events:none}
+  .chart text,.chart .grid-l{pointer-events:none}
+  .chart .hit{fill:transparent; cursor:pointer; outline:none}
+  .chart .hit:hover + .bar, .chart .hit:focus + .bar{opacity:.78}
+  .chart .hit.on + .bar{opacity:.78}
+  .dtip{position:absolute; pointer-events:none; background:var(--surface); border:1px solid var(--line); border-radius:8px;
+    box-shadow:0 4px 14px rgba(0,0,0,.14); padding:7px 10px; font-size:12px; line-height:1.45; white-space:nowrap; z-index:5; transform:translate(-50%,-100%)}
+  .dtip b{display:block; font-size:15px; color:var(--ink)}
+  .dtip span{color:var(--ink-soft)}
+  .dtip i{display:inline-block; width:10px; height:2px; background:var(--viz-1); vertical-align:middle; margin-right:5px}
+  .hbars{display:grid; gap:8px; margin-top:8px}
+  .hbar{display:grid; gap:4px; font-size:12.5px}
+  .hbar .hd2{display:flex; justify-content:space-between; gap:10px; align-items:baseline}
+  .hbar .nm{color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0}
+  .hbar .tr{height:12px}
+  .hbar .bf{height:12px; background:var(--viz-1); border-radius:0 4px 4px 0; min-width:2px}
+  .hbar .vv{color:var(--ink); font-weight:700; font-variant-numeric:tabular-nums; white-space:nowrap}
+  .hbar .vv small{color:var(--ink-faint); font-weight:400}
+  .dmap{height:280px; border-radius:10px; overflow:hidden; background:var(--surface-2); margin-top:8px}
+  .dtable{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:8px; font-variant-numeric:tabular-nums}
+  .dtable th,.dtable td{padding:5px 6px; border-bottom:1px solid var(--line); text-align:right}
+  .dtable th:first-child,.dtable td:first-child{text-align:left}
+  .dtable th{color:var(--ink-faint); font-weight:600}
+  .linkbtn{background:none; border:none; color:var(--green); font-size:12.5px; font-weight:600; padding:6px 0; text-decoration:underline}
   .pstrip-cap{font-size:11.5px; color:var(--ink-faint); margin:6px 0 0}
   .pic-tag{font-size:11px; font-weight:600; color:var(--green-ink); background:var(--green-soft); padding:1px 7px; border-radius:99px; margin-left:6px; white-space:nowrap}
 
@@ -351,7 +395,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 18 · 23 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 19 · 23 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -423,6 +467,43 @@
     </section>
 
     <!-- รถตัดอ้อย -->
+    <section id="tab-dash" hidden>
+      <div class="dfilters">
+        <div class="segmented" id="d-range" role="radiogroup" aria-label="ช่วงเวลา">
+          <label><input type="radio" name="drange" value="7"><span>7 วัน</span></label>
+          <label><input type="radio" name="drange" value="30" checked><span>30 วัน</span></label>
+          <label><input type="radio" name="drange" value="month"><span>เดือนนี้</span></label>
+          <label><input type="radio" name="drange" value="all"><span>ทั้งหมด</span></label>
+        </div>
+        <select id="d-driver" aria-label="คนขับ" hidden></select>
+      </div>
+
+      <div class="card">
+        <p class="sub" id="d-scope" style="margin:0"></p>
+        <div class="hero"><div class="k">อ้อยที่ตัดได้</div><div class="hv" id="d-hero">0</div><div class="hd" id="d-delta"></div></div>
+        <div class="tiles dtiles" id="d-tiles"></div>
+      </div>
+
+      <div class="card">
+        <h2 id="d-chart-title">ตันที่ตัดได้ รายวัน</h2>
+        <p class="sub" style="margin:2px 0 0">แตะที่แท่งเพื่อดูตัวเลข</p>
+        <div class="chart" id="d-chart"></div>
+        <button type="button" class="linkbtn" id="d-tbl-btn">ดูเป็นตาราง</button>
+        <div id="d-table" hidden></div>
+      </div>
+
+      <div class="card" id="d-drivers-card">
+        <h2 id="d-drivers-title">ตันตามคนขับ</h2>
+        <div class="hbars" id="d-drivers"></div>
+      </div>
+
+      <div class="card">
+        <h2>แปลงที่ตัด</h2>
+        <p class="sub" id="d-map-sub" style="margin:2px 0 0"></p>
+        <div class="dmap" id="d-map"></div>
+      </div>
+    </section>
+
     <section id="tab-fleet" hidden>
       <div class="card">
         <h2>ทะเบียนรถตัดอ้อย</h2>
@@ -560,6 +641,7 @@
 
   <nav>
     <button type="button" data-tab="log" aria-current="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>บันทึกงาน</span><span class="ind"></span></button>
+    <button type="button" data-tab="dash"><svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M6 16v-5M11 16V7M16 16v-3M21 16V4" /></svg><span>แดชบอร์ด</span><span class="ind"></span></button>
     <button type="button" data-tab="fleet"><svg viewBox="0 0 24 24"><path d="M3 17h18"/><path d="M5 17v-4l3-5h7l2 5h2v4"/><circle cx="8" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg><span>รถตัดอ้อย</span><span class="ind"></span></button>
     <button type="button" data-tab="guide"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5Z"/></svg><span>คู่มือ</span><span class="ind"></span></button>
     <button type="button" data-tab="history"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg><span>ประวัติ</span><span class="ind"></span></button>
@@ -891,6 +973,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   function renderAll(){
     updateConn(); countDup();
     renderMachineOptions(); renderMyRecent(); renderFleet(); renderHistory();
+    if(!$('tab-dash').hidden) renderDash();
     if(S.isAdmin) renderAdmin();
   }
 
@@ -1201,8 +1284,9 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function showTab(name){
-    ['log','fleet','guide','history','admin'].forEach(function(t){ $('tab-'+t).hidden=(t!==name); });
+    ['log','dash','fleet','guide','history','admin'].forEach(function(t){ $('tab-'+t).hidden=(t!==name); });
     if(name==='guide') renderGuide();
+    if(name==='dash') renderDash();
     Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
       b.setAttribute('aria-current', b.dataset.tab===name?'true':'false'); });
     document.querySelector('main').scrollTop=0;
@@ -1739,6 +1823,209 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     stopWalk(); $('mapx').hidden = true; document.body.style.overflow = '';
   }
 
+  /* ---------- แดชบอร์ด ---------- */
+  var DSH = { map:null, layer:null };
+  function isoDay(d){ return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function addDays(iso, n){ var d = new Date(iso + 'T00:00:00'); d.setDate(d.getDate() + n); return isoDay(d); }
+  function dayDiff(a, b){ return Math.round((new Date(b + 'T00:00:00') - new Date(a + 'T00:00:00')) / 864e5); }
+  var TH_MON = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  function shortDay(iso){ var p = iso.split('-'); return (+p[2]) + ' ' + TH_MON[+p[1] - 1]; }
+  function monLabel(iso){ var p = iso.split('-'); return TH_MON[+p[1] - 1] + ' ' + String(+p[0] + 543).slice(-2); }
+  function compact(n){ n = num(n); return Math.abs(n) >= 1e7 ? nf.format(Math.round(n / 1e4) / 100) + ' ล้าน' : nf0.format(n); }
+
+  function dashRange(){
+    var r = (document.querySelector('input[name="drange"]:checked') || {}).value || '30', to = today(), from;
+    if(r === '7') from = addDays(to, -6);
+    else if(r === '30') from = addDays(to, -29);
+    else if(r === 'month') from = to.slice(0, 8) + '01';
+    else {
+      from = to;
+      dashJobs(null).forEach(function(j){ if(j.work_date && j.work_date < from) from = j.work_date; });
+    }
+    return { key:r, from:from, to:to };
+  }
+  function dashJobs(rg){
+    var who = S.isAdmin ? $('d-driver').value : (S.me && S.me.id);
+    return S.jobs.filter(function(j){
+      if(who && j.created_by !== who) return false;
+      if(rg && (!j.work_date || j.work_date < rg.from || j.work_date > rg.to)) return false;
+      return true;
+    });
+  }
+  function sumBy(list, k){ var t = 0; list.forEach(function(j){ t += num(j[k]); }); return t; }
+
+  function renderDash(){
+    if(!S.me) return;
+    var sel = $('d-driver');
+    if(S.isAdmin){
+      var keep = sel.value;
+      sel.innerHTML = '<option value="">คนขับทุกคน</option>' + S.people.map(function(p){ return '<option value="' + esc(p.id) + '">' + esc(p.full_name || p.username) + '</option>'; }).join('');
+      sel.value = keep; sel.hidden = false;
+    } else sel.hidden = true;
+
+    var rg = dashRange(), jobs = dashJobs(rg);
+    var days = dayDiff(rg.from, rg.to) + 1;
+    $('d-scope').textContent = (S.isAdmin ? (sel.value ? (sel.options[sel.selectedIndex] || {}).text : 'ทุกคน') : 'ของฉัน') +
+      ' · ' + thDate(rg.from) + ' – ' + thDate(rg.to) + ' · ' + nf0.format(jobs.length) + ' รอบงาน';
+
+    // ---- ตัวเลขหลัก
+    var tons = sumBy(jobs, 'tons'), amount = sumBy(jobs, 'amount'), fuelc = sumBy(jobs, 'fuel_cost'), fuel = sumBy(jobs, 'fuel_liters'),
+        rai = sumBy(jobs, 'rai'), hours = sumBy(jobs, 'hours');
+    $('d-hero').innerHTML = nf.format(Math.round(tons * 100) / 100) + '<small>ตัน</small>';
+    var dl = '';
+    if(rg.key !== 'all'){
+      var pf = addDays(rg.from, -days), pt = addDays(rg.from, -1);
+      var prev = sumBy(dashJobs({ from:pf, to:pt }), 'tons');
+      if(prev > 0){
+        var ch = (tons - prev) / prev * 100;
+        dl = '<b class="' + (ch >= 0 ? 'up' : 'down') + '">' + (ch >= 0 ? '▲ +' : '▼ ') + nf0.format(ch) + '%</b> เทียบ ' + days + ' วันก่อนหน้า (' + nf.format(prev) + ' ตัน)';
+      } else dl = 'ช่วงก่อนหน้ายังไม่มีข้อมูลให้เทียบ';
+    }
+    $('d-delta').innerHTML = dl;
+    var tiles = [
+      ['ค่าตัดรวม', compact(amount), 'บาท'], ['ค่าน้ำมัน', compact(fuelc), 'บาท'],
+      ['คงเหลือหลังหักน้ำมัน', compact(amount - fuelc), 'บาท'], ['พื้นที่ตัด', nf.format(rai), 'ไร่'],
+      ['ผลผลิตต่อไร่', rai ? nf.format(tons / rai) : '—', 'ตัน/ไร่'], ['ตัดได้ต่อชั่วโมง', hours ? nf.format(tons / hours) : '—', 'ตัน/ชม.'],
+      ['น้ำมันต่อตัน', tons ? nf.format(fuel / tons) : '—', 'ลิตร/ตัน'], ['ชั่วโมงทำงาน', nf.format(hours), 'ชม.']
+    ];
+    $('d-tiles').innerHTML = tiles.map(function(t){ return '<div class="tile"><div class="k">' + t[0] + '</div><div class="v">' + t[1] + ' <span class="u">' + t[2] + '</span></div></div>'; }).join('');
+
+    renderDashChart(rg, jobs, days);
+    renderDashDrivers(jobs);
+    renderDashMap(jobs);
+  }
+
+  /* ---- กราฟแท่ง: ตันตามวัน/สัปดาห์/เดือน */
+  function dashBuckets(rg, jobs, days){
+    var mode = days <= 45 ? 'day' : days <= 210 ? 'week' : 'month', B = [], idx = {};
+    function keyOf(iso){
+      if(mode === 'day') return iso;
+      if(mode === 'month') return iso.slice(0, 7);
+      var d = new Date(iso + 'T00:00:00'), wd = (d.getDay() + 6) % 7; d.setDate(d.getDate() - wd); return isoDay(d);
+    }
+    var cur = keyOf(rg.from), end = keyOf(rg.to), guard = 0;
+    while(cur <= end && guard++ < 400){
+      idx[cur] = B.length;
+      B.push({ key:cur, label: mode === 'month' ? monLabel(cur + '-01') : shortDay(cur), tons:0, amount:0, n:0 });
+      cur = mode === 'day' ? addDays(cur, 1) : mode === 'week' ? addDays(cur, 7) : (function(){ var y = +cur.slice(0, 4), m = +cur.slice(5, 7) + 1; if(m > 12){ m = 1; y++; } return y + '-' + ('0' + m).slice(-2); })();
+    }
+    jobs.forEach(function(j){ var i = idx[keyOf(j.work_date)]; if(i == null) return; B[i].tons += num(j.tons); B[i].amount += num(j.amount); B[i].n++; });
+    return { mode:mode, B:B };
+  }
+  function niceStep(max, n){ var raw = max / n, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p; return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p; }
+
+  function renderDashChart(rg, jobs, days){
+    var bk = dashBuckets(rg, jobs, days), B = bk.B, box = $('d-chart');
+    $('d-chart-title').textContent = 'ตันที่ตัดได้ ' + (bk.mode === 'day' ? 'รายวัน' : bk.mode === 'week' ? 'รายสัปดาห์' : 'รายเดือน');
+    var W = Math.max(280, box.clientWidth || 320), H = 200, ml = 38, mr = 6, mt = 20, mb = 26, pw = W - ml - mr, ph = H - mt - mb;
+    var max = 0; B.forEach(function(b){ if(b.tons > max) max = b.tons; });
+    var step = niceStep(max || 1, 4), top = Math.max(step, Math.ceil((max || 1) / step) * step);
+    var y = function(v){ return mt + ph - v / top * ph; };
+    var band = pw / Math.max(1, B.length), bw = Math.max(2, Math.min(24, band - 2));
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="กราฟตันที่ตัดได้">';
+    for(var v = 0; v <= top + 1e-9; v += step){
+      s += '<line class="grid-l" x1="' + ml + '" x2="' + (W - mr) + '" y1="' + y(v).toFixed(1) + '" y2="' + y(v).toFixed(1) + '"/>';
+      s += '<text class="axis-t" x="' + (ml - 6) + '" y="' + (y(v) + 3.5).toFixed(1) + '" text-anchor="end">' + nf.format(v) + '</text>';
+    }
+    var every = Math.max(1, Math.ceil(B.length / Math.max(1, Math.floor(pw / 46)))), imax = -1;
+    B.forEach(function(b, i){ if(b.tons === max && max > 0 && imax < 0) imax = i; });
+    B.forEach(function(b, i){
+      var cx = ml + band * i + band / 2, x = cx - bw / 2, yv = y(b.tons), base = mt + ph, h = base - yv;
+      s += '<rect class="hit" data-i="' + i + '" tabindex="0" x="' + (ml + band * i).toFixed(1) + '" y="' + mt + '" width="' + band.toFixed(1) + '" height="' + ph + '" aria-label="' + esc(b.label + ' ' + nf.format(b.tons) + ' ตัน') + '"/>';
+      if(h > 0.5){
+        var r = Math.min(4, h, bw / 2);
+        s += '<path class="bar" d="M' + x.toFixed(1) + ',' + base + 'V' + (yv + r).toFixed(1) + 'Q' + x.toFixed(1) + ',' + yv.toFixed(1) + ' ' + (x + r).toFixed(1) + ',' + yv.toFixed(1) +
+             'H' + (x + bw - r).toFixed(1) + 'Q' + (x + bw).toFixed(1) + ',' + yv.toFixed(1) + ' ' + (x + bw).toFixed(1) + ',' + (yv + r).toFixed(1) + 'V' + base + 'Z"/>';
+      } else s += '<path class="bar" d=""/>';
+      if(i % every === 0) s += '<text class="axis-t" x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle">' + esc(b.label) + '</text>';
+      if(i === imax) s += '<text class="val-t" x="' + cx.toFixed(1) + '" y="' + (yv - 5).toFixed(1) + '" text-anchor="middle">' + nf.format(Math.round(b.tons * 10) / 10) + '</text>';
+    });
+    s += '</svg><div class="dtip" hidden></div>';
+    box.innerHTML = s;
+    if(!max) box.insertAdjacentHTML('beforeend', '<div class="empty" style="padding:8px 0 0">ยังไม่มีงานในช่วงนี้</div>');
+    box._B = B; box._geo = { ml:ml, band:band, y:y, mt:mt };
+    // ตาราง
+    $('d-table').innerHTML = '<table class="dtable"><thead><tr><th>' + (bk.mode === 'day' ? 'วันที่' : bk.mode === 'week' ? 'สัปดาห์เริ่ม' : 'เดือน') + '</th><th>รอบงาน</th><th>ตัน</th><th>ค่าตัด (บาท)</th></tr></thead><tbody>' +
+      B.filter(function(b){ return b.n; }).map(function(b){ return '<tr><td>' + esc(b.label) + '</td><td>' + nf0.format(b.n) + '</td><td>' + nf.format(b.tons) + '</td><td>' + nf0.format(b.amount) + '</td></tr>'; }).join('') +
+      '</tbody></table>';
+  }
+  function dashTip(e){
+    var box = $('d-chart'), t = e.target.closest ? e.target.closest('.hit') : null, tip = box.querySelector('.dtip');
+    Array.prototype.forEach.call(box.querySelectorAll('.hit.on'), function(h){ if(h !== t) h.classList.remove('on'); });
+    if(!t || !box._B){ if(tip) tip.hidden = true; return; }
+    var b = box._B[+t.dataset.i], g = box._geo, svg = box.querySelector('svg'), sc = svg.getBoundingClientRect().width / svg.viewBox.baseVal.width;
+    t.classList.add('on');
+    tip.innerHTML = '<b></b><span></span>';
+    tip.firstChild.textContent = nf.format(b.tons) + ' ตัน';
+    tip.lastChild.textContent = b.label + ' · ' + nf0.format(b.n) + ' รอบ · ' + nf0.format(b.amount) + ' บาท';
+    tip.insertAdjacentHTML('afterbegin', '');
+    var cx = (g.ml + g.band * (+t.dataset.i) + g.band / 2) * sc, cy = (g.y(b.tons) - 8) * sc;
+    var w = box.clientWidth; tip.hidden = false;
+    var half = tip.offsetWidth / 2; cx = Math.max(half, Math.min(w - half, cx));
+    tip.style.left = cx + 'px'; tip.style.top = Math.max(tip.offsetHeight, cy) + 'px';
+  }
+
+  /* ---- แท่งแนวนอน: ตันตามคนขับ (แอดมินเห็นทุกคน, คนขับเห็นตามเจ้าของไร่/แปลง) */
+  function renderDashDrivers(jobs){
+    var by = {}, title;
+    if(S.isAdmin && !$('d-driver').value){
+      title = 'ตันตามคนขับ';
+      jobs.forEach(function(j){ var k = personName(j.created_by); by[k] = by[k] || { t:0, n:0 }; by[k].t += num(j.tons); by[k].n++; });
+    } else {
+      title = 'ตันตามแปลง';
+      jobs.forEach(function(j){ var k = j.plot || j.owner_name || 'ไม่ได้ตั้งชื่อแปลง'; by[k] = by[k] || { t:0, n:0 }; by[k].t += num(j.tons); by[k].n++; });
+    }
+    $('d-drivers-title').textContent = title;
+    var rows = Object.keys(by).map(function(k){ return { k:k, t:by[k].t, n:by[k].n }; }).sort(function(a, b){ return b.t - a.t; });
+    var more = rows.length > 10 ? rows.slice(10) : [];
+    rows = rows.slice(0, 10);
+    if(more.length) rows.push({ k:'อื่น ๆ (' + more.length + ')', t:more.reduce(function(s, r){ return s + r.t; }, 0), n:more.reduce(function(s, r){ return s + r.n; }, 0) });
+    var max = rows.reduce(function(m, r){ return Math.max(m, r.t); }, 0) || 1;
+    var el = $('d-drivers'); el.innerHTML = '';
+    if(!rows.length){ el.innerHTML = '<div class="empty">ยังไม่มีงานในช่วงนี้</div>'; return; }
+    rows.forEach(function(r){
+      var row = document.createElement('div'); row.className = 'hbar';
+      var hd = document.createElement('div'); hd.className = 'hd2';
+      var nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = r.k; nm.title = r.k;
+      var vv = document.createElement('div'); vv.className = 'vv'; vv.textContent = nf.format(Math.round(r.t * 10) / 10) + ' ';
+      var sm = document.createElement('small'); sm.textContent = 'ตัน · ' + r.n + ' รอบ'; vv.appendChild(sm);
+      hd.appendChild(nm); hd.appendChild(vv);
+      var tr = document.createElement('div'); tr.className = 'tr';
+      var bf = document.createElement('div'); bf.className = 'bf'; bf.style.width = Math.max(0.5, r.t / max * 100) + '%';
+      tr.appendChild(bf); row.appendChild(hd); row.appendChild(tr); el.appendChild(row);
+    });
+  }
+
+  /* ---- แผนที่แปลงที่ตัดในช่วงที่เลือก */
+  function renderDashMap(jobs){
+    var geo = jobs.filter(function(j){ return j.lat != null && j.lng != null; });
+    $('d-map-sub').textContent = geo.length ? ('ปักหมุดไว้ ' + geo.length + ' แปลง จาก ' + jobs.length + ' รอบงาน · แตะหมุดเพื่อดูรายละเอียด')
+                                            : 'ยังไม่มีงานที่ปักหมุดในช่วงนี้ — ปักหมุดได้ตอนบันทึกงาน';
+    if(!geo.length){ $('d-map').hidden = true; return; }
+    $('d-map').hidden = false;
+    loadLeaflet().then(function(L){
+      if(!DSH.map){
+        DSH.map = L.map('d-map', { zoomControl:true, maxZoom:20 });
+        DSH.map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener">Leaflet</a>');
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+          { maxZoom:20, maxNativeZoom:18, crossOrigin:true, attribution:'ภาพ © Esri, Maxar, Earthstar Geographics' }).addTo(DSH.map);
+      }
+      if(DSH.layer) DSH.map.removeLayer(DSH.layer);
+      var grp = L.featureGroup(), pts = [];
+      geo.forEach(function(j){
+        if(j.plot_polygon && j.plot_polygon.length > 2) L.polygon(j.plot_polygon, { color:'#f2c14e', weight:2, fillOpacity:.15 }).addTo(grp);
+        var m = L.circleMarker([j.lat, j.lng], { radius:7, color:'#1a2118', weight:2, fillColor:'#ffd24a', fillOpacity:1 }).addTo(grp);
+        var pop = document.createElement('div');
+        var t1 = document.createElement('b'); t1.textContent = j.plot || j.owner_name || 'แปลงที่ปักหมุดไว้'; pop.appendChild(t1);
+        var t2 = document.createElement('div'); t2.textContent = thDate(j.work_date) + ' · ' + nf.format(num(j.tons)) + ' ตัน' + (num(j.rai) ? ' · ' + nf.format(num(j.rai)) + ' ไร่' : ''); pop.appendChild(t2);
+        if(S.isAdmin){ var t3 = document.createElement('div'); t3.textContent = 'โดย ' + personName(j.created_by); pop.appendChild(t3); }
+        m.bindPopup(pop); pts.push([j.lat, j.lng]);
+      });
+      DSH.layer = grp.addTo(DSH.map);
+      setTimeout(function(){ DSH.map.invalidateSize(); if(pts.length === 1) DSH.map.setView(pts[0], 16); else DSH.map.fitBounds(L.latLngBounds(pts), { padding:[30, 30], maxZoom:17 }); }, 60);
+    }).catch(function(){ $('d-map-sub').textContent = 'โหลดแผนที่ไม่ได้ — ต้องต่ออินเทอร์เน็ต'; $('d-map').hidden = true; });
+  }
+
   /* ---------- wiring ---------- */
   function wire(){
     $('login-form').addEventListener('submit', login);
@@ -1791,6 +2078,14 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     Array.prototype.forEach.call(document.querySelectorAll('nav button'), function(b){
       b.addEventListener('click', function(){ showTab(b.dataset.tab); }); });
     ['j-tons','j-rate'].forEach(function(id){ $(id).addEventListener('input', recalc); });
+    $('d-range').addEventListener('change', renderDash);
+    $('d-driver').addEventListener('change', renderDash);
+    $('d-tbl-btn').addEventListener('click', function(){ var t = $('d-table'); t.hidden = !t.hidden; this.textContent = t.hidden ? 'ดูเป็นตาราง' : 'ซ่อนตาราง'; });
+    $('d-chart').addEventListener('pointermove', dashTip);
+    $('d-chart').addEventListener('click', dashTip);
+    $('d-chart').addEventListener('focusin', dashTip);
+    $('d-chart').addEventListener('pointerleave', function(e){ if(e.pointerType === 'mouse') dashTip({ target:document.body }); });
+    (function(){ var tm; window.addEventListener('resize', function(){ clearTimeout(tm); tm = setTimeout(function(){ if(!$('tab-dash').hidden) renderDash(); }, 200); }); })();
     $('j-pin').addEventListener('click', function(){ openMap('pin'); });
     $('j-measure').addEventListener('click', function(){ openMap('measure'); });
     $('j-plotinfo').addEventListener('click', function(e){
