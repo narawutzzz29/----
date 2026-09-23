@@ -102,6 +102,7 @@
   button{font:inherit; cursor:pointer; border-radius:8px; border:1px solid transparent}
   .btn{background:var(--green); color:var(--on-green); padding:11px 16px; font-weight:600; font-size:15px; width:auto}
   .btn.block{width:100%}
+  a.btn{display:inline-block; text-decoration:none; border-radius:8px}
   .btn.ghost{background:transparent; color:var(--ink); border-color:var(--line); font-weight:500}
   .btn.small{padding:7px 11px; font-size:13px}
   .btn.danger{background:transparent;color:var(--red);border-color:var(--line)}
@@ -395,7 +396,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 19 · 23 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 20 · 23 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -587,6 +588,11 @@
 
     <!-- หลังบ้าน -->
     <section id="tab-admin" hidden>
+      <div class="card">
+        <h2>รายงานสำหรับผู้บริหาร</h2>
+        <p class="sub">แดชบอร์ดเต็มจอ เปิดบนคอมพิวเตอร์หรือทีวี และพิมพ์หรือบันทึกเป็น PDF ได้</p>
+        <div class="actions"><a class="btn small" href="dashboard.html" target="_blank" rel="noopener">เปิดแดชบอร์ดผู้บริหาร</a></div>
+      </div>
       <div class="card">
         <h2>สรุปภาพรวม</h2>
         <p class="sub" id="admin-range">ทุกช่วงเวลา</p>
