@@ -341,6 +341,24 @@
   .impstat{font-size:13.5px; margin:8px 0; line-height:1.6}
   .impstat b{font-variant-numeric:tabular-nums}
   .warnline{color:var(--amber); font-size:12.5px}
+  /* v26 แก้ไขข้อมูล (แอดมิน) */
+  #edx{position:fixed; inset:0; z-index:95; background:rgba(12,14,11,.55); display:flex; align-items:flex-start; justify-content:center; overflow:auto; padding:16px}
+  #edx[hidden]{display:none}
+  .edbox{background:var(--surface); color:var(--ink); border-radius:12px; width:100%; max-width:620px; margin:auto 0; box-shadow:0 10px 40px rgba(0,0,0,.3)}
+  .edhead{display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:1px solid var(--line)}
+  .edhead b{flex:1; font-size:16px}
+  .edhead button{background:none; border:0; font-size:20px; color:var(--ink-soft); padding:2px 6px}
+  #ed-form{padding:14px 16px 16px}
+  #ed-form .ro{padding:9px 0; font-size:14px; color:var(--ink-soft)}
+  #ed-form .chk{display:flex; gap:8px; align-items:center; font-size:14px; padding-top:22px}
+  #ed-form .chk input{width:18px; height:18px}
+  .dmtabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px}
+  .dmtabs button{border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:6px 12px; font-size:13.5px}
+  .dmtabs button[aria-pressed="true"]{background:var(--green-soft); border-color:var(--green); color:var(--green-ink); font-weight:600}
+  .dmbar{display:flex; gap:8px; align-items:center; margin-bottom:8px}
+  .dmbar input{flex:1}
+  .rowbtns{white-space:nowrap}
+  .rowbtns .btn{margin-left:4px}
   /* v22 คู่มือคนขับ + ตั้งรหัสใหม่ */
   .resetbox{margin-top:12px; padding:12px; border-radius:8px; background:var(--green-soft, #e6f2ea); font-size:14px; line-height:1.6}
   .resetbox code{font-size:20px; font-weight:700; letter-spacing:.08em; padding:2px 8px; background:var(--surface,#fff); border-radius:6px; user-select:all}
@@ -456,7 +474,7 @@
       </form>
     </div>
     <p style="font-size:12px;color:var(--ink-faint);margin-top:12px" id="login-foot">ลืมรหัสผ่าน หรือยังไม่ได้รับรหัสเชิญ — ติดต่อผู้ดูแลระบบ</p>
-    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 24 · 24 ก.ย. 2569</p>
+    <p style="font-size:11px;color:var(--ink-faint);margin-top:6px">เวอร์ชัน 26 · 24 ก.ย. 2569</p>
   </div>
 </div>
 
@@ -577,28 +595,6 @@
         </div>
       </div>
 
-      <div class="card" id="machine-form-card" hidden>
-        <h2 id="mf-title">เพิ่มรถตัดอ้อย</h2>
-        <form id="machine-form">
-          <input type="hidden" id="m-id">
-          <div class="grid">
-            <div class="f"><label for="m-code">หมายเลขรถ</label><input id="m-code" required placeholder="เลขรถ / ทะเบียน"></div>
-            <div class="f"><label for="m-brand">ยี่ห้อ</label><input id="m-brand" placeholder="เช่น John Deere"></div>
-            <div class="f"><label for="m-model">รุ่น</label><input id="m-model" placeholder="เช่น CH570"></div>
-            <div class="f"><label for="m-year">ปี</label><input type="number" id="m-year" inputmode="numeric" step="1" placeholder="2565"></div>
-            <div class="f"><label for="m-hours">ชั่วโมงเครื่องสะสม</label><input type="number" id="m-hours" inputmode="decimal" step="1" min="0" placeholder="0"></div>
-            <div class="f"><label for="m-status">สถานะ</label><select id="m-status"><option>ว่าง</option><option>กำลังทำงาน</option><option>ซ่อมบำรุง</option><option>รอส่งมอบ</option></select></div>
-            <div class="f wide"><label for="m-driver">คนขับประจำรถ</label><input id="m-driver" placeholder="ชื่อคนขับ"></div>
-            <div class="f wide" data-orgf><label for="m-cust">ลูกค้า (เจ้าของรถ)</label><select id="m-cust"></select></div>
-            <div class="f" data-orgf><label for="m-ad">AD ที่ขาย/ดูแล</label><select id="m-ad"></select></div>
-            <div class="f" data-orgf><label for="m-ssc">SSC ที่ดูแล</label><select id="m-ssc"></select></div>
-            <div class="f wide"><label for="m-note">หมายเหตุ</label><input id="m-note"></div>
-          </div>
-          <div class="actions"><button type="submit" class="btn">บันทึกข้อมูลรถ</button>
-            <button type="button" class="btn ghost" id="mf-cancel">ยกเลิก</button></div>
-        </form>
-      </div>
-
       <div class="card" id="maint-form-card" hidden>
         <h2>บันทึกซ่อมบำรุง</h2>
         <p class="sub" id="maint-for">—</p>
@@ -698,6 +694,20 @@
         <div id="imp-preview" hidden></div>
       </div>
 
+      <div class="card" id="dm-card">
+        <h2>จัดการข้อมูลทั้งหมด</h2>
+        <p class="sub">เพิ่ม แก้ไข หรือลบ รถ · ลูกค้า · ร้าน AD / ทีม SSC · ประวัติซ่อมบำรุง — งานตัดแก้ได้ในตาราง "ข้อมูลดิบทั้งหมด" ด้านล่าง · ผู้ใช้แก้ได้ในตาราง "ผู้ใช้งานระบบ"</p>
+        <div class="dmtabs" id="dm-tabs">
+          <button type="button" data-dm="machines" aria-pressed="true">รถ</button>
+          <button type="button" data-dm="customers" aria-pressed="false">ลูกค้า</button>
+          <button type="button" data-dm="orgs" aria-pressed="false">AD / SSC</button>
+          <button type="button" data-dm="maintenance" aria-pressed="false">ซ่อมบำรุง</button>
+        </div>
+        <div class="dmbar"><input id="dm-q" type="search" placeholder="ค้นหา" autocomplete="off"><button type="button" class="btn small" id="dm-add">+ เพิ่ม</button></div>
+        <div class="tablewrap" style="max-height:55vh;overflow-y:auto"><table id="dm-table"><tbody></tbody></table></div>
+        <p class="sub" id="dm-foot" style="margin:6px 0 0"></p>
+      </div>
+
       <div class="card">
         <h2>สรุปรายคัน</h2>
         <p class="sub">ผลงานของรถแต่ละคันในช่วงที่เลือก แยกตามหมายเลขรถที่กรอกตอนบันทึกงาน</p>
@@ -778,6 +788,22 @@
     <button type="button" class="vbtn" id="v-prev">‹ ก่อนหน้า</button>
     <button type="button" class="vbtn" id="v-zoom">ขยาย</button>
     <button type="button" class="vbtn" id="v-next">ถัดไป ›</button>
+  </div>
+</div>
+
+<div id="edx" hidden role="dialog" aria-modal="true" aria-labelledby="ed-title">
+  <div class="edbox">
+    <div class="edhead"><b id="ed-title">แก้ไข</b><button type="button" id="ed-close" aria-label="ปิด">✕</button></div>
+    <form id="ed-form" novalidate>
+      <div class="grid" id="ed-fields"></div>
+      <p class="sub" id="ed-note" style="margin:10px 0 0"></p>
+      <div id="ed-err" class="warnline" hidden style="margin-top:8px"></div>
+      <div class="actions">
+        <button type="submit" class="btn" id="ed-save">บันทึก</button>
+        <button type="button" class="btn ghost" id="ed-cancel">ยกเลิก</button>
+        <button type="button" class="btn danger" id="ed-del" style="margin-left:auto">ลบ</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -1315,9 +1341,25 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
   function renderImpCounts(){
     if(!S.orgsReady){ $('imp-counts').innerHTML='<span class="warnline">ยังไม่ได้รัน SQL ไฟล์ 11 — รันก่อนจึงจะแยกสิทธิ์ SSC / AD / ลูกค้า และนำเข้าข้อมูลได้</span>'; return; }
-    var linked=S.machines.filter(function(m){ return m.customer_id||m.ad_id||m.ssc_id; }).length;
+    var linked=S.machines.filter(isImported).length, extra=S.machines.length-linked;
     $('imp-counts').innerHTML='รถ <b>'+nf0.format(S.machines.length)+'</b> คัน (ผูกแล้ว '+nf0.format(linked)+') · ลูกค้า <b>'+nf0.format(S.customers.length)+
-      '</b> · AD <b>'+nf0.format(S.orgs.filter(function(o){ return o.kind==='ad'; }).length)+'</b> ร้าน · SSC <b>'+nf0.format(S.orgs.filter(function(o){ return o.kind==='ssc'; }).length)+'</b>';
+      '</b> · AD <b>'+nf0.format(S.orgs.filter(function(o){ return o.kind==='ad'; }).length)+'</b> ร้าน · SSC <b>'+nf0.format(S.orgs.filter(function(o){ return o.kind==='ssc'; }).length)+'</b>'+
+      (linked && extra ? '<div class="warnline" style="margin-top:6px">มีรถที่ไม่ได้มาจากการนำเข้า '+extra+' คัน ('+esc(S.machines.filter(function(m){ return !isImported(m); }).map(function(m){ return m.code; }).slice(0,6).join(', '))+(extra>6?' …':'')+
+         ') <button type="button" class="btn small ghost" id="imp-purge" style="margin-left:6px">ลบออก</button></div>' : '');
+  }
+  // รถที่มาจากการนำเข้า = มีเลขจอง หรือผูกกับลูกค้า / AD / SSC
+  function isImported(m){ return !!(m.booking_no || m.customer_id || m.ad_id || m.ssc_id); }
+  function purgeUnimported(btn){
+    var list=S.machines.filter(function(m){ return !isImported(m); });
+    if(!list.length || !S.machines.some(isImported)) return;
+    var nm=S.machines.filter(function(m){ return list.indexOf(m)>-1; }).length;
+    var mt=S.maint.filter(function(x){ return list.some(function(m){ return m.id===x.machine_id; }); }).length;
+    if(!confirm('ลบรถที่ไม่ได้มาจากการนำเข้า '+nm+' คัน?\n\n'+list.map(function(m){ return '• '+m.code; }).join('\n')+
+      (mt?'\n\nประวัติซ่อมบำรุงของรถเหล่านี้ '+mt+' รายการจะถูกลบด้วย':'')+'\nงานตัดอ้อยที่บันทึกไว้ยังอยู่ครบ')) return;
+    btn.disabled=true; btn.textContent='กำลังลบ…';
+    sb.from('machines').delete().in('id', list.map(function(m){ return m.id; })).then(function(r){
+      if(r.error) throw r.error; toast('ลบรถ '+nm+' คันแล้ว'); return loadAll(); })
+     .catch(function(err){ btn.disabled=false; btn.textContent='ลบออก'; toast('ลบไม่สำเร็จ: '+(err.message||'')); });
   }
   function impField(h){
     var t=String(h||'').toLowerCase().replace(/\s+/g,'');
@@ -1477,6 +1519,179 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='แม่แบบข้อมูลรถ-ลูกค้า-AD-SSC.csv';
     document.body.appendChild(a); a.click(); a.remove(); setTimeout(function(){ URL.revokeObjectURL(a.href); },1000);
   }
+
+  /* ---------- แก้ไข / ลบ ข้อมูลทุกอย่าง (แอดมิน) ---------- */
+  var MT_KINDS=['เปลี่ยนถ่ายน้ำมันเครื่อง','เปลี่ยนใบมีด','ระบบไฮดรอลิก','ยาง / ตีนตะขาบ','ซ่อมใหญ่','อื่น ๆ'];
+  var ED={ table:null, row:null, fields:[] };
+  var TBL_TH={ machines:'รถ', customers:'ลูกค้า', orgs:'ร้าน AD / ทีม SSC', jobs:'งานตัด', maintenance:'ประวัติซ่อมบำรุง', profiles:'ผู้ใช้' };
+  function optList(list, label, blank){ return [['', blank||'— ไม่ระบุ —']].concat(list.map(function(x){ return [x.id, label ? label(x) : x.name]; })); }
+  function custLabel(c){ return c.name+(c.phone?' · '+c.phone:''); }
+  function machLabel(m){ return m.code+(custName(m.customer_id)?' · '+custName(m.customer_id):''); }
+  function edSchema(t, row){
+    var ad=S.orgs.filter(function(o){ return o.kind==='ad'; }), ssc=S.orgs.filter(function(o){ return o.kind==='ssc'; });
+    var org=S.orgsReady;
+    if(t==='machines') return [
+      {k:'code', l:'หมายเลขรถ', req:1}, {k:'status', l:'สถานะ', t:'sel', o:[['ว่าง','ว่าง'],['กำลังทำงาน','กำลังทำงาน'],['ซ่อมบำรุง','ซ่อมบำรุง'],['รอส่งมอบ','รอส่งมอบ']]},
+      org&&{k:'customer_id', l:'ลูกค้า (เจ้าของรถ)', t:'sel', o:optList(S.customers, custLabel), w:1},
+      org&&{k:'ad_id', l:'AD ที่ขาย/ดูแล', t:'sel', o:optList(ad)}, org&&{k:'ssc_id', l:'SSC ที่ดูแล', t:'sel', o:optList(ssc)},
+      org&&{k:'booking_no', l:'เลขจอง'}, org&&{k:'delivery_date', l:'วันที่ส่งมอบ', t:'date'},
+      {k:'brand', l:'ยี่ห้อ'}, {k:'model', l:'รุ่น'}, {k:'year', l:'ปี', t:'num'}, {k:'engine_hours', l:'ชั่วโมงเครื่องสะสม', t:'num'},
+      org&&{k:'ad_staff', l:'ช่าง AD ที่ดูแล', w:1}, org&&{k:'ssc_staff', l:'ช่าง SSC ที่ดูแล', w:1},
+      {k:'driver_name', l:'คนขับประจำรถ'}, {k:'note', l:'หมายเหตุ', w:1}];
+    if(t==='customers') return [{k:'name', l:'ชื่อลูกค้า', req:1, w:1}, {k:'phone', l:'เบอร์โทร'}, {k:'province', l:'จังหวัด'}, {k:'address', l:'ที่อยู่', w:1}, {k:'note', l:'หมายเหตุ', w:1}];
+    if(t==='orgs') return [{k:'kind', l:'กลุ่ม', t:'sel', o:[['ad','AD (ร้านตัวแทน)'],['ssc','SSC']], req:1}, {k:'name', l:'ชื่อ', req:1, w:1}, {k:'province', l:'จังหวัด'}, {k:'phone', l:'เบอร์โทร'}];
+    if(t==='maintenance') return [{k:'machine_id', l:'รถ', t:'sel', o:optList(S.machines, machLabel, '— เลือกรถ —'), req:1, w:1},
+      {k:'work_date', l:'วันที่', t:'date', req:1}, {k:'kind', l:'ประเภท', t:'sel', o:MT_KINDS.concat(row && row.kind && MT_KINDS.indexOf(row.kind)<0 ? [row.kind] : []).map(function(x){ return [x,x]; })},
+      {k:'at_hours', l:'ที่ชั่วโมงเครื่อง', t:'num'}, {k:'cost', l:'ค่าใช้จ่าย (บาท)', t:'num'}, {k:'note', l:'รายละเอียด', w:1}];
+    if(t==='jobs') return [{k:'work_date', l:'วันที่ตัด', t:'date', req:1}, {k:'machine_id', l:'รถ (ในทะเบียน)', t:'sel', o:optList(S.machines, machLabel)},
+      {k:'machine_no', l:'หมายเลขรถ'}, {k:'machine_owner', l:'เจ้าของรถ'}, {k:'plot', l:'แปลง', w:1},
+      {k:'rai', l:'พื้นที่ (ไร่)', t:'num'}, {k:'tons', l:'น้ำหนักอ้อย (ตัน)', t:'num'}, {k:'hours', l:'ชั่วโมงทำงาน', t:'num'}, {k:'fuel_liters', l:'น้ำมัน (ลิตร)', t:'num'},
+      {k:'fuel_cost', l:'ค่าน้ำมัน (บาท)', t:'num'}, {k:'rate', l:'ค่าตัด (บาท/ตัน)', t:'num'}, {k:'amount', l:'ค่าตัดรวม (บาท)', t:'num'},
+      {k:'created_by', l:'ผู้บันทึก', t:'sel', o:optList(S.people, function(p){ return (p.full_name||p.username)+' ('+p.username+')'; })}, {k:'note', l:'หมายเหตุ', w:1}];
+    if(t==='profiles'){ var self=row && row.id===S.me.id; return [{k:'username', l:'ชื่อผู้ใช้ (ใช้เข้าระบบ แก้ไม่ได้)', t:'ro'},
+      {k:'full_name', l:'ชื่อ–นามสกุล'}, {k:'phone', l:'เบอร์โทร'},
+      {k:'role', l:'สิทธิ์', t:'sel', o:[['driver','ผู้ใช้ทั่วไป'],['admin','แอดมิน']], dis:self},
+      {k:'active', l:'เปิดใช้งาน', t:'check', dis:self},
+      org&&{k:'kind', l:'กลุ่ม', t:'sel', o:[['customer','ลูกค้า'],['ad','AD'],['ssc','SSC']]},
+      org&&{k:'customer_id', l:'เป็นลูกค้าคนไหน', t:'sel', o:optList(S.customers, custLabel), w:1},
+      org&&{k:'org_id', l:'ร้าน / ทีมที่สังกัด', t:'sel', o:optList(S.orgs, function(o){ return (o.kind==='ad'?'AD · ':'SSC · ')+o.name; }), w:1}]; }
+    return [];
+  }
+  function openEditor(t, row){
+    if(!S.isAdmin) return;
+    ED.table=t; ED.row=row||null; ED.fields=edSchema(t, row).filter(Boolean);
+    $('ed-title').textContent=(row?'แก้ไข':'เพิ่ม')+TBL_TH[t];
+    $('ed-fields').innerHTML=ED.fields.map(function(f,i){
+      var id='edf-'+i, v=row ? row[f.k] : (f.k==='status' ? 'ว่าง' : f.k==='kind' && t==='orgs' ? 'ad' : f.k==='work_date' ? today() : ''); if(v==null) v='';
+      var dis=f.dis?' disabled':'', inp;
+      if(f.t==='ro') inp='<div class="ro">'+esc(v)+'</div>';
+      else if(f.t==='sel') inp='<select id="'+id+'"'+dis+'>'+f.o.map(function(o){ return '<option value="'+esc(o[0])+'"'+(String(o[0])===String(v)?' selected':'')+'>'+esc(o[1])+'</option>'; }).join('')+'</select>';
+      else if(f.t==='check') return '<div class="f"><label class="chk"><input type="checkbox" id="'+id+'"'+(v===true?' checked':'')+dis+'> '+esc(f.l)+'</label></div>';
+      else inp='<input id="'+id+'"'+(f.t==='num'?' type="number" step="any" inputmode="decimal"':f.t==='date'?' type="date"':'')+' value="'+esc(v)+'"'+dis+'>';
+      return '<div class="f'+(f.w?' wide':'')+'"><label for="'+id+'">'+esc(f.l)+(f.req?' *':'')+'</label>'+inp+'</div>';
+    }).join('');
+    $('ed-del').hidden=!row || (t==='profiles' && row.id===S.me.id);
+    $('ed-del').textContent = t==='profiles' ? 'ลบบัญชีนี้' : 'ลบ';
+    $('ed-note').textContent = t==='profiles' && row && row.id===S.me.id ? 'บัญชีของคุณเอง — เปลี่ยนสิทธิ์หรือปิดบัญชีตัวเองไม่ได้ (กันล็อกตัวเองออกจากระบบ)'
+      : t==='jobs' ? 'แก้ตัน หรือบาท/ตัน แล้วค่าตัดรวมจะคำนวณใหม่ให้' : '';
+    $('ed-err').hidden=true; $('ed-save').disabled=false;
+    $('edx').hidden=false; $('edx').scrollTop=0;
+    var first=$('ed-fields').querySelector('input:not([disabled]),select:not([disabled])'); if(first) try{ first.focus(); }catch(e){}
+  }
+  function closeEditor(){ $('edx').hidden=true; ED.table=null; ED.row=null; }
+  function edInput(k){ for(var i=0;i<ED.fields.length;i++) if(ED.fields[i].k===k) return $('edf-'+i); return null; }
+  function edChange(e){
+    if(ED.table==='jobs'){
+      var t=edInput('tons'), r=edInput('rate'), a=edInput('amount');
+      if((e.target===t || e.target===r) && r.value!==''){ a.value=Math.round(num(t.value)*num(r.value)*100)/100; }
+      if(e.target===edInput('machine_id') && e.target.value){ var m=machineById(e.target.value);
+        if(m){ edInput('machine_no').value=m.code; if(custName(m.customer_id)) edInput('machine_owner').value=custName(m.customer_id); } }
+    }
+  }
+  function saveEditor(e){
+    e.preventDefault();
+    var t=ED.table, row=ED.row, data={}, miss=[];
+    ED.fields.forEach(function(f,i){
+      if(f.t==='ro' || f.dis) return;
+      var el=$('edf-'+i), v;
+      if(f.t==='check') v=el.checked;
+      else if(f.t==='num') v= el.value==='' ? null : Number(el.value);
+      else { v=el.value.trim(); if(v==='') v=null; }
+      if(f.req && (v==null || v==='')) miss.push(f.l);
+      data[f.k]=v;
+    });
+    var err=function(m){ $('ed-err').textContent=m; $('ed-err').hidden=false; };
+    if(miss.length) return err('กรอกให้ครบ: '+miss.join(', '));
+    if(t==='machines'){
+      var dup=S.machines.filter(function(m){ return (!row || m.id!==row.id) && mkey(m.code)===mkey(data.code); })[0];
+      if(dup) return err('หมายเลขรถ "'+data.code+'" มีอยู่แล้ว');
+      if(data.engine_hours==null) data.engine_hours=0;
+    }
+    if(t==='jobs'){ ['rai','tons','hours','fuel_liters','fuel_cost','rate','amount'].forEach(function(k){ if(data[k]==null) data[k]=0; }); }
+    if(t==='profiles' && data.kind){ if(data.kind==='customer') data.org_id=null; else data.customer_id=null; }
+    $('ed-save').disabled=true;
+    var q = row ? sb.from(t).update(data).eq('id', row.id) : sb.from(t).insert(t==='maintenance' ? Object.assign({ created_by:S.me.id }, data) : data);
+    q.then(function(r){
+      if(r.error) throw r.error;
+      toast((row?'แก้ไข':'เพิ่ม')+TBL_TH[t]+'แล้ว'); closeEditor(); return loadAll();
+    }).catch(function(x){
+      $('ed-save').disabled=false;
+      var m=(x&&x.message)||'', c=x&&x.code;
+      err(c==='23505' ? 'ชื่อนี้มีอยู่แล้ว — ใช้ชื่ออื่น หรือแก้รายการเดิมแทน' : c==='23514' ? 'ค่าที่กรอกไม่ถูกต้อง: '+m : 'บันทึกไม่สำเร็จ: '+m);
+    });
+  }
+  function deleteRecord(t, row){
+    if(!S.isAdmin || !row) return;
+    var name = t==='machines' ? 'รถ '+row.code : t==='customers' ? 'ลูกค้า '+row.name : t==='orgs' ? pre(row.kind==='ad'?'AD':'SSC', row.name)
+      : t==='jobs' ? 'งานตัดวันที่ '+thDate(row.work_date)+' · '+nf.format(num(row.tons))+' ตัน' : t==='maintenance' ? 'ซ่อมบำรุง '+thDate(row.work_date)+' · '+(row.kind||'')
+      : 'บัญชี '+(row.full_name||row.username)+' ('+row.username+')';
+    var fx=[];
+    if(t==='machines'){
+      var nm=S.maint.filter(function(x){ return x.machine_id===row.id; }).length, nj=S.jobs.filter(function(j){ return j.machine_id===row.id; }).length;
+      if(nm) fx.push('ประวัติซ่อมบำรุง '+nm+' รายการจะถูกลบด้วย');
+      if(nj) fx.push('งานตัด '+nj+' รายการยังอยู่ แต่ไม่ผูกกับรถคันนี้แล้ว');
+    }
+    if(t==='customers'){
+      var mc=S.machines.filter(function(m){ return m.customer_id===row.id; }).length, pc=S.people.filter(function(p){ return p.customer_id===row.id; }).length;
+      if(mc) fx.push('รถ '+mc+' คันจะไม่มีเจ้าของ');
+      if(pc) fx.push('บัญชีผู้ใช้ '+pc+' คนจะหลุดจากลูกค้ารายนี้ และมองไม่เห็นรถอีก');
+    }
+    if(t==='orgs'){
+      var mo=S.machines.filter(function(m){ return m.ad_id===row.id || m.ssc_id===row.id; }).length, po=S.people.filter(function(p){ return p.org_id===row.id; }).length;
+      if(mo) fx.push('รถ '+mo+' คันจะไม่มี '+(row.kind==='ad'?'AD':'SSC')+' ดูแล');
+      if(po) fx.push('ผู้ใช้ '+po+' คนจะหลุดสังกัด และมองไม่เห็นรถอีก');
+    }
+    var photos = t==='jobs' ? (row.docs||[]).map(function(d){ return d.path; }).filter(Boolean) : [];
+    if(photos.length) fx.push('รูปใบชั่ง/บิล '+photos.length+' รูปจะถูกลบด้วย');
+    if(t==='profiles'){
+      var jn=S.jobs.filter(function(j){ return j.created_by===row.id; }).length;
+      fx.push('ลบบัญชีถาวร เข้าระบบด้วยชื่อนี้ไม่ได้อีก'+(jn?' · งานตัด '+jn+' รายการที่เขาบันทึกยังอยู่':''));
+      fx.push('ถ้าแค่อยากหยุดใช้ชั่วคราว ให้ใช้ "ปิดบัญชี" แทน');
+    }
+    if(!confirm('ลบ '+name+' ถาวร?'+(fx.length?'\n\n• '+fx.join('\n• '):'')+'\n\nลบแล้วกู้คืนไม่ได้')) return;
+    var p;
+    if(t==='profiles'){
+      p = sb.functions.invoke('admin-reset-password', { body:{ action:'delete', user_id:row.id } }).then(function(r){
+        if(r.error) return fnMsg(r.error, 'ลบบัญชีไม่สำเร็จ', 'ยังไม่ได้ติดตั้ง Edge Function admin-reset-password (ไฟล์ 09)').then(function(m){
+          if(/รหัสผ่านต้องยาว/.test(m)) m='ต้องอัปเดต Edge Function admin-reset-password เป็นตัวใหม่ (ไฟล์ 09) ก่อน';
+          throw new Error(m); });
+        return { error:null };
+      });
+    } else p = sb.from(t).delete().eq('id', row.id);
+    p.then(function(r){
+      if(r && r.error) throw r.error;
+      if(photos.length) sb.storage.from('receipts').remove(photos).then(function(){}, function(){});
+      toast('ลบแล้ว'); closeEditor(); return loadAll();
+    }).catch(function(x){ toast('ลบไม่สำเร็จ: '+((x&&x.message)||'')); });
+  }
+
+  /* ---------- ตารางจัดการข้อมูล (แอดมิน) ---------- */
+  var DM='machines';
+  function dmRows(){
+    if(DM==='machines') return S.machines.map(function(m){ return { r:m, c:[m.code, m.status||'', custName(m.customer_id), orgName(m.ad_id), orgName(m.ssc_id), m.booking_no||''] }; });
+    if(DM==='customers') return S.customers.map(function(c){ return { r:c, c:[c.name, c.phone||'', c.province||'',
+      S.machines.filter(function(m){ return m.customer_id===c.id; }).length, S.people.filter(function(p){ return p.customer_id===c.id; }).length] }; });
+    if(DM==='orgs') return S.orgs.map(function(o){ return { r:o, c:[o.kind==='ad'?'AD':'SSC', o.name, o.province||'',
+      S.machines.filter(function(m){ return m.ad_id===o.id || m.ssc_id===o.id; }).length, S.people.filter(function(p){ return p.org_id===o.id; }).length] }; });
+    return S.maint.map(function(x){ var m=machineById(x.machine_id); return { r:x, c:[thDate(x.work_date), m?m.code:'—', x.kind||'', nf0.format(num(x.cost)), x.note||''] }; });
+  }
+  var DM_HEAD={ machines:['หมายเลขรถ','สถานะ','ลูกค้า','AD','SSC','เลขจอง'], customers:['ชื่อ','เบอร์','จังหวัด','รถ','บัญชี'],
+    orgs:['กลุ่ม','ชื่อ','จังหวัด','รถ','ผู้ใช้'], maintenance:['วันที่','รถ','ประเภท','ค่าใช้จ่าย ฿','รายละเอียด'] };
+  function renderDM(){
+    if(!$('dm-card')) return;
+    Array.prototype.forEach.call(document.querySelectorAll('#dm-tabs button'), function(b){
+      b.hidden = !S.orgsReady && (b.dataset.dm==='customers' || b.dataset.dm==='orgs');
+      b.setAttribute('aria-pressed', b.dataset.dm===DM ? 'true' : 'false'); });
+    var q=mkey($('dm-q').value), all=dmRows();
+    var rows=all.filter(function(x){ return !q || mkey(x.c.join(' ')).indexOf(q)>-1; });
+    var shown=rows.slice(0,300), H=DM_HEAD[DM];
+    $('dm-table').innerHTML='<thead><tr>'+H.map(function(h){ return '<th>'+h+'</th>'; }).join('')+'<th></th></tr></thead><tbody>'+
+      (shown.map(function(x){ return '<tr>'+x.c.map(function(v){ return '<td>'+esc(v)+'</td>'; }).join('')+
+        '<td class="rowbtns"><button type="button" class="btn small ghost" data-dmedit="'+esc(x.r.id)+'">แก้ไข</button><button type="button" class="btn small danger" data-dmdel="'+esc(x.r.id)+'">ลบ</button></td></tr>'; }).join('')
+       || '<tr><td colspan="'+(H.length+1)+'" class="empty">'+(all.length?'ไม่พบตามคำค้น':'ยังไม่มีข้อมูล')+'</td></tr>')+'</tbody>';
+    $('dm-foot').textContent = rows.length>300 ? 'แสดง 300 จาก '+nf0.format(rows.length)+' รายการ — พิมพ์ค้นหาเพื่อหาเพิ่ม' : nf0.format(rows.length)+' รายการ';
+  }
+  function dmList(){ return DM==='machines'?S.machines:DM==='customers'?S.customers:DM==='orgs'?S.orgs:S.maint; }
 
   /* ---------- settings (admin) ---------- */
   function loadSettings(){
@@ -1641,7 +1856,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
       return '<div class="meta" style="padding:3px 0"><span>'+thDate(j.work_date)+'</span><span>'+esc(j.plot||j.owner_name||'')+'</span><span>'+nf.format(num(j.tons))+' ตัน</span></div>';
     }).join('') : '<div class="meta">ยังไม่มีงานที่กรอกหมายเลขรถ "'+esc(m.code||'')+'"</div>')+'</div>';
     h += '<div><p class="eyebrow">ประวัติซ่อมบำรุง</p>'+(mt.length? mt.map(function(x){
-      return '<div class="meta" style="padding:3px 0"><span>'+thDate(x.work_date)+'</span><span>'+esc(x.kind||'')+'</span><span>'+nf0.format(num(x.cost))+' ฿</span>'+(x.note?'<span>'+esc(x.note)+'</span>':'')+'</div>';
+      return '<div class="meta" style="padding:3px 0"><span>'+thDate(x.work_date)+'</span><span>'+esc(x.kind||'')+'</span><span>'+nf0.format(num(x.cost))+' ฿</span>'+(x.note?'<span>'+esc(x.note)+'</span>':'')+
+        (S.isAdmin?'<button type="button" class="chip" data-editmt="'+esc(x.id)+'">แก้ไข</button>':'')+'</div>';
     }).join('') : '<div class="meta">ยังไม่มีประวัติ</div>')+'</div>';
     h += '<div class="actions">'+(S.kind!=='ad'?'<button type="button" class="btn small ghost" data-maint="'+esc(m.id)+'">+ บันทึกซ่อมบำรุง</button>':'')+
       (S.isAdmin?'<button type="button" class="btn small ghost" data-edit="'+esc(m.id)+'">แก้ไขข้อมูลรถ</button>':'')+'</div></div>';
@@ -1669,7 +1885,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
   }
 
   function renderAdmin(){
-    renderImpCounts();
+    renderImpCounts(); renderDM();
     var jobs=filteredJobs(), tons=0, amount=0, fuel=0, hours=0, rai=0;
     jobs.forEach(function(j){ tons+=num(j.tons); amount+=num(j.amount); fuel+=num(j.fuel_liters); hours+=num(j.hours); rai+=num(j.rai); });
     $('admin-tiles').innerHTML = [
@@ -1704,7 +1920,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
         '<td>'+thStamp(s.last)+'</td><td>'+thStamp(p.last_seen)+'</td>'+
         '<td>'+(p.active?'<span class="chip ok">ใช้งาน</span>'
               : (!p.last_seen && !s.n ? '<span class="chip wait">รออนุมัติ</span>' : '<span class="chip fix">ปิด</span>'))+'</td>'+
-        '<td>'+(p.id!==S.me.id
+        '<td class="rowbtns"><button type="button" class="btn small ghost" data-edituser="'+esc(p.id)+'">แก้ไข</button> '+(p.id!==S.me.id
           ? '<button type="button" class="btn small ghost" data-toggle="'+esc(p.id)+'" data-active="'+(p.active?'1':'0')+'">'+
               (p.active?'ปิดบัญชี':(!p.last_seen && !s.n ? 'อนุมัติ' : 'เปิดใช้'))+'</button> '+
             (S.orgsReady && p.role!=='admin'?'<button type="button" class="btn small ghost" data-link="'+esc(p.id)+'">ผูกสังกัด</button> ':'')+
@@ -1726,7 +1942,7 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
         '<td class="num">'+nf.format(num(j.tons))+'</td><td class="num">'+nf.format(num(j.rai))+'</td>'+
         '<td class="num">'+nf.format(num(j.hours))+'</td><td class="num">'+nf.format(num(j.fuel_liters))+'</td>'+
         '<td class="num">'+nf0.format(num(j.amount))+'</td><td>'+docChips(j,false)+'</td><td>'+esc(personName(j.created_by))+'</td><td>'+thStamp(j.created_at)+'</td>'+
-        '<td><button type="button" class="btn small danger" data-del="'+esc(j.id)+'">ลบ</button></td></tr>';
+        '<td class="rowbtns"><button type="button" class="btn small ghost" data-editjob="'+esc(j.id)+'">แก้ไข</button><button type="button" class="btn small danger" data-del="'+esc(j.id)+'">ลบ</button></td></tr>';
     }).join('');
     $('admin-raw-table').innerHTML='<thead><tr><th>วันที่</th><th>หมายเลขรถ</th><th>เจ้าของรถ</th><th>แปลง</th><th>พิกัด</th>'+
       '<th>ตัน</th><th>ไร่</th><th>ชม.</th><th>ลิตร</th><th>ค่าตัด ฿</th><th>เอกสาร</th><th>ผู้บันทึก</th><th>เวลาบันทึก</th><th></th></tr></thead><tbody>'+
@@ -1967,18 +2183,6 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     recalc(); document.querySelector('main').scrollTop=0;
   }
 
-  function openMachineForm(m){
-    $('mf-title').textContent = m?'แก้ไขข้อมูลรถ':'เพิ่มรถตัดอ้อย';
-    $('m-id').value=m?m.id:''; $('m-code').value=m?(m.code||''):''; $('m-brand').value=m?(m.brand||''):'';
-    $('m-model').value=m?(m.model||''):''; $('m-year').value=m&&m.year?m.year:'';
-    $('m-hours').value=m&&m.engine_hours?m.engine_hours:''; $('m-status').value=m?(m.status||'ว่าง'):'ว่าง';
-    $('m-driver').value=m?(m.driver_name||''):''; $('m-note').value=m?(m.note||''):'';
-    Array.prototype.forEach.call(document.querySelectorAll('[data-orgf]'), function(el){ el.hidden = !S.orgsReady; });
-    fillSel($('m-cust'), S.customers, m&&m.customer_id, 'ยังไม่ระบุ', function(c){ return c.name+(c.phone?' · '+c.phone:''); });
-    fillSel($('m-ad'),  S.orgs.filter(function(o){ return o.kind==='ad'; }),  m&&m.ad_id,  'ยังไม่ระบุ');
-    fillSel($('m-ssc'), S.orgs.filter(function(o){ return o.kind==='ssc'; }), m&&m.ssc_id, 'ยังไม่ระบุ');
-    $('machine-form-card').hidden=false; $('machine-form-card').scrollIntoView({behavior:'smooth',block:'nearest'});
-  }
 
   function openMaint(id){
     var m=machineById(id);
@@ -2735,12 +2939,28 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     $('btn-logout').addEventListener('click', logout);
     $('btn-save-settings').addEventListener('click', saveSettings);
     $('acc-form').addEventListener('submit', changeMyPassword);
+    $('ed-form').addEventListener('submit', saveEditor);
+    $('ed-form').addEventListener('input', edChange);
+    $('ed-form').addEventListener('change', edChange);
+    $('ed-close').addEventListener('click', closeEditor);
+    $('ed-cancel').addEventListener('click', closeEditor);
+    $('ed-del').addEventListener('click', function(){ deleteRecord(ED.table, ED.row); });
+    $('edx').addEventListener('click', function(e){ if(e.target.id==='edx') closeEditor(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !$('edx').hidden) closeEditor(); });
+    $('dm-tabs').addEventListener('click', function(e){ var b=e.target.closest('[data-dm]'); if(!b) return; DM=b.dataset.dm; $('dm-q').value=''; renderDM(); });
+    $('dm-q').addEventListener('input', renderDM);
+    $('dm-add').addEventListener('click', function(){ openEditor(DM, null); });
+    $('dm-table').addEventListener('click', function(e){
+      var b=e.target.closest('[data-dmedit]'); if(b){ openEditor(DM, findIn(dmList(), b.dataset.dmedit)); return; }
+      var d=e.target.closest('[data-dmdel]'); if(d){ deleteRecord(DM, findIn(dmList(), d.dataset.dmdel)); }
+    });
     Array.prototype.forEach.call(document.querySelectorAll('input[name="rgkind"]'), function(r){ r.addEventListener('change', syncRegKind); });
     $('rg-org').addEventListener('change', function(){ $('rg-orgname').hidden = ($('rg-org').value!=='__other'); if(!$('rg-orgname').hidden) $('rg-orgname').focus(); });
     $('lk-kind').addEventListener('change', syncLinkKind);
     $('lk-save').addEventListener('click', saveLink);
     $('lk-cancel').addEventListener('click', function(){ $('link-card').hidden=true; });
     $('imp-read').addEventListener('click', readImport);
+    $('imp-counts').addEventListener('click', function(e){ if(e.target.id==='imp-purge') purgeUnimported(e.target); });
     $('imp-template').addEventListener('click', downloadTemplate);
     $('imp-preview').addEventListener('click', function(e){
       if(e.target.id==='imp-go') runImport(e.target);
@@ -2882,27 +3102,15 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     $('a-to').addEventListener('change', renderAdmin);
     $('btn-refresh').addEventListener('click', function(){ loadAll().then(function(){ toast('โหลดข้อมูลใหม่แล้ว'); }); });
     $('btn-export').addEventListener('click', exportCsv);
-    $('btn-add-machine').addEventListener('click', function(){ openMachineForm(null); });
-    $('mf-cancel').addEventListener('click', function(){ $('machine-form-card').hidden=true; });
+    $('btn-add-machine').addEventListener('click', function(){ openEditor('machines', null); });
     $('mt-cancel').addEventListener('click', function(){ $('maint-form-card').hidden=true; });
 
     $('fleet-list').addEventListener('click', function(e){
       var b=e.target.closest('[data-maint]'); if(b){ openMaint(b.dataset.maint); return; }
-      var ed=e.target.closest('[data-edit]'); if(ed){ openMachineForm(machineById(ed.dataset.edit)); return; }
+      var ed=e.target.closest('[data-edit]'); if(ed){ openEditor('machines', machineById(ed.dataset.edit)); return; }
+      var em=e.target.closest('[data-editmt]'); if(em){ openEditor('maintenance', findIn(S.maint, em.dataset.editmt)); return; }
       var row=e.target.closest('[data-machine]');
       if(row){ S.openMachine = (S.openMachine===row.dataset.machine)? null : row.dataset.machine; renderFleet(); }
-    });
-
-    $('machine-form').addEventListener('submit', function(e){
-      e.preventDefault();
-      var id=$('m-id').value||null;
-      var data={ code:$('m-code').value.trim(), brand:$('m-brand').value.trim(), model:$('m-model').value.trim(),
-        year:$('m-year').value?num($('m-year').value):null, engine_hours:num($('m-hours').value),
-        status:$('m-status').value, driver_name:$('m-driver').value.trim(), note:$('m-note').value.trim() };
-      if(S.orgsReady){ data.customer_id=$('m-cust').value||null; data.ad_id=$('m-ad').value||null; data.ssc_id=$('m-ssc').value||null; }
-      var p = id ? sb.from('machines').update(data).eq('id',id) : sb.from('machines').insert(data);
-      p.then(function(r){ if(r.error) throw r.error; $('machine-form-card').hidden=true; toast(id?'แก้ไขแล้ว':'เพิ่มรถแล้ว'); return loadAll(); })
-       .catch(function(err){ toast('บันทึกไม่สำเร็จ: '+(err.message||'')); });
     });
 
     $('maint-form').addEventListener('submit', function(e){
@@ -2915,10 +3123,9 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
     });
 
     $('admin-raw-table').addEventListener('click', function(e){
+      var eb=e.target.closest('[data-editjob]'); if(eb){ openEditor('jobs', findIn(S.jobs, eb.dataset.editjob)); return; }
       var b=e.target.closest('[data-del]'); if(!b) return;
-      if(!confirm('ลบรายการนี้ถาวร?')) return;
-      sb.from('jobs').delete().eq('id',b.dataset.del).then(function(r){ if(r.error) throw r.error; toast('ลบแล้ว'); return loadAll(); })
-       .catch(function(err){ toast('ลบไม่สำเร็จ: '+(err.message||'')); });
+      deleteRecord('jobs', findIn(S.jobs, b.dataset.del));
     });
 
     $('admin-user-table').addEventListener('click', function(e){
@@ -2930,6 +3137,8 @@ var LOGIN_DOMAIN      = "canecut.local";   // ต่อท้ายชื่อ�
          .catch(function(err){ toast('ทำรายการไม่สำเร็จ: '+(err.message||'')); });
         return;
       }
+      var ub=e.target.closest('[data-edituser]');
+      if(ub){ openEditor('profiles', findIn(S.people, ub.dataset.edituser)); return; }
       var lb=e.target.closest('[data-link]');
       if(lb){ openLink(lb.dataset.link); return; }
       var xb=e.target.closest('[data-reset]');
